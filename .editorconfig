@@ -10,6 +10,8 @@ indent_size = 4
 
 [*.{kt,kts}]
 max_line_length = 120
+# Composable functions are named like types: PartloreApp, not partloreApp.
+ktlint_function_naming_ignore_when_annotated_with = Composable
 
 [*.{yml,yaml,json,toml,xml}]
 indent_size = 2
