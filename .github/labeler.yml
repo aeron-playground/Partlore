@@ -18,6 +18,21 @@ area:ci:
   - changed-files:
       - any-glob-to-any-file: [".github/**", ".githooks/**"]
 
+area:build:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.gradle.kts"
+          - "gradle/**"
+          - "gradle.properties"
+          - "gradlew"
+          - "gradlew.bat"
+          - "config/**"
+          - ".editorconfig"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ["gradle/libs.versions.toml"]
+
 area:docs:
   - changed-files:
       - any-glob-to-any-file: ["docs/**", "*.md"]
