@@ -3,6 +3,21 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+// version.txt is updated by release-please. The version code is derived from it, so it always
+// grows: 1.2.3 -> 1_002_003. Before the first release (0.0.0) it is 1, the lowest Android allows.
+val appVersion =
+    providers
+        .fileContents(rootProject.layout.projectDirectory.file("version.txt"))
+        .asText
+        .get()
+        .trim()
+val appVersionCode =
+    appVersion
+        .split(".")
+        .map(String::toInt)
+        .let { (major, minor, patch) -> major * 1_000_000 + minor * 1_000 + patch }
+        .coerceAtLeast(1)
+
 android {
     namespace = "dev.partlore.app"
     compileSdk = 37
@@ -11,8 +26,8 @@ android {
         applicationId = "dev.partlore.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = appVersionCode
+        versionName = appVersion
     }
 
     // play: Google Play build. foss: F-Droid build, open-source dependencies only.

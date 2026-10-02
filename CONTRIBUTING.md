@@ -139,6 +139,16 @@ Content in `content/` is licensed CC BY-SA 4.0. By contributing it, you agree to
 
 Code is licensed Apache-2.0. By contributing it, you agree to that licence.
 
+## Releases
+
+Releases are automatic. A bot keeps one open "release PR" that collects the changes since the
+last release from the commit messages on `main`. Merging that PR tags the release (`app-v0.1.0`)
+and publishes it on GitHub.
+
+- Below 1.0.0: `feat`, `fix` and `perf` commits bump the patch version (0.0.1 → 0.0.2), and a
+  breaking change (`feat!:`) bumps the minor version (0.0.2 → 0.1.0).
+- Never edit `CHANGELOG.md` or `version.txt` by hand. The release PR updates both.
+
 ## Reporting problems
 
 - Wrong pin or spec? Use the **Content error** issue form.
