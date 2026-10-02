@@ -1,33 +1,40 @@
 package dev.partlore.app
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.partlore.core.designsystem.theme.PartloreTheme
 
-/** Placeholder root. Replaced by the design system theme and app shell. */
+/** Placeholder root until the app shell exists. */
 @Composable
 fun PartloreApp(modifier: Modifier = Modifier) {
-    val colors = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()
-    MaterialTheme(colorScheme = colors) {
-        Surface(modifier = modifier.fillMaxSize()) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.safeDrawingPadding(),
-            ) {
+    PartloreTheme {
+        Box(
+            modifier.fillMaxSize().background(
+                PartloreTheme.colors.bg,
+            ).safeDrawingPadding().padding(PartloreTheme.spacing.space16),
+            contentAlignment = Alignment.Center,
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = stringResource(R.string.app_name),
-                    style = MaterialTheme.typography.displayMedium,
+                    stringResource(R.string.app_name),
+                    style = PartloreTheme.typography.displayM,
+                    color = PartloreTheme.colors.textPrimary,
+                )
+                Text(
+                    stringResource(R.string.placeholder_status),
+                    style = PartloreTheme.typography.bodyM,
+                    color = PartloreTheme.colors.textSecondary,
+                    modifier = Modifier.padding(top = PartloreTheme.spacing.space8),
                 )
             }
         }
