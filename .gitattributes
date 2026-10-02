@@ -1,0 +1,20 @@
+* text=auto eol=lf
+
+# Windows scripts need CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.jar binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.ttf binary
+*.otf binary
+*.db binary
+
+# Generated or vendored files fold up in PR diffs
+gradlew linguist-generated=true
+gradlew.bat linguist-generated=true
+gradle/wrapper/** linguist-generated=true
+**/screenshots/**/*.png linguist-generated=true

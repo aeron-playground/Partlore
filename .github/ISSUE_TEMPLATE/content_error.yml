@@ -1,0 +1,51 @@
+name: Content error
+description: A pin, spec, gotcha or article is wrong or missing.
+title: "[content] "
+labels: [content-error, area:content]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for checking our data. Please include a source: we can only change a fact when an
+        official document backs it up. If the app opened this form, the first fields are filled in.
+  - type: input
+    id: part_id
+    attributes:
+      label: Part ID
+      description: The part's ID, for example `esp32-wroom-32e`.
+    validations:
+      required: true
+  - type: input
+    id: field_path
+    attributes:
+      label: Field
+      description: Which pin, spec or gotcha, for example `pins.p12.strapping` or `specs.supply.voltage`.
+  - type: input
+    id: pack_version
+    attributes:
+      label: Content pack version
+      description: Settings → Content in the app.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: What the app says, and what you think is correct.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: Link to the datasheet or official document, with the version and page number.
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Could following the wrong data damage hardware?
+      options:
+        - "No"
+        - "Maybe"
+        - "Yes"
+    validations:
+      required: true
