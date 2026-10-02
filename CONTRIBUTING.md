@@ -36,6 +36,18 @@ This file is ignored by git.
 | `./gradlew assembleFossDebug` | Build the F-Droid debug APK |
 | `./gradlew installPlayDebug` | Install the debug app on a connected device or emulator |
 
+### Checks on every pull request
+
+| Check | What it runs |
+|---|---|
+| `lint` | `./gradlew spotlessCheck detekt lint` |
+| `test` | `./gradlew test` |
+| `build` | Debug APKs for both flavors |
+| `dco` | Every commit has a matching `Signed-off-by` |
+| `dependency-review` | New dependencies have no known high-severity vulnerabilities |
+| `pr-title` | The PR title follows the commit format |
+| `Analyze (…)` | CodeQL security scan of the Kotlin code and the workflows |
+
 ### Git hooks
 
 `core.hooksPath .githooks` turns on two checks:
