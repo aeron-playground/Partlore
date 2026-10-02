@@ -30,6 +30,20 @@ links to the document it came from.
 
 Big decisions are written down in [`docs/adr/`](docs/adr/).
 
+## Build from source
+
+Needs JDK 21 and the Android SDK (platform 37).
+
+```bash
+git clone https://github.com/aeron-playground/Partlore.git
+cd Partlore
+./gradlew check               # format, lint and tests
+./gradlew assemblePlayDebug   # APK in app/build/outputs/apk/
+```
+
+There are two flavors: `play` for Google Play and `foss` for F-Droid. See
+[CONTRIBUTING.md](CONTRIBUTING.md#setup) for the full setup.
+
 ## Contributing
 
 Pin data, fixes and code are all welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first.

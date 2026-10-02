@@ -9,6 +9,40 @@ Not sure where to start? Look for issues labelled
 [`good first issue`](https://github.com/aeron-playground/Partlore/labels/good%20first%20issue),
 or ask in [Discussions](https://github.com/aeron-playground/Partlore/discussions).
 
+## Setup
+
+You need:
+
+- **JDK 21** (for example [Temurin](https://adoptium.net/))
+- **Android SDK** with platform 37 (Android Studio installs it, or use the command-line tools)
+
+Then, once per clone:
+
+```bash
+git config core.hooksPath .githooks   # turn on the commit checks
+./gradlew check                       # build and run every check
+```
+
+If Gradle can't find the SDK, create `local.properties` with `sdk.dir=/path/to/Android/Sdk`.
+This file is ignored by git.
+
+### Commands
+
+| Command | What it does |
+|---|---|
+| `./gradlew check` | Everything CI runs: formatting, detekt, Android Lint, unit tests |
+| `./gradlew spotlessApply` | Fix formatting |
+| `./gradlew assemblePlayDebug` | Build the Google Play debug APK |
+| `./gradlew assembleFossDebug` | Build the F-Droid debug APK |
+| `./gradlew installPlayDebug` | Install the debug app on a connected device or emulator |
+
+### Git hooks
+
+`core.hooksPath .githooks` turns on two checks:
+
+- **pre-commit**: checks Kotlin formatting when Kotlin files are staged.
+- **commit-msg**: checks the commit message format and the DCO sign-off.
+
 ## The workflow
 
 1. **Open or pick an issue.** Every change starts with one. Say you're working on it.

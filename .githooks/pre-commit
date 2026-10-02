@@ -1,0 +1,11 @@
+#!/bin/sh
+# Checks Kotlin formatting before each commit, only when Kotlin files are staged.
+set -eu
+
+if git diff --cached --name-only --diff-filter=ACMR | grep -Eq '\.kts?$'; then
+    root=$(git rev-parse --show-toplevel)
+    "$root/gradlew" -p "$root" --quiet spotlessCheck || {
+        echo "Formatting problems found. Run ./gradlew spotlessApply, then stage the changes." >&2
+        exit 1
+    }
+fi
