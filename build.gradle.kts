@@ -49,7 +49,11 @@ spotless {
             // Also set in .editorconfig for the IDE and the ktlint CLI. Spotless 8.10 does not
             // pick this property up from .editorconfig, so it is repeated here.
             .editorConfigOverride(
-                mapOf("ktlint_function_naming_ignore_when_annotated_with" to "Composable"),
+                mapOf(
+                    "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
+                    "compose_allowed_composition_locals" to
+                        "LocalPartloreColors,LocalPartloreTypography,LocalPartloreMotion",
+                ),
             ).customRuleSets(
                 listOf(
                     libs.compose.rules.ktlint
