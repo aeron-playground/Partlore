@@ -1,0 +1,31 @@
+area:app:
+  - changed-files:
+      - any-glob-to-any-file: ["app/**", "feature/**", "core/**"]
+
+area:design:
+  - changed-files:
+      - any-glob-to-any-file: ["core/designsystem/**"]
+
+area:content:
+  - changed-files:
+      - any-glob-to-any-file: ["content/**"]
+
+area:tools:
+  - changed-files:
+      - any-glob-to-any-file: ["tools/**", "scripts/**"]
+
+area:ci:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**", ".githooks/**"]
+
+area:docs:
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "*.md"]
+
+area:planner:
+  - changed-files:
+      - any-glob-to-any-file: ["core/planner/**", "feature/planner/**"]
+
+area:ocr:
+  - changed-files:
+      - any-glob-to-any-file: ["core/ocr/**", "feature/scanner/**"]

@@ -5,6 +5,9 @@
 #   check-commit-msg.sh file <path>      header format + DCO sign-off (commit-msg hook)
 set -eu
 
+# CI raises this for Dependabot, whose titles name full package coordinates.
+max_length=${COMMIT_MAX_LENGTH:-72}
+
 types='feat|fix|perf|refactor|test|docs|build|ci|chore|revert'
 scopes='app|design|content|tools|ci|docs|deps|planner|ocr|repo|release|build'
 pattern="^($types)(\\(($scopes)\\))?!?: [a-z0-9].*\$"
@@ -25,7 +28,7 @@ check_header() {
   types:  $(printf '%s' "$types" | tr '|' ' ')
   scopes: $(printf '%s' "$scopes" | tr '|' ' ')
   summary starts lowercase"
-    [ "${#header}" -le 72 ] || fail "header is ${#header} characters; the limit is 72"
+    [ "${#header}" -le "$max_length" ] || fail "header is ${#header} characters; the limit is $max_length"
 }
 
 check_file() {

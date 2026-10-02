@@ -1,0 +1,29 @@
+name: Welcome
+
+# Greets first-time contributors. Never checks out or runs PR code.
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/first-interaction@1c4688942c71f71d4f5502a26ea67c331730fa4d # v3.1.0
+        with:
+          repo_token: ${{ github.token }}
+          issue_message: |
+            Thanks for opening your first issue! A maintainer will reply within a few days.
+            If it's about wrong pin or spec data, a link to the datasheet page helps a lot.
+          pr_message: |
+            Thanks for your first pull request! Please check that every commit is signed off
+            (`git commit -s`) and that the PR title follows the format in CONTRIBUTING.md.
