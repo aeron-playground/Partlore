@@ -1,0 +1,72 @@
+name: Release APK
+
+# Builds the signed foss APK for an app release and attaches it, with a SHA-256 checksum and a
+# build provenance attestation. Can also be run by hand to rebuild the APK of an existing release.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag, for example app-v0.0.1
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  DO_NOT_TRACK: 1
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  apk:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'app-v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write # upload files to the release
+      id-token: write # sign the attestation
+      attestations: write
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.TAG }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+
+      - name: Build the signed foss APK
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$RELEASE_KEYSTORE_BASE64" ] || [ -z "$RELEASE_KEYSTORE_PASSWORD" ]; then
+            echo "::error::Release signing secrets are not set."
+            exit 1
+          fi
+          export RELEASE_KEYSTORE_FILE="$RUNNER_TEMP/release.jks"
+          printf '%s' "$RELEASE_KEYSTORE_BASE64" | base64 -d > "$RELEASE_KEYSTORE_FILE"
+          trap 'rm -f "$RELEASE_KEYSTORE_FILE"' EXIT
+          ./gradlew assembleFossRelease
+
+      - name: Verify the signature and add a checksum
+        run: |
+          apk="partlore-${TAG#app-v}-foss.apk"
+          cp app/build/outputs/apk/foss/release/app-foss-release.apk "$apk"
+          build_tools=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 | sort -V | tail -n 1)
+          "$build_tools/apksigner" verify --print-certs "$apk"
+          sha256sum "$apk" > "$apk.sha256"
+          echo "APK=$apk" >> "$GITHUB_ENV"
+
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: ${{ env.APK }}
+
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" "$APK" "$APK.sha256" --clobber

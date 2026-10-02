@@ -18,6 +18,11 @@ val appVersionCode =
         .let { (major, minor, patch) -> major * 1_000_000 + minor * 1_000 + patch }
         .coerceAtLeast(1)
 
+// Release signing only happens in the release workflow, which provides the key through these
+// variables. Everywhere else, release builds stay unsigned.
+val releaseKeystoreFile = providers.environmentVariable("RELEASE_KEYSTORE_FILE").orNull
+val releaseKeystorePassword = providers.environmentVariable("RELEASE_KEYSTORE_PASSWORD").orNull
+
 android {
     namespace = "dev.partlore.app"
     compileSdk = 37
@@ -37,11 +42,24 @@ android {
         create("foss") { dimension = "distribution" }
     }
 
+    signingConfigs {
+        if (releaseKeystoreFile != null && releaseKeystorePassword != null) {
+            create("release") {
+                storeFile = file(releaseKeystoreFile)
+                storePassword = releaseKeystorePassword
+                keyAlias = "partlore"
+                // PKCS12 keystores use one password for the store and the key.
+                keyPassword = releaseKeystorePassword
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
         }
         release {
+            signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

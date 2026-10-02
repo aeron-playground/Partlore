@@ -10,6 +10,20 @@ links to the document it came from.
 > **Status: early development.** There is no app to install yet. Follow the
 > [roadmap](https://github.com/orgs/aeron-playground/projects/2) to see what's being built.
 
+## Download
+
+Once the first version is out, every [release](https://github.com/aeron-playground/Partlore/releases)
+has an installable APK: `partlore-<version>-foss.apk`. It is the open-source build with no Google
+libraries, so it works on any Android 8+ phone. Updates install over it as long as you keep
+downloading from here.
+
+To check the file is genuine, compare its checksum, or verify that this repository's CI built it:
+
+```bash
+sha256sum -c partlore-<version>-foss.apk.sha256
+gh attestation verify partlore-<version>-foss.apk --repo aeron-playground/Partlore
+```
+
 ## What makes it different
 
 - **Pins are data, not pictures.** Pinouts are drawn from structured files, so every pin can be
