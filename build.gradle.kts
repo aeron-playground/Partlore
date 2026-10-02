@@ -1,3 +1,19 @@
+buildscript {
+    dependencies {
+        // Raise libraries that AGP puts on the build classpath to versions with security fixes.
+        constraints {
+            listOf(
+                libs.bouncycastle.bcprov,
+                libs.bouncycastle.bcpkix,
+                libs.bouncycastle.bcutil,
+                libs.jose4j,
+                libs.jdom2,
+                libs.commons.lang3,
+            ).forEach { add("classpath", it.get().toString()) }
+        }
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
