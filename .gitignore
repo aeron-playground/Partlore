@@ -1,0 +1,40 @@
+# Gradle
+.gradle/
+build/
+.kotlin/
+
+# Local machine settings (SDK path, secrets)
+local.properties
+.env
+.env.*
+!.env.example
+
+# Signing keys: never commit them
+*.jks
+*.keystore
+*.p12
+*.pem
+keystore.properties
+*.minisign.key
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.fleet/
+
+# Android
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+output-metadata.json
+
+# Generated content packs (CI builds them)
+*.db
+*.db-journal
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,7 @@
+# Default owner for everything
+* @aeron-gh
+
+# Sensitive paths
+/.github/ @aeron-gh
+/content/schema/ @aeron-gh
+/tools/ @aeron-gh
