@@ -26,6 +26,8 @@ android {
             isIncludeAndroidResources = true
             all {
                 it.maxHeapSize = "1536m"
+                // Robolectric's setup for Android 16+ images reads a JDK-internal class that Java 21 hides.
+                it.jvmArgs("--add-exports=java.base/jdk.internal.access=ALL-UNNAMED")
                 // Needed for drop shadows to render in screenshots.
                 it.systemProperty("robolectric.pixelCopyRenderMode", "hardware")
             }
