@@ -53,6 +53,7 @@ spotless {
                     "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
                     "compose_allowed_composition_locals" to
                         "LocalPartloreColors,LocalPartloreTypography,LocalPartloreMotion",
+                    "compose_disallow_material2" to "true",
                 ),
             ).customRuleSets(
                 listOf(
@@ -81,8 +82,4 @@ detekt {
             exclude("**/build/**")
         },
     )
-}
-
-dependencies {
-    detektPlugins(libs.compose.rules.detekt)
 }
