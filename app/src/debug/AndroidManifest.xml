@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application>
+    <!-- Same as the main manifest; stated here too so tools that read this file alone see it. -->
+    <application android:allowBackup="false">
         <activity
             android:name=".DesignCatalogActivity"
             android:exported="true"
