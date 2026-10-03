@@ -74,6 +74,16 @@ class DesignCatalogScreenshotTest {
     @Config(qualifiers = TABLET)
     fun typeLightTablet() = shot("type_light_tablet", Light) { TypographyCatalog() }
 
+    @Test fun componentsLight() = shot("components_light", Light) { ComponentsCatalog() }
+
+    @Test fun componentsDark() = shot("components_dark", Dark) { ComponentsCatalog() }
+
+    @Test fun componentsBench() = shot("components_bench", Bench) { ComponentsCatalog() }
+
+    @Test
+    @Config(qualifiers = PHONE_TALL)
+    fun componentsLightFont200() = shot("components_light_font200", Light, fontScale = 2f) { ComponentsCatalog() }
+
     private fun shot(name: String, mode: PartloreThemeMode, fontScale: Float = 1f, content: @Composable () -> Unit) =
         captureRoboImage("src/test/screenshots/$name.png") {
             val density = LocalDensity.current

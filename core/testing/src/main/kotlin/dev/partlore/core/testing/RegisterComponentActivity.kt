@@ -1,4 +1,4 @@
-package dev.partlore.core.designsystem.testing
+package dev.partlore.core.testing
 
 import android.content.ComponentName
 import androidx.activity.ComponentActivity
