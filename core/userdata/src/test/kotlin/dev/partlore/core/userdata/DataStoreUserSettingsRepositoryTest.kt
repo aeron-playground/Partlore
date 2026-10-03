@@ -65,6 +65,16 @@ class DataStoreUserSettingsRepositoryTest {
     }
 
     @Test
+    fun aDamagedFileIsReplacedWithDefaultsAndSavingStillWorks() = runTest(UnconfinedTestDispatcher()) {
+        // Not a valid settings file: a field that claims 127 bytes, followed by 2.
+        storeFile().writeBytes(byteArrayOf(0x0A, 0x7F, 0x13, 0x00))
+        val repo = DataStoreUserSettingsRepository(userSettingsDataStore(backgroundScope, ::storeFile))
+        assertEquals(UserSettings(), repo.settings.first())
+        repo.setTheme(ThemeSetting.Bench)
+        assertEquals(ThemeSetting.Bench, repo.settings.first().theme)
+    }
+
+    @Test
     fun unknownSavedValuesFallBackToDefaults() = runTest(UnconfinedTestDispatcher()) {
         val store = newStore(backgroundScope)
         store.edit {
