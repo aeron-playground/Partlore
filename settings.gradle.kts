@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "Partlore"
 
 include(":app")
+include(":core:designsystem")

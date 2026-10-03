@@ -12,6 +12,7 @@ indent_size = 4
 max_line_length = 120
 # Composable functions are named like types: PartloreApp, not partloreApp.
 ktlint_function_naming_ignore_when_annotated_with = Composable
+compose_allowed_composition_locals = LocalPartloreColors,LocalPartloreTypography,LocalPartloreMotion
 
 [*.{yml,yaml,json,toml,xml}]
 indent_size = 2

@@ -3,7 +3,7 @@
 
 naming:
   FunctionNaming:
-    # Composable functions are named like types: PartloreApp, PbCard.
+    # Composable functions are named like types: PartloreApp, PlCard.
     ignoreAnnotated: ['Composable']
 
 complexity:
@@ -15,6 +15,9 @@ style:
   UnusedPrivateMember:
     # Private @Preview functions are used by the IDE, not by code.
     ignoreAnnotated: ['Preview']
+  MagicNumber:
+    # Token files are where numbers belong. Keep detekt's default test excludes.
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/designsystem/**/theme/**']
 
 Compose:
   ComposableAnnotationNaming:

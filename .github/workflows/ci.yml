@@ -39,7 +39,14 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - run: ./gradlew test
+      # verifyRoborazziDebug compares screenshots with the committed ones.
+      - run: ./gradlew test verifyRoborazziDebug
+      - if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: screenshot-diffs
+          path: "**/build/outputs/roborazzi/**"
+          retention-days: 7
 
   build:
     runs-on: ubuntu-latest

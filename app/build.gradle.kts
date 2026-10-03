@@ -88,17 +88,7 @@ android {
 }
 
 dependencies {
-    // Android Lint runs with its own classpath. Raise the same vulnerable libraries there.
-    constraints {
-        listOf(
-            libs.bouncycastle.bcprov,
-            libs.bouncycastle.bcpkix,
-            libs.bouncycastle.bcutil,
-            libs.commons.lang3,
-            libs.httpclient,
-        ).forEach { add("androidLintTool", it) }
-    }
-
+    implementation(project(":core:designsystem"))
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Same as the main manifest; stated here too so tools that read this file alone see it. -->
+    <application android:allowBackup="false">
+        <activity
+            android:name=".DesignCatalogActivity"
+            android:exported="true"
+            android:label="@string/catalog_label">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
