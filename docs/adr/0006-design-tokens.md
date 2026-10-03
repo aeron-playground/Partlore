@@ -60,6 +60,7 @@ version Roborazzi brings in calls an input API that Android 17 removed.
 
 ## Update 2026-10-03
 
-Screenshot tests now run on Robolectric's Android 17 image, with Espresso 3.7.0. All 18
-screenshots were re-recorded. The only differences were smoothing on the edges of letters: same
-sizes, same positions.
+Espresso is now 3.7.0, so the Espresso problem above is gone. We tried the Android 17 image:
+every test passed locally, but on CI some drawings came back blank (one screenshot fully black, and
+the font weight test measured 0 px of ink for both weights) in 3 of 3 runs. The screenshot tests
+stay on Android 16 until we understand why.
