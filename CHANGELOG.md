@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.2](https://github.com/aeron-playground/Partlore/compare/app-v0.0.1...app-v0.0.2) (2026-10-03)
+
+
+### Features
+
+* **app:** add the app shell, settings and onboarding ([#22](https://github.com/aeron-playground/Partlore/issues/22)) ([0ab749d](https://github.com/aeron-playground/Partlore/commit/0ab749d0d6b1136b40fec2d9793808ff9be55c43))
+
 ## 0.0.1 (2026-10-03)
 
 
