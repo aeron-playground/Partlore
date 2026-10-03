@@ -1,7 +1,5 @@
 package dev.partlore.core.designsystem.theme
 
-import android.content.ComponentName
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,15 +18,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.partlore.core.designsystem.testing.registerComponentActivity
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
 import org.junit.runner.RunWith
-import org.junit.runners.model.Statement
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.GraphicsMode
 
 /**
@@ -38,20 +33,8 @@ import org.robolectric.annotation.GraphicsMode
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class FontWeightRenderingTest {
-    // createComposeRule opens a blank ComponentActivity; library modules don't declare one, so
-    // register it with Robolectric first (rule order 0 runs before the compose rule).
     @get:Rule(order = 0)
-    val registerActivity =
-        TestRule { base, _ ->
-            object : Statement() {
-                override fun evaluate() {
-                    val app = RuntimeEnvironment.getApplication()
-                    shadowOf(app.packageManager)
-                        .addActivityIfNotPresent(ComponentName(app, ComponentActivity::class.java))
-                    base.evaluate()
-                }
-            }
-        }
+    val activity = registerComponentActivity()
 
     @get:Rule(order = 1)
     val compose = createComposeRule()

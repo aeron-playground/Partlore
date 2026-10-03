@@ -1,5 +1,9 @@
 package dev.partlore.core.designsystem.theme
 
+import android.content.ContentResolver
+import android.database.ContentObserver
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
@@ -8,8 +12,12 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,11 +40,7 @@ fun PartloreTheme(
             PartloreThemeMode.Dark -> DarkColors
             PartloreThemeMode.Bench -> BenchColors
         }
-    val context = LocalContext.current
-    val animatorScale =
-        remember(context) {
-            Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f)
-        }
+    val animatorScale = rememberSystemAnimatorScale()
     val motion =
         remember(motionPreference, animatorScale) {
             PartloreMotion(resolveReducedMotion(motionPreference, animatorScale))
@@ -106,3 +110,28 @@ internal fun PartloreColors.toMaterialColorScheme(): ColorScheme =
         errorContainer = dangerContainer,
         onErrorContainer = textPrimary,
     )
+
+/** The system animator duration scale (0 = animations off), kept up to date while showing. */
+@Composable
+private fun rememberSystemAnimatorScale(): Float {
+    val resolver = LocalContext.current.contentResolver
+    var scale by remember(resolver) { mutableFloatStateOf(readAnimatorScale(resolver)) }
+    DisposableEffect(resolver) {
+        val observer =
+            object : ContentObserver(Handler(Looper.getMainLooper())) {
+                override fun onChange(selfChange: Boolean) {
+                    scale = readAnimatorScale(resolver)
+                }
+            }
+        resolver.registerContentObserver(
+            Settings.Global.getUriFor(Settings.Global.ANIMATOR_DURATION_SCALE),
+            false,
+            observer,
+        )
+        onDispose { resolver.unregisterContentObserver(observer) }
+    }
+    return scale
+}
+
+private fun readAnimatorScale(resolver: ContentResolver): Float =
+    Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f)
