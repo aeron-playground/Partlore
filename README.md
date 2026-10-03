@@ -67,6 +67,7 @@ Found a security problem? Please follow [SECURITY.md](SECURITY.md) and don't ope
 
 - Code: [Apache-2.0](LICENSE)
 - Content in [`content/`](content/): [CC BY-SA 4.0](content/LICENSE)
+- Fonts in `core/designsystem`: [SIL Open Font License 1.1](core/designsystem/src/main/assets/licenses/fonts/) (licence texts ship with the app)
 
 Partlore is not affiliated with or endorsed by Arduino, Espressif, Raspberry Pi or any other
 manufacturer. Product names are used only to describe the parts they refer to.

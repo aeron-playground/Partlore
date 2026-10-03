@@ -30,18 +30,20 @@ This file is ignored by git.
 
 | Command | What it does |
 |---|---|
-| `./gradlew check` | Everything CI runs: formatting, detekt, Android Lint, unit tests |
+| `./gradlew check` | Everything CI runs: formatting, detekt, Android Lint, unit tests, screenshot comparison |
 | `./gradlew spotlessApply` | Fix formatting |
 | `./gradlew assemblePlayDebug` | Build the Google Play debug APK |
 | `./gradlew assembleFossDebug` | Build the F-Droid debug APK |
 | `./gradlew installPlayDebug` | Install the debug app on a connected device or emulator |
+| `./gradlew :core:designsystem:recordRoborazziDebug` | Re-record screenshots after an intended UI change |
+| `./gradlew verifyRoborazziDebug` | Compare screenshots with the committed ones (part of `check`) |
 
 ### Checks on every pull request
 
 | Check | What it runs |
 |---|---|
 | `lint` | `./gradlew spotlessCheck detekt lint` |
-| `test` | `./gradlew test` |
+| `test` | `./gradlew test verifyRoborazziDebug` (unit tests and screenshot comparison) |
 | `build` | Debug APKs for both flavors |
 | `dco` | Every commit has a matching `Signed-off-by` |
 | `dependency-review` | New dependencies have no known high-severity vulnerabilities |
