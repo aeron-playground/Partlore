@@ -8,22 +8,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.partlore.core.designsystem.R
 
-// Variable fonts: each Font entry sets the weight axis to its weight.
+// One static file per weight: variable fonts' weight axis is not applied on real devices.
 private val Bricolage =
     FontFamily(
-        Font(R.font.bricolage_grotesque, FontWeight.SemiBold),
-        Font(R.font.bricolage_grotesque, FontWeight(650)),
-        Font(R.font.bricolage_grotesque, FontWeight.Bold),
+        Font(R.font.bricolage_grotesque_semibold, FontWeight.SemiBold),
+        Font(R.font.bricolage_grotesque_bold, FontWeight.Bold),
     )
 
 private val Atkinson =
     FontFamily(
-        Font(R.font.atkinson_hyperlegible_next, FontWeight.Normal),
-        Font(R.font.atkinson_hyperlegible_next, FontWeight.Medium),
-        Font(R.font.atkinson_hyperlegible_next, FontWeight.SemiBold),
+        Font(R.font.atkinson_hyperlegible_next_regular, FontWeight.Normal),
+        Font(R.font.atkinson_hyperlegible_next_medium, FontWeight.Medium),
+        Font(R.font.atkinson_hyperlegible_next_semibold, FontWeight.SemiBold),
     )
 
-private val JetBrainsMono = FontFamily(Font(R.font.jetbrains_mono, FontWeight.Medium))
+private val JetBrainsMono = FontFamily(Font(R.font.jetbrains_mono_medium, FontWeight.Medium))
 
 // Slashed zero, so 0 and O never look alike in pin names and values.
 private const val MONO_FEATURES = "zero"
@@ -35,7 +34,7 @@ data class PartloreTypography(
     val displayM: TextStyle =
         TextStyle(fontFamily = Bricolage, fontWeight = FontWeight.Bold, fontSize = 32.sp, lineHeight = 38.sp),
     val headline: TextStyle =
-        TextStyle(fontFamily = Bricolage, fontWeight = FontWeight(650), fontSize = 24.sp, lineHeight = 30.sp),
+        TextStyle(fontFamily = Bricolage, fontWeight = FontWeight.Bold, fontSize = 24.sp, lineHeight = 30.sp),
     val title: TextStyle =
         TextStyle(fontFamily = Bricolage, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 26.sp),
     val bodyL: TextStyle =
