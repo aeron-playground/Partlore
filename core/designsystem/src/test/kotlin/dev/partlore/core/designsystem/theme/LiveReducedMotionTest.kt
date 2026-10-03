@@ -3,7 +3,7 @@ package dev.partlore.core.designsystem.theme
 import android.os.Looper
 import android.provider.Settings
 import androidx.compose.ui.test.junit4.createComposeRule
-import dev.partlore.core.designsystem.testing.registerComponentActivity
+import dev.partlore.core.testing.registerComponentActivity
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

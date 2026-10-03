@@ -1,6 +1,8 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.compose)
+    id("partlore.android.application")
+    id("partlore.android.compose")
+    id("partlore.android.screenshots")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 // version.txt is updated by release-please. The version code is derived from it, so it always
@@ -25,12 +27,9 @@ val releaseKeystorePassword = providers.environmentVariable("RELEASE_KEYSTORE_PA
 
 android {
     namespace = "dev.partlore.app"
-    compileSdk = 37
 
     defaultConfig {
         applicationId = "dev.partlore.app"
-        minSdk = 26
-        targetSdk = 37
         versionCode = appVersionCode
         versionName = appVersion
     }
@@ -54,6 +53,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -68,31 +71,28 @@ android {
             )
         }
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    lint {
-        warningsAsErrors = true
-        abortOnError = true
-        checkDependencies = true
-        // Version updates come from the dependency bot, not from lint.
-        disable += setOf("GradleDependency", "NewerVersionAvailable", "AndroidGradlePluginVersion")
-    }
 }
 
 dependencies {
     implementation(project(":core:designsystem"))
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(project(":core:model"))
+    implementation(project(":core:userdata"))
+    implementation(project(":feature:onboarding"))
+    implementation(project(":feature:settings"))
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.serialization.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+
+    testImplementation(project(":core:testing"))
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
 }

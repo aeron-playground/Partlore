@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -24,3 +25,8 @@ rootProject.name = "Partlore"
 
 include(":app")
 include(":core:designsystem")
+include(":core:model")
+include(":core:testing")
+include(":core:userdata")
+include(":feature:onboarding")
+include(":feature:settings")

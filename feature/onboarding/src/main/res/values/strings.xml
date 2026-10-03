@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_continue">Continue</string>
+    <string name="onboarding_start">Start</string>
+    <string name="onboarding_page">Page %1$d of %2$d</string>
+    <string name="onboarding_1_title">A reference for the bench</string>
+    <string name="onboarding_1_body">Boards, chips and modules, with every pin you can tap.</string>
+    <string name="onboarding_2_title">Every pin has a source</string>
+    <string name="onboarding_2_body">Each fact links to the datasheet it came from, and shows how carefully it was checked.</string>
+    <string name="onboarding_3_title">Works offline</string>
+    <string name="onboarding_3_body">Everything lives on your phone. No account, no ads, no tracking.</string>
+    <string name="onboarding_4_title">What do you build with?</string>
+    <string name="onboarding_4_body">Optional. It only changes what the home screen shows first.</string>
+    <string name="interest_esp32">ESP32</string>
+    <string name="interest_arduino">Arduino</string>
+    <string name="interest_pico">Pico</string>
+    <string name="interest_stm32">STM32</string>
+    <string name="interest_sensors">Sensors</string>
+</resources>

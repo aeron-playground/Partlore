@@ -1,48 +1,31 @@
 package dev.partlore.app
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.Text
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.partlore.app.shell.PartloreShell
 import dev.partlore.core.designsystem.theme.PartloreTheme
+import dev.partlore.feature.onboarding.OnboardingRoute
+import dev.partlore.feature.settings.SettingsRoute
+import org.koin.compose.viewmodel.koinViewModel
 
-/** Placeholder root until the app shell exists. */
 @Composable
-fun PartloreApp(modifier: Modifier = Modifier) {
-    PartloreTheme {
-        Box(
-            modifier.fillMaxSize().background(
-                PartloreTheme.colors.bg,
-            ).safeDrawingPadding().padding(PartloreTheme.spacing.space16),
-            contentAlignment = Alignment.Center,
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    stringResource(R.string.app_name),
-                    style = PartloreTheme.typography.displayM,
-                    color = PartloreTheme.colors.textPrimary,
-                )
-                Text(
-                    stringResource(R.string.placeholder_status),
-                    style = PartloreTheme.typography.bodyM,
-                    color = PartloreTheme.colors.textSecondary,
-                    modifier = Modifier.padding(top = PartloreTheme.spacing.space8),
-                )
-            }
+fun PartloreApp(modifier: Modifier = Modifier, viewModel: MainViewModel = koinViewModel()) {
+    val loaded by viewModel.settings.collectAsStateWithLifecycle()
+    // Until settings are read, the window background shows; nothing guesses theme or onboarding.
+    val settings = loaded ?: return
+    PartloreTheme(
+        mode = settings.theme.toThemeMode(isSystemInDarkTheme()),
+        motionPreference = settings.motion.toMotionPreference(),
+    ) {
+        if (settings.onboardingDone) {
+            PartloreShell(settings = { onBack ->
+                SettingsRoute(versionName = BuildConfig.VERSION_NAME, onBack = onBack)
+            }, modifier = modifier)
+        } else {
+            OnboardingRoute(modifier = modifier)
         }
     }
-}
-
-@Preview
-@Composable
-private fun PartloreAppPreview() {
-    PartloreApp()
 }
