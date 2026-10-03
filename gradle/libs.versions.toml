@@ -10,6 +10,9 @@ compose-rules = "0.6.7"
 junit = "4.13.2"
 robolectric = "4.17"
 roborazzi = "1.76.0"
+# Roborazzi brings Espresso 3.5.1, which calls an input API that Android 17 removed.
+espresso = "3.7.0"
+androidx-test-core = "1.7.0"
 # AGP's build classpath and Android Lint's own tool classpath carry older versions of these with
 # known vulnerabilities. Raised in build.gradle.kts files. Remove once AGP ships these or newer.
 bouncycastle = "1.86"
@@ -32,9 +35,10 @@ junit = { module = "junit:junit", version.ref = "junit" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
 roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 
 # Lint rule sets (not shipped in the app)
-compose-rules-detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "compose-rules" }
 compose-rules-ktlint = { module = "io.nlopez.compose.rules:ktlint", version.ref = "compose-rules" }
 
 # Build classpath only (see the versions comment above)

@@ -40,6 +40,16 @@ subprojects {
     }
 }
 
+// CI keeps only the build log, so print the whole message of every failed test there.
+subprojects {
+    tasks.withType<Test>().configureEach {
+        testLogging {
+            events("failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        }
+    }
+}
+
 spotless {
     kotlin {
         target("**/*.kt")
@@ -53,6 +63,7 @@ spotless {
                     "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
                     "compose_allowed_composition_locals" to
                         "LocalPartloreColors,LocalPartloreTypography,LocalPartloreMotion",
+                    "compose_disallow_material2" to "true",
                 ),
             ).customRuleSets(
                 listOf(
@@ -81,8 +92,4 @@ detekt {
             exclude("**/build/**")
         },
     )
-}
-
-dependencies {
-    detektPlugins(libs.compose.rules.detekt)
 }

@@ -57,3 +57,10 @@ version Roborazzi brings in calls an input API that Android 17 removed.
 - Pin function colors, components and a lint rule that bans raw colors outside the token files
   come in later PRs.
 - Moving the screenshot tests to the Android 17 image needs a newer Espresso.
+
+## Update 2026-10-03
+
+Espresso is now 3.7.0, so the Espresso problem above is gone. We tried the Android 17 image:
+every test passed locally, but on CI some drawings came back blank (one screenshot fully black, and
+the font weight test measured 0 px of ink for both weights) in 3 of 3 runs. The screenshot tests
+stay on Android 16 until we understand why.
