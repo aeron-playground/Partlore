@@ -2,6 +2,7 @@ plugins {
     id("partlore.android.application")
     id("partlore.android.compose")
     id("partlore.android.screenshots")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 // version.txt is updated by release-please. The version code is derived from it, so it always
@@ -70,7 +71,15 @@ android {
 
 dependencies {
     implementation(project(":core:designsystem"))
+    implementation(project(":core:model"))
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.serialization.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material3)
+
+    testImplementation(project(":core:testing"))
 }
