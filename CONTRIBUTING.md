@@ -35,15 +35,31 @@ This file is ignored by git.
 | `./gradlew assemblePlayDebug` | Build the Google Play debug APK |
 | `./gradlew assembleFossDebug` | Build the F-Droid debug APK |
 | `./gradlew installPlayDebug` | Install the debug app on a connected device or emulator |
-| `./gradlew :core:designsystem:recordRoborazziDebug` | Re-record screenshots after an intended UI change |
-| `./gradlew verifyRoborazziDebug` | Compare screenshots with the committed ones (part of `check`) |
+| `./gradlew :<module>:recordRoborazziDebug` | Re-record a module's screenshots after an intended UI change |
+| `./gradlew :app:recordRoborazziPlayDebug` | The same for the app module (it has flavors) |
+| `./gradlew verifyRoborazziDebug verifyRoborazziPlayDebug` | Compare screenshots with the committed ones (part of `check`) |
+
+### Project layout
+
+| Module | What it holds |
+|---|---|
+| `app` | The activity, navigation and the wiring of everything else |
+| `core:designsystem` | Theme, tokens, `Pl*` components, icons, the Design Catalog |
+| `core:model` | Plain Kotlin types shared by everything |
+| `core:userdata` | What the user chooses, saved on the device |
+| `core:testing` | Test helpers and fakes |
+| `feature:*` | One screen or flow each, for example `feature:settings` |
+| `build-logic` | Shared build settings (convention plugins) |
+
+A feature module depends only on `core:*` modules. Only `app` knows about navigation. See
+[ADR 0008](docs/adr/0008-modules-and-convention-plugins.md) for how to add a module.
 
 ### Checks on every pull request
 
 | Check | What it runs |
 |---|---|
 | `lint` | `./gradlew spotlessCheck detekt lint` |
-| `test` | `./gradlew test verifyRoborazziDebug` (unit tests and screenshot comparison) |
+| `test` | `./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug` (unit tests and screenshot comparison) |
 | `build` | Debug APKs for both flavors |
 | `dco` | Every commit has a matching `Signed-off-by` |
 | `dependency-review` | New dependencies have no known high-severity vulnerabilities |
