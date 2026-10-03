@@ -11,6 +11,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 enum class PartloreThemeMode { Light, Dark, Bench }
@@ -73,9 +74,27 @@ internal fun PartloreColors.toMaterialColorScheme(): ColorScheme =
         onPrimary = onPrimary,
         primaryContainer = primaryContainer,
         onPrimaryContainer = primary,
-        // The navigation bar's selected-tab indicator reads secondaryContainer.
+        // The navigation bar reads secondary (active label) and secondaryContainer (indicator).
+        secondary = primary,
+        onSecondary = onPrimary,
         secondaryContainer = primaryContainer,
         onSecondaryContainer = primary,
+        // Containers: navigation bar, sheets, menus, dialogs.
+        surfaceContainerLowest = bg,
+        surfaceContainerLow = surface,
+        surfaceContainer = surface,
+        surfaceContainerHigh = surfaceRaised,
+        surfaceContainerHighest = surfaceRaised,
+        surfaceBright = surfaceRaised,
+        surfaceDim = surfaceSunken,
+        outlineVariant = outline,
+        // Elevation comes from shadows and raised surfaces, not from tinting.
+        surfaceTint = Color.Transparent,
+        // Snackbars.
+        inverseSurface = textPrimary,
+        inverseOnSurface = bg,
+        inversePrimary = if (isDark) LightColors.primary else DarkColors.primary,
+        onError = if (isDark) bg else surface,
         background = bg,
         onBackground = textPrimary,
         surface = surface,
