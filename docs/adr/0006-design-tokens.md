@@ -57,3 +57,9 @@ version Roborazzi brings in calls an input API that Android 17 removed.
 - Pin function colors, components and a lint rule that bans raw colors outside the token files
   come in later PRs.
 - Moving the screenshot tests to the Android 17 image needs a newer Espresso.
+
+## Update 2026-10-03
+
+Screenshot tests now run on Robolectric's Android 17 image, with Espresso 3.7.0. All 18
+screenshots were re-recorded. The only differences were smoothing on the edges of letters: same
+sizes, same positions.

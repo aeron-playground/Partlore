@@ -57,4 +57,10 @@ dependencies {
     testImplementation(libs.roborazzi.compose)
     testImplementation(libs.androidx.activity.compose)
     testImplementation(libs.androidx.compose.ui.test.junit4)
+
+    constraints {
+        // Roborazzi brings Espresso 3.5.1, which calls an input API that Android 17 removed.
+        testImplementation(libs.androidx.test.espresso.core)
+        testImplementation(libs.androidx.test.core)
+    }
 }
