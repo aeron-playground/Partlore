@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Partlore</string>
-    <string name="placeholder_status">Early development build</string>
     <string name="tab_library">Library</string>
     <string name="tab_search">Search</string>
     <string name="tab_tools">Tools</string>
