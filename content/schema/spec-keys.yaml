@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=spec-keys.schema.json
+keys:
+  - key: supply.voltage
+    label: Supply voltage
+    type: range
+    unit: V
+    description: The voltage the part runs on, as the maker recommends it.
+  - key: input.voltage
+    label: Input voltage
+    type: range
+    unit: V
+    description: The voltage a board accepts on its power input (barrel jack or VIN), as the maker recommends it.
+  - key: input.voltage_limit
+    label: Input voltage limits
+    type: range
+    unit: V
+    description: The lowest and highest voltage the board's power input survives.
+  - key: supply.current_needed
+    label: Supply current needed
+    type: number
+    unit: A
+    description: The least current the power supply must be able to deliver.
+  - key: io.logic_level
+    label: Logic level
+    type: number
+    unit: V
+    description: The voltage of a logic high on the I/O pins.
+  - key: io.current_per_pin
+    label: Current per I/O pin
+    type: number
+    unit: mA
+    description: The most current one I/O pin may source or sink.
+  - key: io.current_total
+    label: Total I/O current
+    type: number
+    unit: mA
+    description: The most current all I/O pins together may source or sink.
+  - key: cpu.cores
+    label: CPU cores
+    type: number
+    description: Number of processor cores.
+  - key: cpu.clock_max
+    label: Maximum clock
+    type: number
+    unit: MHz
+    description: The fastest the processor may run.
+  - key: flash.size
+    label: Flash
+    type: text
+    description: Program storage, with every size the maker sells when sizes differ by ordering code.
+  - key: sram.size
+    label: SRAM
+    type: number
+    unit: KB
+    description: Working memory on the chip.
+  - key: psram.size
+    label: PSRAM
+    type: text
+    description: Extra RAM for the processor, with every size the maker sells when sizes differ by ordering code.
+  - key: eeprom.size
+    label: EEPROM
+    type: number
+    unit: KB
+    description: Memory that keeps its data without power.
+  - key: radio.wifi
+    label: Wi-Fi
+    type: text
+    description: Wi-Fi standards supported.
+  - key: radio.bluetooth
+    label: Bluetooth
+    type: text
+    description: Bluetooth versions and modes supported.
+  - key: temperature.operating
+    label: Operating temperature
+    type: range
+    unit: °C
+    description: The ambient temperature range the part is made for.
+  - key: usb.connector
+    label: USB connector
+    type: text
+    description: The USB socket on the board.
+  - key: usb.bridge
+    label: USB bridge
+    type: text
+    description: The chip that turns USB into the serial port the main chip uses.
+  - key: temperature.storage
+    label: Storage temperature
+    type: range
+    unit: °C
+    description: The temperature range the part may be stored in without power.

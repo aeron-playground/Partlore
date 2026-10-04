@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=../../../schema/part.schema.json
+id: espressif/esp32-wroom-32e
+kind: module
+name: ESP32-WROOM-32E
+aliases:
+  - ESP32-WROOM-32E-N4
+  - ESP32-WROOM-32E-N8
+  - ESP32-WROOM-32E-N16
+  - ESP32-WROOM-32E-H4
+  - ESP32-WROOM-32E-H8
+  - ESP32-WROOM-32E-N4R2
+  - ESP32-WROOM-32E-N8R2
+  - ESP32-WROOM-32E-N16R2
+manufacturer: Espressif
+category: wifi-modules
+tags: [wifi, bluetooth, 3v3-logic]
+summary: An ESP32 module with Wi-Fi, Bluetooth, on-module flash and a PCB antenna, on 38 solder pads.
+specs:
+  - { key: supply.voltage, unit: V, min: 3.0, typ: 3.3, max: 3.6, source: s1, page: 28 }
+  - { key: supply.current_needed, unit: A, value: 0.5, source: s1, page: 28 }
+  - { key: io.logic_level, unit: V, value: 3.3, source: s1, page: 28 }
+  - { key: cpu.cores, value: 2, source: s1, page: 2 }
+  - { key: cpu.clock_max, unit: MHz, value: 240, source: s1, page: 2 }
+  - key: flash.size
+    value: "4 MB (N4, H4, N4R2), 8 MB (N8, H8, N8R2) or 16 MB (N16, N16R2)"
+    source: s1
+    page: 3
+  - key: psram.size
+    value: "2 MB on N4R2, N8R2 and N16R2; none on the others"
+    source: s1
+    page: 3
+  - { key: sram.size, unit: KB, value: 520, source: s1, page: 2 }
+  - { key: radio.wifi, value: "802.11 b/g/n, 2.4 GHz", source: s1, page: 2 }
+  - { key: radio.bluetooth, value: "Bluetooth 4.2 BR/EDR and Bluetooth LE", source: s1, page: 2 }
+  - key: temperature.operating
+    unit: °C
+    min: -40
+    max: 85
+    condition: "N4, N8, N16, N4R2, N8R2 and N16R2"
+    source: s1
+    page: 3
+  - key: temperature.operating
+    unit: °C
+    min: -40
+    max: 105
+    condition: "H4 and H8"
+    source: s1
+    page: 3
+absolute_max:
+  - { key: supply.voltage, unit: V, min: -0.3, max: 3.6, source: s1, page: 28 }
+  - { key: io.current_total, unit: mA, value: 1200, source: s2, page: 51 }
+  - { key: temperature.storage, unit: °C, min: -40, max: 105, source: s1, page: 28 }
+status:
+  level: draft

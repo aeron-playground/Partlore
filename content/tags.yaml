@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=schema/tags.schema.json
+tags:
+  - id: wifi
+    label: Wi-Fi
+  - id: bluetooth
+    label: Bluetooth
+  - id: 3v3-logic
+    label: 3.3 V logic
+  - id: 5v-logic
+    label: 5 V logic
+  - id: usb-b
+    label: USB-B
+  - id: micro-usb
+    label: Micro-USB

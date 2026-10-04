@@ -40,8 +40,11 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup
       # verifyRoborazzi* compares screenshots with the committed ones. The app has flavors, so its
-      # task is verifyRoborazziPlayDebug.
-      - run: ./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug
+      # task is verifyRoborazziPlayDebug. validateContent and packContent check content/; scaleTest
+      # packs 5,000 generated parts and checks the speed targets.
+      - run: >-
+          ./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug
+          validateContent packContent :tools:packer:scaleTest
       - if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -58,6 +61,15 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup
       - run: ./gradlew assemblePlayDebug assembleFossDebug
+      # A pack with drafts included, and a checklist per part, for reviewing content pull requests.
+      - run: ./gradlew :tools:packer:packContent -Ppreview :tools:validator:contentChecklist
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: content-preview
+          path: |
+            build/content/preview/
+            build/content/checklists/
+          retention-days: 7
 
   dco:
     if: github.event_name == 'pull_request'

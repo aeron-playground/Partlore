@@ -17,4 +17,4 @@ style:
     ignoreAnnotated: ['Preview']
   MagicNumber:
     # Token files are where numbers belong. Keep detekt's default test excludes.
-    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/designsystem/**/theme/**']
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/designsystem/**/theme/**', '**/testFixtures/**']

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tags",
+  "description": "The tags parts may use, with the label the app shows.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tags"],
+  "properties": {
+    "tags": {
+      "description": "Every tag.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label"],
+        "properties": {
+          "id": { "description": "Id parts use.", "$ref": "common.schema.json#/$defs/slug" },
+          "label": { "description": "Label shown in the app.", "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

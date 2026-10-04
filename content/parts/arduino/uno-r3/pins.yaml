@@ -1,0 +1,695 @@
+# yaml-language-server: $schema=../../../schema/pins.schema.json
+status:
+  level: draft
+headers:
+  - id: power
+    label: POWER
+    type: socket
+    rows: 1
+    pins_per_row: 8
+    pitch_mm: 2.54
+    source: s5
+    ref: "UNO-TH_Rev3e.brd, element POWER (8x1F-H8.5, package 1X08)"
+  - id: analog
+    label: AD
+    type: socket
+    rows: 1
+    pins_per_row: 6
+    pitch_mm: 2.54
+    source: s5
+    ref: "UNO-TH_Rev3e.brd, element AD (6x1F-H8.5, package 1X06)"
+  - id: digital-low
+    label: IOL
+    type: socket
+    rows: 1
+    pins_per_row: 8
+    pitch_mm: 2.54
+    source: s5
+    ref: "UNO-TH_Rev3e.brd, element IOL (8x1F-H8.5, package 1X08)"
+  - id: digital-high
+    label: IOH
+    type: socket
+    rows: 1
+    pins_per_row: 10
+    pitch_mm: 2.54
+    source: s5
+    ref: "UNO-TH_Rev3e.brd, element IOH (10x1F-H8.5, package 1X10)"
+  - id: icsp
+    label: ICSP
+    type: header
+    rows: 2
+    pins_per_row: 3
+    pitch_mm: 2.54
+    source: s5
+    ref: "UNO-TH_Rev3e.brd, element ICSP (3x2 M, package 2X03)"
+pins:
+  - id: nc
+    header: power
+    row: 1
+    index: 1
+    label_aliases: ["NC"]
+    direction: nc
+    safe: avoid
+    note: "Not connected."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+  - id: ioref
+    header: power
+    row: 1
+    index: 2
+    label_aliases: ["IOREF"]
+    direction: power
+    voltage: 5
+    safe: ok
+    note: "Logic-level reference, connected to 5 V."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+  - id: reset
+    header: power
+    row: 1
+    index: 3
+    chip_name: PC6
+    label_aliases: ["RESET"]
+    direction: in
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: reset }
+    safe: caution
+    note: "Pull low to reset the board."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: 3v3
+    header: power
+    row: 1
+    index: 4
+    label_aliases: ["+3V3", "3.3V"]
+    direction: power
+    voltage: 3.3
+    safe: ok
+    note: "Output of the board's 3.3 V regulator; at most 50 mA."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 8 }
+  - id: 5v
+    header: power
+    row: 1
+    index: 5
+    label_aliases: ["+5V", "5V"]
+    direction: power
+    voltage: 5
+    safe: ok
+    note: "The board's 5 V rail."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 8 }
+  - id: gnd-power-6
+    header: power
+    row: 1
+    index: 6
+    label_aliases: ["GND"]
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+  - id: gnd-power-7
+    header: power
+    row: 1
+    index: 7
+    label_aliases: ["GND"]
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+  - id: vin
+    header: power
+    row: 1
+    index: 8
+    label_aliases: ["VIN"]
+    direction: power
+    safe: caution
+    note: "Power input to the board's 5 V regulator, 6 to 20 V."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 6 }
+      - { source: s1, page: 8 }
+  - id: a0
+    header: analog
+    row: 1
+    index: 1
+    chip_name: PC0
+    label_aliases: ["D14"]
+    arduino: "A0"
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: "ADC[0]" }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: a1
+    header: analog
+    row: 1
+    index: 2
+    chip_name: PC1
+    label_aliases: ["D15"]
+    arduino: "A1"
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: "ADC[1]" }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: a2
+    header: analog
+    row: 1
+    index: 3
+    chip_name: PC2
+    label_aliases: ["D16"]
+    arduino: "A2"
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: "ADC[2]" }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: a3
+    header: analog
+    row: 1
+    index: 4
+    chip_name: PC3
+    label_aliases: ["D17"]
+    arduino: "A3"
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: "ADC[3]" }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: a4
+    header: analog
+    row: 1
+    index: 5
+    chip_name: PC4
+    label_aliases: ["D18", "SDA"]
+    arduino: "A4"
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: "ADC[4]" }
+      - { type: i2c, signal: "SDA", default: true }
+    safe: ok
+    note: "Also on the SDA pin next to AREF."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: a5
+    header: analog
+    row: 1
+    index: 6
+    chip_name: PC5
+    label_aliases: ["D19", "SCL"]
+    arduino: "A5"
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: "ADC[5]" }
+      - { type: i2c, signal: "SCL", default: true }
+    safe: ok
+    note: "Also on the SCL pin next to AREF."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d0
+    header: digital-low
+    row: 1
+    index: 1
+    chip_name: PD0
+    label_aliases: ["D0", "RX"]
+    arduino: 0
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: "RX", default: true }
+    safe: caution
+    note: "Also wired through a 1 kΩ resistor to the ATmega16U2 USB bridge."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+      - { source: s1, page: 7 }
+  - id: d1
+    header: digital-low
+    row: 1
+    index: 2
+    chip_name: PD1
+    label_aliases: ["D1", "TX"]
+    arduino: 1
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: "TX", default: true }
+    safe: caution
+    note: "Also wired through a 1 kΩ resistor to the ATmega16U2 USB bridge."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+      - { source: s1, page: 7 }
+  - id: d2
+    header: digital-low
+    row: 1
+    index: 3
+    chip_name: PD2
+    label_aliases: ["D2"]
+    arduino: 2
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d3
+    header: digital-low
+    row: 1
+    index: 4
+    chip_name: PD3
+    label_aliases: ["D3"]
+    arduino: 3
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: pwm }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d4
+    header: digital-low
+    row: 1
+    index: 5
+    chip_name: PD4
+    label_aliases: ["D4"]
+    arduino: 4
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d5
+    header: digital-low
+    row: 1
+    index: 6
+    chip_name: PD5
+    label_aliases: ["D5"]
+    arduino: 5
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: pwm }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d6
+    header: digital-low
+    row: 1
+    index: 7
+    chip_name: PD6
+    label_aliases: ["D6"]
+    arduino: 6
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: pwm }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d7
+    header: digital-low
+    row: 1
+    index: 8
+    chip_name: PD7
+    label_aliases: ["D7"]
+    arduino: 7
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d8
+    header: digital-high
+    row: 1
+    index: 1
+    chip_name: PB0
+    label_aliases: ["D8"]
+    arduino: 8
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d9
+    header: digital-high
+    row: 1
+    index: 2
+    chip_name: PB1
+    label_aliases: ["D9"]
+    arduino: 9
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: pwm }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d10
+    header: digital-high
+    row: 1
+    index: 3
+    chip_name: PB2
+    label_aliases: ["D10", "SS"]
+    arduino: 10
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: pwm }
+      - { type: spi, signal: "SS", default: true }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d11
+    header: digital-high
+    row: 1
+    index: 4
+    chip_name: PB3
+    label_aliases: ["D11", "COPI", "MOSI"]
+    arduino: 11
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: pwm }
+      - { type: spi, signal: "COPI", default: true }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d12
+    header: digital-high
+    row: 1
+    index: 5
+    chip_name: PB4
+    label_aliases: ["D12", "CIPO", "MISO"]
+    arduino: 12
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: "CIPO", default: true }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: d13
+    header: digital-high
+    row: 1
+    index: 6
+    chip_name: PB5
+    label_aliases: ["D13", "SCK", "LED_BUILTIN"]
+    arduino: 13
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: "SCK", default: true }
+    safe: ok
+    note: "Also drives the on-board LED (LED_BUILTIN)."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: gnd-digital
+    header: digital-high
+    row: 1
+    index: 7
+    label_aliases: ["GND"]
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+  - id: aref
+    header: digital-high
+    row: 1
+    index: 8
+    label_aliases: ["AREF"]
+    direction: in
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: analog-ref }
+    safe: ok
+    note: "Reference voltage for the analog inputs."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: sda
+    header: digital-high
+    row: 1
+    index: 9
+    chip_name: PC4
+    label_aliases: ["SDA", "D18"]
+    arduino: 18
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: i2c, signal: "SDA", default: true }
+    safe: ok
+    note: "The same pin as A4."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: scl
+    header: digital-high
+    row: 1
+    index: 10
+    chip_name: PC5
+    label_aliases: ["SCL", "D19"]
+    arduino: 19
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: i2c, signal: "SCL", default: true }
+    safe: ok
+    note: "The same pin as A5."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: icsp-cipo
+    header: icsp
+    row: 1
+    index: 1
+    chip_name: PB4
+    label_aliases: ["CIPO", "MISO"]
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: spi, signal: "CIPO" }
+    safe: ok
+    note: "The same pin as D12."
+    cites:
+      - { source: s2, page: 4 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: icsp-5v
+    header: icsp
+    row: 2
+    index: 1
+    label_aliases: ["+5V"]
+    direction: power
+    voltage: 5
+    safe: ok
+    note: "The board's 5 V rail."
+    cites:
+      - { source: s2, page: 4 }
+      - { source: s3, page: 1 }
+  - id: icsp-sck
+    header: icsp
+    row: 1
+    index: 2
+    chip_name: PB5
+    label_aliases: ["SCK"]
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: spi, signal: "SCK" }
+    safe: ok
+    note: "The same pin as D13."
+    cites:
+      - { source: s2, page: 4 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: icsp-copi
+    header: icsp
+    row: 2
+    index: 2
+    chip_name: PB3
+    label_aliases: ["COPI", "MOSI"]
+    direction: io
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: spi, signal: "COPI" }
+    safe: ok
+    note: "The same pin as D11."
+    cites:
+      - { source: s2, page: 4 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: icsp-reset
+    header: icsp
+    row: 1
+    index: 3
+    chip_name: PC6
+    label_aliases: ["RESET"]
+    direction: in
+    voltage: 5
+    five_v_tolerant: true
+    functions:
+      - { type: reset }
+    safe: caution
+    note: "The same signal as the RESET pin; low resets the board."
+    cites:
+      - { source: s2, page: 4 }
+      - { source: s3, page: 1 }
+      - { source: s4, page: 308 }
+  - id: icsp-gnd
+    header: icsp
+    row: 2
+    index: 3
+    label_aliases: ["GND"]
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s2, page: 4 }
+      - { source: s3, page: 1 }

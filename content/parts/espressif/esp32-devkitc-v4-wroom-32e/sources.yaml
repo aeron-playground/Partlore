@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../../schema/sources.schema.json
+sources:
+  - id: s1
+    type: datasheet
+    title: ESP32-WROOM-32E & ESP32-WROOM-32UE Datasheet
+    publisher: Espressif Systems
+    url: https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf
+    version: "2.1"
+    retrieved: 2026-10-04
+    sha256: "4c7a345d1c1bfec34c38665639e39a7f43b79a35a12f6adcc2c7c0f83850f8b8"
+    license: link-only
+  - id: s2
+    type: web-doc
+    title: ESP32-DevKitC V4 user guide
+    publisher: Espressif Systems
+    url: https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html
+    version: "latest, source commit 52772fb"
+    retrieved: 2026-10-04
+    license: link-only
+  - id: s3
+    type: schematic
+    title: ESP32-DevKitC V4 schematic
+    publisher: Espressif Systems
+    url: https://dl.espressif.com/dl/schematics/esp32_devkitc_v4_sch.pdf
+    version: "V4, 2020-02-25"
+    retrieved: 2026-10-04
+    sha256: "ea500de5a3bfa97633f32ddb88fabd2d680637225190ea9c3f81e91b7d8bb7f6"
+    license: link-only
+  - id: s4
+    type: schematic
+    title: ESP32-DevKitC V4 PCB layout
+    publisher: Espressif Systems
+    url: https://dl.espressif.com/dl/schematics/esp32_devkitc_v4_pcb_layout.pdf
+    version: "V4"
+    retrieved: 2026-10-04
+    sha256: "ae7473227cb26713534e70f311ad33b6c7b0a3a250bc2d99d31328456a7c967c"
+    license: link-only
+  - id: s5
+    type: schematic
+    title: ESP32-DevKitC V4 dimensions
+    publisher: Espressif Systems
+    url: https://dl.espressif.com/dl/schematics/esp32_devkitc_v4_dimensions.pdf
+    version: "V4"
+    retrieved: 2026-10-04
+    sha256: "93769872f5640475a25e6c367230b407606771e4bbee0aba56903263b17d8d30"
+    license: link-only

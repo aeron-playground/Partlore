@@ -30,7 +30,7 @@ This file is ignored by git.
 
 | Command | What it does |
 |---|---|
-| `./gradlew check` | Everything CI runs: formatting, detekt, Android Lint, unit tests, screenshot comparison |
+| `./gradlew check` | Formatting, detekt, Android Lint, unit tests, screenshot comparison, content checks and the content pack |
 | `./gradlew spotlessApply` | Fix formatting |
 | `./gradlew assemblePlayDebug` | Build the Google Play debug APK |
 | `./gradlew assembleFossDebug` | Build the F-Droid debug APK |
@@ -38,6 +38,9 @@ This file is ignored by git.
 | `./gradlew :<module>:recordRoborazziDebug` | Re-record a module's screenshots after an intended UI change |
 | `./gradlew :app:recordRoborazziPlayDebug` | The same for the app module (it has flavors) |
 | `./gradlew verifyRoborazziDebug verifyRoborazziPlayDebug` | Compare screenshots with the committed ones (part of `check`) |
+| `./gradlew validateContent` | Check every part in `content/` |
+| `./gradlew packContent` | Build the content pack (`-Ppreview` includes drafts) |
+| `./gradlew contentChecklist -Ppart=<maker>/<part>` | Write a page-grouped checklist for checking a part |
 
 ### Project layout
 
@@ -48,7 +51,10 @@ This file is ignored by git.
 | `core:model` | Plain Kotlin types shared by everything |
 | `core:userdata` | What the user chooses, saved on the device |
 | `core:testing` | Test helpers and fakes |
+| `core:packformat` | The tables of the content pack, shared by the packer and the app |
 | `feature:*` | One screen or flow each, for example `feature:settings` |
+| `tools:validator` | Checks the files in `content/` (runs on your computer, not in the app) |
+| `tools:packer` | Builds the content pack from `content/` |
 | `build-logic` | Shared build settings (convention plugins) |
 
 A feature module depends only on `core:*` modules. Only `app` knows about navigation. See
@@ -59,8 +65,8 @@ A feature module depends only on `core:*` modules. Only `app` knows about naviga
 | Check | What it runs |
 |---|---|
 | `lint` | `./gradlew spotlessCheck detekt lint` |
-| `test` | `./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug` (unit tests and screenshot comparison) |
-| `build` | Debug APKs for both flavors |
+| `test` | `./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug validateContent packContent :tools:packer:scaleTest` (unit tests, screenshots, content checks, and packing 5,000 generated parts against the speed targets) |
+| `build` | Debug APKs for both flavors, and the preview content pack with checklists as an artifact |
 | `dco` | Every commit has a matching `Signed-off-by` |
 | `dependency-review` | New dependencies have no known high-severity vulnerabilities |
 | `pr-title` | The PR title follows the commit format |
@@ -141,8 +147,11 @@ Wrong pin data can damage someone's hardware. These rules are strict on purpose.
   datasheet PDF. Their licences don't allow it.
 - **No manufacturer images or logos.** Board art is drawn by contributors.
 - **Never** use leaked schematics, boardviews or confidential documents.
-- New parts start as `draft`. A reviewer who is not the author checks each pin against the
-  source before the status goes up.
+- New parts start as `draft`. Before a file can become `checked`, a person compares every value
+  with the place it cites and records that in the file's `status`. `verified` needs a second,
+  different person.
+
+How to add, cite and check a part: [content/README.md](content/README.md).
 
 Content in `content/` is licensed CC BY-SA 4.0. By contributing it, you agree to that licence.
 

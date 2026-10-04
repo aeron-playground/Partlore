@@ -1,0 +1,662 @@
+# yaml-language-server: $schema=../../../schema/pins.schema.json
+status:
+  level: draft
+headers:
+  - id: pads
+    label: Module pins
+    type: pads
+    rows: 1
+    pins_per_row: 38
+    pitch_mm: 1.27
+    source: s1
+    page: 40
+pins:
+  - id: gnd-1
+    header: pads
+    row: 1
+    index: 1
+    module_pad: GND
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+  - id: 3v3
+    header: pads
+    row: 1
+    index: 2
+    module_pad: 3V3
+    direction: power
+    voltage: 3.3
+    safe: ok
+    note: "Power input, 3.0 to 3.6 V. The supply must deliver at least 0.5 A."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: en
+    header: pads
+    row: 1
+    index: 3
+    module_pad: EN
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: reset, signal: CHIP_PU }
+    safe: caution
+    note: "High runs the chip, low switches it off. Don't leave it floating; an RC delay (10 kΩ, 1 µF) is suggested."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 29 }
+      - { source: s1, page: 37 }
+      - { source: s1, page: 39 }
+  - id: gpio36
+    header: pads
+    row: 1
+    index: 4
+    chip_name: GPIO36
+    module_pad: SENSOR_VP
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH0 }
+      - { type: rtc, signal: RTC_GPIO0 }
+    safe: caution
+    note: "Input only, with no internal pull-up or pull-down."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s2, page: 61 }
+  - id: gpio39
+    header: pads
+    row: 1
+    index: 5
+    chip_name: GPIO39
+    module_pad: SENSOR_VN
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH3 }
+      - { type: rtc, signal: RTC_GPIO3 }
+    safe: caution
+    note: "Input only, with no internal pull-up or pull-down."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s2, page: 61 }
+  - id: gpio34
+    header: pads
+    row: 1
+    index: 6
+    chip_name: GPIO34
+    module_pad: IO34
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH6 }
+      - { type: rtc, signal: RTC_GPIO4 }
+    safe: caution
+    note: "Input only, with no internal pull-up or pull-down."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s2, page: 61 }
+  - id: gpio35
+    header: pads
+    row: 1
+    index: 7
+    chip_name: GPIO35
+    module_pad: IO35
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH7 }
+      - { type: rtc, signal: RTC_GPIO5 }
+    safe: caution
+    note: "Input only, with no internal pull-up or pull-down."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s2, page: 61 }
+  - id: gpio32
+    header: pads
+    row: 1
+    index: 8
+    chip_name: GPIO32
+    module_pad: IO32
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: clock, signal: XTAL_32K_P }
+      - { type: adc, signal: ADC1_CH4 }
+      - { type: touch, signal: TOUCH9 }
+      - { type: rtc, signal: RTC_GPIO9 }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: gpio33
+    header: pads
+    row: 1
+    index: 9
+    chip_name: GPIO33
+    module_pad: IO33
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: clock, signal: XTAL_32K_N }
+      - { type: adc, signal: ADC1_CH5 }
+      - { type: touch, signal: TOUCH8 }
+      - { type: rtc, signal: RTC_GPIO8 }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: gpio25
+    header: pads
+    row: 1
+    index: 10
+    chip_name: GPIO25
+    module_pad: IO25
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: dac, signal: DAC_1 }
+      - { type: adc, signal: ADC2_CH8 }
+      - { type: rtc, signal: RTC_GPIO6 }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: gpio26
+    header: pads
+    row: 1
+    index: 11
+    chip_name: GPIO26
+    module_pad: IO26
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: dac, signal: DAC_2 }
+      - { type: adc, signal: ADC2_CH9 }
+      - { type: rtc, signal: RTC_GPIO7 }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: gpio27
+    header: pads
+    row: 1
+    index: 12
+    chip_name: GPIO27
+    module_pad: IO27
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH7 }
+      - { type: touch, signal: TOUCH7 }
+      - { type: rtc, signal: RTC_GPIO17 }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: gpio14
+    header: pads
+    row: 1
+    index: 13
+    chip_name: GPIO14
+    module_pad: IO14
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH6 }
+      - { type: touch, signal: TOUCH6 }
+      - { type: rtc, signal: RTC_GPIO16 }
+      - { type: jtag, signal: MTMS }
+      - { type: spi, signal: HSPICLK }
+      - { type: sdio, signal: HS2_CLK }
+      - { type: sdio, signal: SD_CLK }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: gpio12
+    header: pads
+    row: 1
+    index: 14
+    chip_name: GPIO12
+    module_pad: IO12
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH5 }
+      - { type: touch, signal: TOUCH5 }
+      - { type: rtc, signal: RTC_GPIO15 }
+      - { type: jtag, signal: MTDI }
+      - { type: spi, signal: HSPIQ }
+      - { type: sdio, signal: HS2_DATA2 }
+      - { type: sdio, signal: SD_DATA2 }
+    strapping: { role: flash-voltage, must_be: low, at: reset }
+    safe: caution
+    note: "Read at reset to set the flash supply: low gives 3.3 V, high gives 1.8 V. Keep it low at power-on (internal pull-down)."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 15 }
+      - { source: s1, page: 39 }
+      - { source: s2, page: 19 }
+  - id: gnd-15
+    header: pads
+    row: 1
+    index: 15
+    module_pad: GND
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+  - id: gpio13
+    header: pads
+    row: 1
+    index: 16
+    chip_name: GPIO13
+    module_pad: IO13
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH4 }
+      - { type: touch, signal: TOUCH4 }
+      - { type: rtc, signal: RTC_GPIO14 }
+      - { type: jtag, signal: MTCK }
+      - { type: spi, signal: HSPID }
+      - { type: sdio, signal: HS2_DATA3 }
+      - { type: sdio, signal: SD_DATA3 }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: nc-17
+    header: pads
+    row: 1
+    index: 17
+    module_pad: NC
+    direction: nc
+    safe: avoid
+    note: "Not connected. The chip's GPIO6 to GPIO11 go to the module's flash and aren't brought out."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: nc-18
+    header: pads
+    row: 1
+    index: 18
+    module_pad: NC
+    direction: nc
+    safe: avoid
+    note: "Not connected. The chip's GPIO6 to GPIO11 go to the module's flash and aren't brought out."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: nc-19
+    header: pads
+    row: 1
+    index: 19
+    module_pad: NC
+    direction: nc
+    safe: avoid
+    note: "Not connected. The chip's GPIO6 to GPIO11 go to the module's flash and aren't brought out."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: nc-20
+    header: pads
+    row: 1
+    index: 20
+    module_pad: NC
+    direction: nc
+    safe: avoid
+    note: "Not connected. The chip's GPIO6 to GPIO11 go to the module's flash and aren't brought out."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: nc-21
+    header: pads
+    row: 1
+    index: 21
+    module_pad: NC
+    direction: nc
+    safe: avoid
+    note: "Not connected. The chip's GPIO6 to GPIO11 go to the module's flash and aren't brought out."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: nc-22
+    header: pads
+    row: 1
+    index: 22
+    module_pad: NC
+    direction: nc
+    safe: avoid
+    note: "Not connected. The chip's GPIO6 to GPIO11 go to the module's flash and aren't brought out."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: gpio15
+    header: pads
+    row: 1
+    index: 23
+    chip_name: GPIO15
+    module_pad: IO15
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH3 }
+      - { type: touch, signal: TOUCH3 }
+      - { type: jtag, signal: MTDO }
+      - { type: spi, signal: HSPICS0 }
+      - { type: rtc, signal: RTC_GPIO13 }
+      - { type: sdio, signal: HS2_CMD }
+      - { type: sdio, signal: SD_CMD }
+    strapping: { role: boot-log, at: reset }
+    safe: caution
+    note: "Read at reset: high (internal pull-up, the default) prints boot messages on U0TXD, low turns them off. With GPIO5 it also sets SDIO slave timing."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 16 }
+  - id: gpio2
+    header: pads
+    row: 1
+    index: 24
+    chip_name: GPIO2
+    module_pad: IO2
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH2 }
+      - { type: touch, signal: TOUCH2 }
+      - { type: rtc, signal: RTC_GPIO12 }
+      - { type: spi, signal: HSPIWP }
+      - { type: sdio, signal: HS2_DATA0 }
+      - { type: sdio, signal: SD_DATA0 }
+    strapping: { role: boot-mode, at: reset }
+    safe: caution
+    note: "Read at reset with GPIO0. Any level runs the program in flash; download mode needs it low. Internal pull-down."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 14 }
+  - id: gpio0
+    header: pads
+    row: 1
+    index: 25
+    chip_name: GPIO0
+    module_pad: IO0
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH1 }
+      - { type: touch, signal: TOUCH1 }
+      - { type: rtc, signal: RTC_GPIO11 }
+      - { type: clock, signal: CLK_OUT1 }
+    strapping: { role: boot-mode, must_be: high, at: reset }
+    safe: caution
+    note: "Read at reset: high (internal pull-up, the default) runs the program in flash; low, with GPIO2 low, starts download mode."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 14 }
+  - id: gpio4
+    header: pads
+    row: 1
+    index: 26
+    chip_name: GPIO4
+    module_pad: IO4
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH0 }
+      - { type: touch, signal: TOUCH0 }
+      - { type: rtc, signal: RTC_GPIO10 }
+      - { type: spi, signal: HSPIHD }
+      - { type: sdio, signal: HS2_DATA1 }
+      - { type: sdio, signal: SD_DATA1 }
+    safe: ok
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+  - id: gpio16
+    header: pads
+    row: 1
+    index: 27
+    chip_name: GPIO16
+    module_pad: IO16
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: sdio, signal: HS1_DATA4 }
+      - { type: uart, signal: U2RXD }
+    safe: caution
+    note: "On the variants with PSRAM (N4R2, N8R2, N16R2) it connects to the PSRAM: pull it up and don't use it."
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 3 }
+      - { source: s1, page: 39 }
+  - id: gpio17
+    header: pads
+    row: 1
+    index: 28
+    chip_name: GPIO17
+    module_pad: IO17
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: sdio, signal: HS1_DATA5 }
+      - { type: uart, signal: U2TXD }
+    safe: ok
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+  - id: gpio5
+    header: pads
+    row: 1
+    index: 29
+    chip_name: GPIO5
+    module_pad: IO5
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: VSPICS0 }
+      - { type: sdio, signal: HS1_DATA6 }
+    strapping: { role: sdio-timing, at: reset }
+    safe: caution
+    note: "Read at reset with GPIO15 to set SDIO slave timing. Internal pull-up."
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 16 }
+  - id: gpio18
+    header: pads
+    row: 1
+    index: 30
+    chip_name: GPIO18
+    module_pad: IO18
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: VSPICLK }
+      - { type: sdio, signal: HS1_DATA7 }
+    safe: ok
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+  - id: gpio19
+    header: pads
+    row: 1
+    index: 31
+    chip_name: GPIO19
+    module_pad: IO19
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: VSPIQ }
+      - { type: uart, signal: U0CTS }
+    safe: ok
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+  - id: nc-32
+    header: pads
+    row: 1
+    index: 32
+    module_pad: NC
+    direction: nc
+    safe: avoid
+    note: "Not connected."
+    cites:
+      - { source: s1, page: 12 }
+  - id: gpio21
+    header: pads
+    row: 1
+    index: 33
+    chip_name: GPIO21
+    module_pad: IO21
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: VSPIHD }
+    safe: ok
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+  - id: gpio3
+    header: pads
+    row: 1
+    index: 34
+    chip_name: GPIO3
+    module_pad: RXD0
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0RXD, default: true }
+      - { type: clock, signal: CLK_OUT2 }
+    safe: caution
+    note: "UART0 receive, used for firmware download."
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 39 }
+  - id: gpio1
+    header: pads
+    row: 1
+    index: 35
+    chip_name: GPIO1
+    module_pad: TXD0
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0TXD, default: true }
+      - { type: clock, signal: CLK_OUT3 }
+    safe: caution
+    note: "UART0 transmit, used for firmware download and logs. Sends boot messages at reset unless GPIO15 is low."
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 16 }
+      - { source: s1, page: 39 }
+  - id: gpio22
+    header: pads
+    row: 1
+    index: 36
+    chip_name: GPIO22
+    module_pad: IO22
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: VSPIWP }
+      - { type: uart, signal: U0RTS }
+    safe: ok
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+  - id: gpio23
+    header: pads
+    row: 1
+    index: 37
+    chip_name: GPIO23
+    module_pad: IO23
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: VSPID }
+      - { type: sdio, signal: HS1_STROBE }
+    safe: ok
+    cites:
+      - { source: s1, page: 12 }
+      - { source: s1, page: 28 }
+  - id: gnd-38
+    header: pads
+    row: 1
+    index: 38
+    module_pad: GND
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, page: 12 }

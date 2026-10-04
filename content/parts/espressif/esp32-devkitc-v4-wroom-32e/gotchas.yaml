@@ -1,0 +1,102 @@
+# yaml-language-server: $schema=../../../schema/gotchas.schema.json
+status:
+  level: draft
+gotchas:
+  - id: one-power-source
+    severity: danger
+    title: Power the board from one source only
+    body: >-
+      The board takes power from Micro-USB, the 5V pin or the 3V3 pin. Use only one of them at a
+      time: connecting more can damage the board or the power source.
+    pins: [5v, 3v3]
+    cites:
+      - { source: s2, section: Power Supply Options }
+  - id: not-5v-tolerant
+    severity: danger
+    title: The I/O pins are not 5 V tolerant
+    body: >-
+      An input may go at most 0.3 V above the module's 3.3 V supply. Use a level shifter for 5 V
+      signals, even though the board has a 5V pin.
+    cites:
+      - { source: s1, page: 28 }
+  - id: flash-lines-not-connected
+    severity: info
+    title: D0 to D3, CMD and CLK aren't connected on this version
+    body: >-
+      These six pins go to module pads 17 to 22, which the ESP32-WROOM-32E leaves unconnected. The
+      guide's GPIO6 to GPIO11 apply to boards with older modules, where they are flash lines that
+      must not be used.
+    pins: [d2, d3, cmd, d1, d0, clk]
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: c15-download-mode
+    severity: caution
+    title: "Earlier boards: C15 can force download mode"
+    body: >-
+      On earlier ESP32-DevKitC V4 boards, capacitor C15 on GPIO0 can make the board start in
+      download mode and can disturb a clock output on GPIO0. Espressif's fix is to remove C15.
+    pins: [gpio0]
+    cites:
+      - { source: s2, section: Note on C15 }
+      - { source: s3, page: 1 }
+  - id: boot-mode-pins
+    severity: caution
+    title: GPIO0 and GPIO2 choose the boot mode at reset
+    body: >-
+      If GPIO0 and GPIO2 are both low at reset, the module waits for a firmware download instead of
+      running the program in flash.
+    pins: [gpio0, gpio2]
+    cites:
+      - { source: s1, page: 14 }
+      - { source: s1, page: 15 }
+  - id: gpio12-low-at-power-on
+    severity: caution
+    title: Keep GPIO12 low at power-on
+    body: >-
+      GPIO12 sets the module's flash supply voltage at reset: low gives 3.3 V, high gives 1.8 V.
+      Espressif says to keep it low when the module powers on, so don't connect parts that pull it
+      up.
+    pins: [gpio12]
+    cites:
+      - { source: s1, page: 15 }
+      - { source: s1, page: 39 }
+  - id: input-only-pins
+    severity: caution
+    title: VP, VN, 34 and 35 are input only
+    body: These four pins can read signals but can't drive an output.
+    pins: [gpio36, gpio39, gpio34, gpio35]
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s1, page: 11 }
+  - id: tx-rx-usb
+    severity: caution
+    title: TX and RX are shared with the USB serial port
+    body: >-
+      TX and RX connect to the board's CP2102N USB-to-UART chip, which uploads firmware and shows
+      logs over USB.
+    pins: [gpio1, gpio3]
+    cites:
+      - { source: s3, page: 1 }
+      - { source: s1, page: 39 }
+  - id: boot-button
+    severity: info
+    title: Boot plus EN starts firmware download mode
+    body: >-
+      Hold the Boot button and press EN: the module restarts ready to receive new firmware over the
+      serial port.
+    pins: [gpio0, en]
+    cites:
+      - { source: s2, section: Functional Description }
+  - id: male-or-female-headers
+    severity: info
+    title: Sold with male or female headers
+    body: >-
+      Espressif sells this board with male pin headers or with female sockets. The pin order in this
+      entry is the same for both.
+    cites:
+      - { source: s2, section: Overview }
+      - { source: s2, section: "Header Block, J2" }

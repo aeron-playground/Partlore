@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sources",
+  "description": "Every document this part's facts come from.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sources"],
+  "properties": {
+    "sources": {
+      "description": "One entry per document.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "title", "publisher", "url", "retrieved", "license"],
+        "properties": {
+          "id": { "description": "Id, unique in this part, for example s1.", "$ref": "common.schema.json#/$defs/sourceId" },
+          "type": {
+            "description": "PDF types cite a page; web-doc cites a section; dataset cites a ref.",
+            "enum": ["datasheet", "reference-manual", "errata", "app-note", "user-guide", "schematic", "pinout", "web-doc", "dataset"]
+          },
+          "title": { "description": "The document's title.", "type": "string", "minLength": 1 },
+          "publisher": { "description": "Who published it.", "type": "string", "minLength": 1 },
+          "url": { "description": "Where to read it (https).", "type": "string", "pattern": "^https://[^\\s]+$" },
+          "version": { "description": "The document's version or revision, in quotes. Required for PDFs.", "type": "string", "minLength": 1 },
+          "retrieved": { "description": "When we downloaded it.", "$ref": "common.schema.json#/$defs/date" },
+          "sha256": { "description": "SHA-256 of the exact PDF checked. Required for PDFs.", "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "license": { "description": "link-only for documents we may only link to; otherwise its SPDX licence id.", "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

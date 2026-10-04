@@ -1,0 +1,102 @@
+# yaml-language-server: $schema=../../../schema/gotchas.schema.json
+status:
+  level: draft
+gotchas:
+  - id: boot-mode-pins
+    severity: caution
+    title: GPIO0 and GPIO2 choose the boot mode at reset
+    body: >-
+      If GPIO0 and GPIO2 are both low at reset, the chip waits for a firmware download over UART or
+      SDIO instead of running the program in flash. GPIO0 has an internal pull-up and GPIO2 a
+      pull-down.
+    pins: [gpio0, gpio2]
+    cites:
+      - { source: s1, page: 13 }
+      - { source: s1, page: 14 }
+      - { source: s1, page: 15 }
+  - id: gpio12-low-at-power-on
+    severity: caution
+    title: Keep GPIO12 low at power-on
+    body: >-
+      GPIO12 sets the flash supply voltage at reset: low gives 3.3 V, high gives 1.8 V. Espressif
+      says to keep it low when the module powers on, so don't connect parts that pull it up.
+    pins: [gpio12]
+    cites:
+      - { source: s1, page: 13 }
+      - { source: s1, page: 15 }
+      - { source: s1, page: 39 }
+      - { source: s2, page: 19 }
+  - id: input-only-pins
+    severity: caution
+    title: GPIO34, GPIO35, GPIO36 and GPIO39 are input only
+    body: >-
+      These pins can't drive an output and have no internal pull-up or pull-down. Add an external
+      resistor when an input could float.
+    pins: [gpio34, gpio35, gpio36, gpio39]
+    cites:
+      - { source: s2, page: 61 }
+  - id: io16-psram
+    severity: caution
+    title: IO16 is taken on the variants with PSRAM
+    body: >-
+      On ESP32-WROOM-32E-N4R2, -N8R2 and -N16R2, IO16 connects to the PSRAM inside the module.
+      Pull it up and don't use it for anything else.
+    pins: [gpio16]
+    cites:
+      - { source: s1, page: 3 }
+      - { source: s1, page: 12 }
+      - { source: s1, page: 39 }
+  - id: not-5v-tolerant
+    severity: danger
+    title: The pins are not 5 V tolerant
+    body: >-
+      An input may go at most 0.3 V above the supply, so 3.6 V with a 3.3 V supply. Use a level
+      shifter for 5 V signals.
+    cites:
+      - { source: s1, page: 28 }
+  - id: en-delay
+    severity: caution
+    title: EN needs a defined level and a power-up delay
+    body: >-
+      EN high runs the chip and EN low switches it off, so don't leave it floating. For a stable
+      power-up, Espressif suggests an RC delay on EN, usually 10 kΩ and 1 µF.
+    pins: [en]
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s1, page: 39 }
+  - id: battery-supervisor
+    severity: caution
+    title: On battery power, add a supply voltage supervisor
+    body: >-
+      Espressif recommends a supervisor that pulls EN (the chip's CHIP_PU) low when the supply
+      drops below 2.3 V, so a weak battery doesn't cause boot failures.
+    pins: [en]
+    cites:
+      - { source: s1, page: 37 }
+      - { source: s2, page: 19 }
+  - id: uart0-flashing
+    severity: info
+    title: TXD0 and RXD0 carry firmware downloads and logs
+    body: >-
+      UART0 on TXD0 (pin 35) and RXD0 (pin 34) is used to download firmware and for log output.
+      At reset the chip prints boot messages on TXD0 unless GPIO15 is low.
+    pins: [gpio1, gpio3, gpio15]
+    cites:
+      - { source: s1, page: 16 }
+      - { source: s1, page: 39 }
+  - id: ground-pad
+    severity: info
+    title: The ground pad under the module is optional
+    body: >-
+      Soldering the exposed ground pad isn't required, but it helps cooling. Too much solder paste
+      there can lift the module and weaken the joints of the other pins.
+    cites:
+      - { source: s1, page: 39 }
+  - id: antenna-keepout
+    severity: info
+    title: Keep the antenna area clear
+    body: >-
+      The pin layout drawing marks a keepout zone around the PCB antenna. Espressif's hardware
+      design guidelines explain how to place the module on a board.
+    cites:
+      - { source: s1, page: 10 }

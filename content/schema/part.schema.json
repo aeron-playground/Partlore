@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Part",
+  "description": "Who a part is: name, maker, kind, specs and I²C addresses.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "kind", "name", "manufacturer", "category", "summary", "status"],
+  "properties": {
+    "id": { "description": "maker/part, equal to the folder path. Permanent.", "$ref": "common.schema.json#/$defs/partId" },
+    "kind": { "description": "What sort of part this is.", "enum": ["chip", "module", "board", "sensor", "display", "power"] },
+    "name": { "description": "The name as the maker writes it.", "type": "string", "minLength": 1 },
+    "aliases": {
+      "description": "Other names people search for.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "manufacturer": { "description": "The maker. Its slug must equal the first half of the id.", "type": "string", "minLength": 1 },
+    "category": { "description": "A category id from content/categories.yaml.", "$ref": "common.schema.json#/$defs/slug" },
+    "tags": {
+      "description": "Tag ids from content/tags.yaml.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/slug" }
+    },
+    "uses": { "description": "The part this one is built around.", "$ref": "common.schema.json#/$defs/partId" },
+    "related": {
+      "description": "Other parts worth a look.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/partId" }
+    },
+    "summary": { "description": "One sentence in our own words.", "type": "string", "minLength": 1, "maxLength": 200 },
+    "specs": { "description": "Values as the maker recommends them.", "type": "array", "items": { "$ref": "#/$defs/specValue" } },
+    "absolute_max": { "description": "Limits that must never be exceeded.", "type": "array", "items": { "$ref": "#/$defs/specValue" } },
+    "i2c": { "description": "I²C addresses the part answers on.", "type": "array", "items": { "$ref": "#/$defs/i2cAddress" } },
+    "status": { "description": "Check status of this file.", "$ref": "status.schema.json" }
+  },
+  "$defs": {
+    "specValue": {
+      "description": "One value from a source.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "source"],
+      "properties": {
+        "key": { "description": "A key from content/schema/spec-keys.yaml.", "type": "string", "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)+$" },
+        "unit": { "description": "Must equal the key's unit; leave out for keys without one.", "type": "string", "minLength": 1 },
+        "min": { "description": "Lowest value (range keys).", "type": "number" },
+        "typ": { "description": "Typical value (range keys).", "type": "number" },
+        "max": { "description": "Highest value (range keys).", "type": "number" },
+        "value": { "description": "The value for number, text and bool keys.", "type": ["string", "number", "boolean"] },
+        "condition": { "description": "When the value applies, for example 'at 25 °C'.", "type": "string", "minLength": 1 },
+        "source": { "description": "Source id.", "$ref": "common.schema.json#/$defs/sourceId" },
+        "page": { "description": "Page in a PDF source.", "$ref": "common.schema.json#/$defs/page" },
+        "section": { "description": "Heading on a web page source.", "$ref": "common.schema.json#/$defs/section" },
+        "ref": { "description": "Path in a dataset source.", "$ref": "common.schema.json#/$defs/ref" }
+      }
+    },
+    "i2cAddress": {
+      "description": "One 7-bit I²C address.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address", "source"],
+      "properties": {
+        "address": {
+          "description": "0x08 to 0x77, in quotes and lowercase, for example \"0x76\".",
+          "type": "string",
+          "pattern": "^0x(0[89a-f]|[1-6][0-9a-f]|7[0-7])$"
+        },
+        "default": { "description": "True for the address the part uses unless changed.", "type": "boolean" },
+        "select": { "description": "How to pick this address, for example 'SDO to VDDIO'.", "type": "string", "minLength": 1 },
+        "source": { "description": "Source id.", "$ref": "common.schema.json#/$defs/sourceId" },
+        "page": { "description": "Page in a PDF source.", "$ref": "common.schema.json#/$defs/page" },
+        "section": { "description": "Heading on a web page source.", "$ref": "common.schema.json#/$defs/section" },
+        "ref": { "description": "Path in a dataset source.", "$ref": "common.schema.json#/$defs/ref" }
+      }
+    }
+  }
+}

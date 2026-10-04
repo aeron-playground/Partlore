@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pins",
+  "description": "Every pin of a part, grouped into headers, sockets or rows of pads.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "headers", "pins"],
+  "properties": {
+    "status": { "description": "Check status of this file.", "$ref": "status.schema.json" },
+    "headers": { "description": "Headers, sockets or rows of pads.", "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/header" } },
+    "pins": { "description": "Every position of every header.", "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/pin" } }
+  },
+  "$defs": {
+    "header": {
+      "description": "One header, socket or row of pads.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "type", "rows", "pins_per_row", "pitch_mm", "source"],
+      "properties": {
+        "id": { "description": "Id used by pins in this file.", "$ref": "common.schema.json#/$defs/slug" },
+        "label": { "description": "The name on the board or in the source, for example J2.", "type": "string", "minLength": 1 },
+        "type": { "description": "header: pins sticking out. socket: holes for pins. pads: solder pads.", "enum": ["header", "socket", "pads"] },
+        "rows": { "description": "Number of rows.", "enum": [1, 2] },
+        "pins_per_row": { "description": "Positions in each row.", "type": "integer", "minimum": 1 },
+        "pitch_mm": { "description": "Distance between neighbouring pins in millimetres.", "type": "number", "exclusiveMinimum": 0 },
+        "source": { "description": "Source id.", "$ref": "common.schema.json#/$defs/sourceId" },
+        "page": { "description": "Page in a PDF source.", "$ref": "common.schema.json#/$defs/page" },
+        "section": { "description": "Heading on a web page source.", "$ref": "common.schema.json#/$defs/section" },
+        "ref": { "description": "Path in a dataset source.", "$ref": "common.schema.json#/$defs/ref" }
+      }
+    },
+    "pin": {
+      "description": "One pin.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "header", "row", "index", "direction", "safe", "cites"],
+      "properties": {
+        "id": { "description": "Readable id, unique in this part, for example gpio21 or gnd-2.", "$ref": "common.schema.json#/$defs/slug" },
+        "header": { "description": "Header id.", "$ref": "common.schema.json#/$defs/slug" },
+        "row": { "description": "Row in the header, from 1.", "type": "integer", "minimum": 1 },
+        "index": { "description": "Position in the row, from 1, in the order of the cited pin table.", "type": "integer", "minimum": 1 },
+        "chip_name": { "description": "The pin's name on the chip, for example GPIO21.", "type": "string", "minLength": 1 },
+        "module_pad": { "description": "The pad's name on the module, for example IO21.", "type": "string", "minLength": 1 },
+        "board_label": { "description": "What is printed next to the pin.", "type": ["string", "integer"], "minLength": 1 },
+        "label_aliases": {
+          "description": "Other names people use for this pin.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": ["string", "integer"], "minLength": 1 }
+        },
+        "arduino": {
+          "description": "The pin number in Arduino code, or a name like A0.",
+          "oneOf": [{ "type": "integer", "minimum": 0 }, { "type": "string", "pattern": "^A[0-9]+$" }]
+        },
+        "direction": { "description": "io, in, out, power, ground or nc (not connected).", "enum": ["io", "in", "out", "power", "ground", "nc"] },
+        "voltage": { "description": "The pin's logic or supply voltage in volts.", "type": "number", "exclusiveMinimum": 0 },
+        "five_v_tolerant": { "description": "True when the pin survives 5 V input.", "type": "boolean" },
+        "functions": { "description": "What the pin can do.", "type": "array", "items": { "$ref": "#/$defs/function" } },
+        "strapping": {
+          "description": "For pins read at reset to choose how the chip starts.",
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["role", "at"],
+          "properties": {
+            "role": { "description": "What it chooses, for example boot-mode.", "$ref": "common.schema.json#/$defs/slug" },
+            "must_be": { "description": "The level a normal start needs, when the source states one. Leave out when any level works or the source doesn't say.", "enum": ["high", "low"] },
+            "at": { "description": "When the chip reads it.", "enum": ["reset"] }
+          }
+        },
+        "safe": { "description": "ok: free to use. caution: works with care (see note or gotchas). avoid: don't use.", "enum": ["ok", "caution", "avoid"] },
+        "note": { "description": "Short, in our own words.", "type": "string", "minLength": 1 },
+        "cites": {
+          "description": "Where these facts come from (names, functions, voltage may be on different pages).",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common.schema.json#/$defs/cite" }
+        }
+      }
+    },
+    "function": {
+      "description": "One thing a pin can do.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "description": "Kind of function.",
+          "enum": ["gpio", "adc", "dac", "touch", "pwm", "i2c", "spi", "uart", "i2s", "can", "usb", "jtag", "sdio", "rtc", "clock", "reset", "boot", "analog-ref"]
+        },
+        "signal": { "description": "The signal name, for example SDA or ADC1_CH0.", "type": "string", "minLength": 1 },
+        "default": { "description": "True when this is the pin's usual job for that function.", "type": "boolean" }
+      }
+    }
+  }
+}

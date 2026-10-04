@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schema/sources.schema.json
+sources:
+  - id: s1
+    type: datasheet
+    title: ESP32-WROOM-32E & ESP32-WROOM-32UE Datasheet
+    publisher: Espressif Systems
+    url: https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf
+    version: "2.1"
+    retrieved: 2026-10-04
+    sha256: "4c7a345d1c1bfec34c38665639e39a7f43b79a35a12f6adcc2c7c0f83850f8b8"
+    license: link-only
+  - id: s2
+    type: datasheet
+    title: ESP32 Series Datasheet
+    publisher: Espressif Systems
+    url: https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf
+    version: "5.3"
+    retrieved: 2026-10-04
+    sha256: "a7917e6b47528c9dcab06837a49d452e582751335797db879f1cf2d17cd29adf"
+    license: link-only

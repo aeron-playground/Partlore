@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=../../../schema/gotchas.schema.json
+status:
+  level: draft
+gotchas:
+  - id: pin-current
+    severity: danger
+    title: Keep each I/O pin at or below 20 mA
+    body: >-
+      Arduino gives 20 mA as the maximum current per I/O pin. The ATmega328P's absolute limits are
+      40 mA per pin and 200 mA through its supply pins; going past them can damage the chip.
+    cites:
+      - { source: s2, page: 1 }
+      - { source: s4, page: 308 }
+  - id: usb-serial-pins
+    severity: caution
+    title: D0 and D1 are shared with the USB bridge
+    body: >-
+      D0 (RX) and D1 (TX) also connect, through 1 kΩ resistors, to the ATmega16U2 that the board
+      uses to talk to the computer over USB.
+    pins: [d0, d1]
+    cites:
+      - { source: s1, page: 7 }
+      - { source: s3, page: 1 }
+  - id: i2c-on-a4-a5
+    severity: info
+    title: SDA and SCL are the same pins as A4 and A5
+    body: >-
+      The SDA and SCL pins next to AREF are wired to A4 and A5, so using I²C takes both of those
+      analog inputs.
+    pins: [a4, a5, sda, scl]
+    cites:
+      - { source: s1, page: 11 }
+      - { source: s3, page: 1 }
+  - id: vin-range
+    severity: caution
+    title: VIN takes 6 to 20 V
+    body: >-
+      VIN feeds the board's 5 V regulator. The documented input range is 6 to 20 V; USB power must
+      stay at or below 5.5 V.
+    pins: [vin]
+    cites:
+      - { source: s1, page: 6 }
+      - { source: s1, page: 8 }
+  - id: 3v3-current
+    severity: caution
+    title: The 3.3V pin supplies at most 50 mA
+    body: The 3.3 V output comes from a regulator on the board; Arduino gives 50 mA as its maximum.
+    pins: [3v3]
+    cites:
+      - { source: s2, page: 1 }
+  - id: icsp-repeats-spi
+    severity: info
+    title: The ICSP header repeats D11, D12, D13 and RESET
+    body: >-
+      The six-pin ICSP header next to the ATmega328P carries the same SPI signals as D11, D12 and
+      D13, plus RESET, 5 V and GND.
+    pins: [icsp-cipo, icsp-sck, icsp-copi, icsp-reset]
+    cites:
+      - { source: s2, page: 4 }
+      - { source: s3, page: 1 }
+  - id: d13-led
+    severity: info
+    title: D13 also drives the on-board LED
+    body: D13 also controls the LED marked L (LED_BUILTIN), through a buffer on the board.
+    pins: [d13]
+    cites:
+      - { source: s2, page: 1 }
+      - { source: s3, page: 1 }
