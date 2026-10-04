@@ -96,3 +96,16 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
 }
+
+androidComponents {
+    onVariants { variant ->
+        // Debug builds carry drafts so they can be tried; release builds carry checked parts only.
+        val kind = if (variant.buildType == "debug") "Preview" else "Release"
+        val copy =
+            tasks.register<CopyPackTask>("copy${variant.name.replaceFirstChar(Char::uppercase)}Pack") {
+                dependsOn(":tools:packer:pack${kind}Asset")
+                packDir.set(rootProject.layout.projectDirectory.dir("tools/packer/build/packs/${kind.lowercase()}"))
+            }
+        variant.sources.assets?.addGeneratedSourceDirectory(copy, CopyPackTask::outputDir)
+    }
+}
