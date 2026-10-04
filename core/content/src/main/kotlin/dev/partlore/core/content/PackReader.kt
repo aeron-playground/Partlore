@@ -24,7 +24,7 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
         return LibraryHome(
             isPreview = meta("preview") == "1",
             partCount = counts.values.sum(),
-            starterBoards = cards("p.kind = 'board'", limit = STARTER_BOARDS),
+            starterBoards = cards("kind = 'board'", limit = STARTER_BOARDS),
             categories = categories.filter {
                 it.parentId == null
             }.sortedWith(CATEGORY_ORDER).map { tile(it, categories, counts) },
@@ -37,7 +37,7 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
         val counts = directCounts()
         val children = categories.filter { it.parentId == id }.sortedWith(CATEGORY_ORDER)
         val ids = subtree(id, categories)
-        val parts = cards("p.category_id IN (${ids.joinToString { "?" }})", ids)
+        val parts = cards("category_id IN (${ids.joinToString { "?" }})", ids)
         return CategoryPage(
             id = category.id,
             name = category.name,
@@ -82,20 +82,28 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
                 all.filter { it.parentId == id }.flatMap { subtree(it.id, all, seen) }
         }
 
-    /** Part cards matching [where] (SQL over `part p`), A–Z, with their status level and tags. */
+    /**
+     * Part cards matching [where] (SQL over the `part` table), A–Z, with their status level and tags.
+     * The parts are picked and sorted first; status and tags are then looked up for those parts only,
+     * so a screen that shows 12 cards never reads the statuses or tags of the whole pack.
+     */
     private fun cards(where: String, args: List<String> = emptyList(), limit: Int = Int.MAX_VALUE): List<PartCard> {
         val rows =
             db.query(
-                "SELECT p.id, p.name, p.kind, p.category_id, s.level FROM part p " +
-                    "JOIN status s ON s.part_id = p.id AND s.file = 'part' " +
-                    "WHERE $where ORDER BY p.name COLLATE NOCASE, p.id LIMIT $limit",
+                "SELECT p.id, p.name, p.kind, p.category_id, s.level FROM " +
+                    "(SELECT id, name, kind, category_id FROM part WHERE $where " +
+                    "ORDER BY name COLLATE NOCASE, id LIMIT $limit) p " +
+                    // CROSS JOIN keeps the picked parts as the outer loop instead of a scan of every status.
+                    "CROSS JOIN status s ON s.part_id = p.id AND s.file = 'part' " +
+                    "ORDER BY p.name COLLATE NOCASE, p.id",
                 args,
             ) { CardRow(it.text(), it.text(), it.text(), it.text(), it.text()) }
+        val ids = rows.map { it.id }
         val tags =
             db.query(
                 "SELECT pt.part_id, t.id, t.label FROM part_tag pt JOIN tag t ON t.id = pt.tag_id " +
-                    "JOIN part p ON p.id = pt.part_id WHERE $where ORDER BY t.label COLLATE NOCASE",
-                args,
+                    "WHERE pt.part_id IN (${ids.joinToString { "?" }}) ORDER BY t.label COLLATE NOCASE",
+                ids,
             ) { it.text() to Tag(it.text(), it.text()) }
                 .groupBy({ it.first }, { it.second })
         return rows.map { row ->
