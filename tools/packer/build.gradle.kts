@@ -50,3 +50,17 @@ val packContent =
     }
 
 tasks.named("check") { dependsOn(packContent) }
+
+tasks.register<Test>("scaleTest") {
+    group = "verification"
+    description = "Validates and packs 5,000 generated parts and checks the speed targets (CI)."
+    testClassesDirs =
+        sourceSets.test
+            .get()
+            .output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    filter { includeTestsMatching("*ScaleTest") }
+    systemProperty("partlore.scaleTest", "true")
+    maxHeapSize = "1g"
+    testLogging { showStandardStreams = true }
+}
