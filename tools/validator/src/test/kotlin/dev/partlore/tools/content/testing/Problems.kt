@@ -2,10 +2,15 @@ package dev.partlore.tools.content.testing
 
 import dev.partlore.tools.content.Validator
 import dev.partlore.tools.content.diag.Diagnostic
+import dev.partlore.tools.content.ship.Mode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import java.time.LocalDate
 
-internal fun ContentFixture.problems(): List<Diagnostic> = Validator(root).validate().diagnostics
+internal val TODAY: LocalDate = LocalDate.of(2026, 10, 4)
+
+internal fun ContentFixture.problems(mode: Mode = Mode.RELEASE): List<Diagnostic> =
+    Validator(root, TODAY).validate(mode).diagnostics
 
 internal fun assertProblem(problems: List<Diagnostic>, file: String, line: Int, messagePart: String) {
     assertTrue(
