@@ -2,6 +2,7 @@ package dev.partlore.tools.packer
 
 import dev.partlore.tools.content.cli.CliOptions
 import dev.partlore.tools.content.diag.DiagnosticPrinter
+import dev.partlore.tools.content.rules.latestToday
 import java.io.File
 import java.io.PrintStream
 import java.time.LocalDate
@@ -9,7 +10,7 @@ import java.time.LocalDate
 class PackerCli(
     private val out: PrintStream,
     private val github: Boolean,
-    private val today: LocalDate = LocalDate.now(),
+    private val today: LocalDate = latestToday(),
 ) {
     fun run(args: Array<String>): Int {
         val options = CliOptions.parse(args)

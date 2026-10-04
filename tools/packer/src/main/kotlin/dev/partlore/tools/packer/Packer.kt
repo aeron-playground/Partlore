@@ -4,12 +4,13 @@ import dev.partlore.core.packformat.PackFormat
 import dev.partlore.tools.content.Validator
 import dev.partlore.tools.content.diag.Diagnostic
 import dev.partlore.tools.content.model.Content
+import dev.partlore.tools.content.rules.latestToday
 import dev.partlore.tools.content.ship.Mode
 import java.io.File
 import java.time.LocalDate
 
 /** Validates content/, then writes the pack and manifest. Invalid content is never packed. */
-class Packer(private val contentDir: File, private val outDir: File, private val today: LocalDate = LocalDate.now()) {
+class Packer(private val contentDir: File, private val outDir: File, private val today: LocalDate = latestToday()) {
     sealed interface Result {
         val diagnostics: List<Diagnostic>
 

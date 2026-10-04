@@ -3,6 +3,7 @@ package dev.partlore.tools.content.cli
 import dev.partlore.tools.content.Validator
 import dev.partlore.tools.content.checklist.Checklist
 import dev.partlore.tools.content.diag.DiagnosticPrinter
+import dev.partlore.tools.content.rules.latestToday
 import dev.partlore.tools.content.ship.Mode
 import java.io.File
 import java.io.PrintStream
@@ -11,7 +12,7 @@ import java.time.LocalDate
 class ValidatorCli(
     private val out: PrintStream,
     private val github: Boolean,
-    private val today: LocalDate = LocalDate.now(),
+    private val today: LocalDate = latestToday(),
 ) {
     fun run(args: Array<String>): Int {
         val options = CliOptions.parse(args) ?: return usage()

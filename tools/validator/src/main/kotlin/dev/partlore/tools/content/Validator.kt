@@ -12,6 +12,7 @@ import dev.partlore.tools.content.rules.PinLayoutRules
 import dev.partlore.tools.content.rules.SafetyRules
 import dev.partlore.tools.content.rules.SharedFileRules
 import dev.partlore.tools.content.rules.StatusRules
+import dev.partlore.tools.content.rules.latestToday
 import dev.partlore.tools.content.ship.Mode
 import java.io.File
 import java.time.LocalDate
@@ -21,7 +22,7 @@ data class ValidationResult(val content: Content, val diagnostics: List<Diagnost
 }
 
 /** Loads content/ and runs every rule. */
-class Validator(private val contentDir: File, private val today: LocalDate = LocalDate.now()) {
+class Validator(private val contentDir: File, private val today: LocalDate = latestToday()) {
     fun validate(mode: Mode = Mode.RELEASE): ValidationResult {
         val diagnostics = Diagnostics()
         val content = ContentLoader(contentDir).load(diagnostics)
