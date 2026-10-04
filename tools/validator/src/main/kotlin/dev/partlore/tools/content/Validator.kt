@@ -6,8 +6,10 @@ import dev.partlore.tools.content.diag.Severity
 import dev.partlore.tools.content.load.ContentLoader
 import dev.partlore.tools.content.model.Content
 import dev.partlore.tools.content.rules.CitationRules
+import dev.partlore.tools.content.rules.LicenceRules
 import dev.partlore.tools.content.rules.PartLinkRules
 import dev.partlore.tools.content.rules.PinLayoutRules
+import dev.partlore.tools.content.rules.SafetyRules
 import dev.partlore.tools.content.rules.SharedFileRules
 import java.io.File
 
@@ -24,6 +26,8 @@ class Validator(private val contentDir: File) {
         CitationRules.check(content, diagnostics)
         PartLinkRules.check(content, diagnostics)
         PinLayoutRules.check(content, diagnostics)
+        SafetyRules.check(content, diagnostics)
+        LicenceRules.check(content, diagnostics)
         return ValidationResult(content, diagnostics.all)
     }
 }
