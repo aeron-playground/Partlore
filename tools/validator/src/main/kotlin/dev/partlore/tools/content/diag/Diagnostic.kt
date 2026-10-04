@@ -1,5 +1,7 @@
 package dev.partlore.tools.content.diag
 
+import java.util.concurrent.ConcurrentLinkedQueue
+
 /** A place in a content file: path relative to the content folder, line and column counted from 1. */
 data class Pos(val file: String, val line: Int, val col: Int)
 
@@ -18,9 +20,9 @@ data class Diagnostic(val file: String, val line: Int, val col: Int, val severit
         message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
 }
 
-/** Collects problems; read them sorted by file, line and column. */
+/** Collects problems, from several threads at once; read them sorted by file, line and column. */
 class Diagnostics {
-    private val items = mutableListOf<Diagnostic>()
+    private val items = ConcurrentLinkedQueue<Diagnostic>()
 
     fun error(pos: Pos, message: String) {
         items += Diagnostic(pos.file, pos.line, pos.col, Severity.ERROR, message)

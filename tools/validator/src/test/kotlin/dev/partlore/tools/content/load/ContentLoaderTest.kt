@@ -64,6 +64,18 @@ class ContentLoaderTest {
     }
 
     @Test
+    fun loadingManyPartsTogetherLosesNothing() {
+        val ids = (0 until MANY).map { "testmaker/board-%02d".format(it) }
+        ids.forEach { fixture.addBoard(it) }
+        val broken = ids.filterIndexed { i, _ -> i % 2 == 0 }
+        broken.forEach { id -> fixture.edit("parts/$id/pins.yaml") { it.replaceFirst("voltage: 3.3", "votlage: 3.3") } }
+        val (content, problems) = load()
+        assertEquals(broken.map { "parts/$it/pins.yaml" }, problems.map { it.file })
+        assertEquals(broken.toSet(), content.unreadable)
+        assertEquals(ids - broken.toSet(), content.parts.map { it.id })
+    }
+
+    @Test
     fun theIdMustMatchItsFolder() {
         fixture.addBoard()
         fixture.edit("$BOARD_DIR/part.yaml") { it.replace("id: $BOARD", "id: testmaker/other-board") }
@@ -103,5 +115,9 @@ class ContentLoaderTest {
     fun aBadVersionIsAnError() {
         fixture.write("version.txt", "one\n")
         assertEquals("version.txt", load().second.single().file)
+    }
+
+    private companion object {
+        const val MANY = 40
     }
 }

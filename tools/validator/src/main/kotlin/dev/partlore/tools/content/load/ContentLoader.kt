@@ -13,7 +13,9 @@ class ContentLoader(private val contentDir: File) {
     private val schemas = SchemaChecker(File(contentDir, "schema"), yaml.nodeReader)
 
     fun load(diagnostics: Diagnostics): Content {
-        val parts = partFolders(diagnostics).associateWith { loadPart(it, diagnostics) }
+        // Parts don't depend on each other, so they are read on all cores; the list keeps folder order.
+        val folders = partFolders(diagnostics)
+        val parts = folders.zip(folders.parallelStream().map { loadPart(it, diagnostics) }.toList()).toMap()
         return Content(
             version = version(diagnostics),
             categories = shared("categories.yaml", "categories.schema.json", diagnostics, ::mapCategories),

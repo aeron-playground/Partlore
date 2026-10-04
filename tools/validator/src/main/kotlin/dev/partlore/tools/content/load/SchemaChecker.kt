@@ -9,6 +9,7 @@ import dev.partlore.tools.content.diag.Diagnostics
 import dev.partlore.tools.content.diag.Pos
 import tools.jackson.databind.JsonNode
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import com.networknt.schema.Error as SchemaError
 
 /**
@@ -24,11 +25,12 @@ class SchemaChecker(schemaDir: File, nodeReader: NodeReader) {
             )
         }
 
-    private val schemas = mutableMapOf<String, Schema>()
+    // Parts are checked on several threads at once; the registry and its schemas are thread-safe.
+    private val schemas = ConcurrentHashMap<String, Schema>()
 
     /** Reports every schema problem in [tree]; true when there are none. */
     fun check(schemaFile: String, tree: JsonNode, file: String, diagnostics: Diagnostics): Boolean {
-        val schema = schemas.getOrPut(schemaFile) { registry.getSchema(SchemaLocation.of(BASE + schemaFile)) }
+        val schema = schemas.computeIfAbsent(schemaFile) { registry.getSchema(SchemaLocation.of(BASE + it)) }
         val errors = schema.validate(tree)
         errors.forEach { diagnostics.error(position(it, tree, file), describe(it)) }
         return errors.isEmpty()
