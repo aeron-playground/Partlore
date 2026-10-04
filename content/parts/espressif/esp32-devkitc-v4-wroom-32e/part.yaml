@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../schema/part.schema.json
+id: espressif/esp32-devkitc-v4-wroom-32e
+kind: board
+name: ESP32-DevKitC V4 (ESP32-WROOM-32E)
+manufacturer: Espressif
+category: esp32-boards
+tags: [wifi, bluetooth, 3v3-logic, micro-usb]
+uses: espressif/esp32-wroom-32e
+summary: Espressif's ESP32 development board with an ESP32-WROOM-32E module, a Micro-USB port and two 19-pin headers.
+specs:
+  - key: input.voltage
+    unit: V
+    typ: 5
+    condition: "Micro-USB or the 5V pin"
+    source: s2
+    section: Power Supply Options
+  - key: input.voltage
+    unit: V
+    typ: 3.3
+    condition: "3V3 pin"
+    source: s2
+    section: Power Supply Options
+  - { key: io.logic_level, unit: V, value: 3.3, source: s1, page: 28 }
+  - { key: radio.wifi, value: "802.11 b/g/n, 2.4 GHz", source: s1, page: 2 }
+  - { key: radio.bluetooth, value: "Bluetooth 4.2 BR/EDR and Bluetooth LE", source: s1, page: 2 }
+  - { key: usb.connector, value: "Micro-USB", source: s2, section: Functional Description }
+  - { key: usb.bridge, value: "CP2102N", source: s3, page: 1 }
+status:
+  level: draft

@@ -29,6 +29,6 @@ class RealContentTest {
             assertEquals(part.id, positions.toString(), pins)
         }
         val ids = query(result.file, "SELECT id FROM part ORDER BY id").map { it.single() }
-        assertEquals(listOf("espressif/esp32-wroom-32e"), ids)
+        assertEquals(listOf("espressif/esp32-devkitc-v4-wroom-32e", "espressif/esp32-wroom-32e"), ids)
     }
 }

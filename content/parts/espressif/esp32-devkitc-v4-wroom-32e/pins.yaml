@@ -1,0 +1,697 @@
+# yaml-language-server: $schema=../../../schema/pins.schema.json
+status:
+  level: draft
+headers:
+  - id: j2
+    label: J2
+    type: header
+    rows: 1
+    pins_per_row: 19
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+  - id: j3
+    label: J3
+    type: header
+    rows: 1
+    pins_per_row: 19
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+pins:
+  - id: 3v3
+    header: j2
+    row: 1
+    index: 1
+    module_pad: 3V3
+    board_label: "3V3"
+    direction: power
+    voltage: 3.3
+    safe: caution
+    note: "The board's 3.3 V rail. Can power the board; use only one power source at a time."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s2, section: "Power Supply Options" }
+  - id: en
+    header: j2
+    row: 1
+    index: 2
+    module_pad: EN
+    board_label: "EN"
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: reset, signal: CHIP_PU }
+    safe: caution
+    note: "Low resets the module. The board pulls it up with a delay, and the EN button pulls it low."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 29 }
+      - { source: s3, page: 1 }
+  - id: gpio36
+    header: j2
+    row: 1
+    index: 3
+    chip_name: GPIO36
+    module_pad: SENSOR_VP
+    board_label: "VP"
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH0 }
+    safe: caution
+    note: "Input only."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio39
+    header: j2
+    row: 1
+    index: 4
+    chip_name: GPIO39
+    module_pad: SENSOR_VN
+    board_label: "VN"
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH3 }
+    safe: caution
+    note: "Input only."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio34
+    header: j2
+    row: 1
+    index: 5
+    chip_name: GPIO34
+    module_pad: IO34
+    board_label: "34"
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH6 }
+    safe: caution
+    note: "Input only."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio35
+    header: j2
+    row: 1
+    index: 6
+    chip_name: GPIO35
+    module_pad: IO35
+    board_label: "35"
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH7 }
+    safe: caution
+    note: "Input only."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio32
+    header: j2
+    row: 1
+    index: 7
+    chip_name: GPIO32
+    module_pad: IO32
+    board_label: "32"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH4 }
+      - { type: touch, signal: TOUCH_CH9 }
+      - { type: clock, signal: XTAL_32K_P }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio33
+    header: j2
+    row: 1
+    index: 8
+    chip_name: GPIO33
+    module_pad: IO33
+    board_label: "33"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH5 }
+      - { type: touch, signal: TOUCH_CH8 }
+      - { type: clock, signal: XTAL_32K_N }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio25
+    header: j2
+    row: 1
+    index: 9
+    chip_name: GPIO25
+    module_pad: IO25
+    board_label: "25"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH8 }
+      - { type: dac, signal: DAC_1 }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio26
+    header: j2
+    row: 1
+    index: 10
+    chip_name: GPIO26
+    module_pad: IO26
+    board_label: "26"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH9 }
+      - { type: dac, signal: DAC_2 }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio27
+    header: j2
+    row: 1
+    index: 11
+    chip_name: GPIO27
+    module_pad: IO27
+    board_label: "27"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH7 }
+      - { type: touch, signal: TOUCH_CH7 }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio14
+    header: j2
+    row: 1
+    index: 12
+    chip_name: GPIO14
+    module_pad: IO14
+    board_label: "14"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH6 }
+      - { type: touch, signal: TOUCH_CH6 }
+      - { type: jtag, signal: MTMS }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio12
+    header: j2
+    row: 1
+    index: 13
+    chip_name: GPIO12
+    module_pad: IO12
+    board_label: "12"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH5 }
+      - { type: touch, signal: TOUCH_CH5 }
+      - { type: jtag, signal: MTDI }
+    strapping: { role: flash-voltage, must_be: low, at: reset }
+    safe: caution
+    note: "Read at reset to set the module's flash supply: low gives 3.3 V, high gives 1.8 V. Keep it low at power-on."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 15 }
+      - { source: s1, page: 39 }
+  - id: gnd-j2-14
+    header: j2
+    row: 1
+    index: 14
+    module_pad: GND
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+  - id: gpio13
+    header: j2
+    row: 1
+    index: 15
+    chip_name: GPIO13
+    module_pad: IO13
+    board_label: "13"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH4 }
+      - { type: touch, signal: TOUCH_CH4 }
+      - { type: jtag, signal: MTCK }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: d2
+    header: j2
+    row: 1
+    index: 16
+    board_label: "D2"
+    direction: nc
+    safe: avoid
+    note: "Not connected on this version: it goes to module pad 17, which the ESP32-WROOM-32E leaves unconnected. The guide's GPIO9 applies to boards with older modules."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: d3
+    header: j2
+    row: 1
+    index: 17
+    board_label: "D3"
+    direction: nc
+    safe: avoid
+    note: "Not connected on this version: it goes to module pad 18, which the ESP32-WROOM-32E leaves unconnected. The guide's GPIO10 applies to boards with older modules."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: cmd
+    header: j2
+    row: 1
+    index: 18
+    board_label: "CMD"
+    direction: nc
+    safe: avoid
+    note: "Not connected on this version: it goes to module pad 19, which the ESP32-WROOM-32E leaves unconnected. The guide's GPIO11 applies to boards with older modules."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: 5v
+    header: j2
+    row: 1
+    index: 19
+    board_label: "5V"
+    direction: power
+    voltage: 5
+    safe: caution
+    note: "Can power the board; use only one power source at a time."
+    cites:
+      - { source: s2, section: "Header Block, J2" }
+      - { source: s4, page: 5 }
+      - { source: s2, section: "Power Supply Options" }
+  - id: gnd-j3-1
+    header: j3
+    row: 1
+    index: 1
+    module_pad: GND
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+  - id: gpio23
+    header: j3
+    row: 1
+    index: 2
+    chip_name: GPIO23
+    module_pad: IO23
+    board_label: "23"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio22
+    header: j3
+    row: 1
+    index: 3
+    chip_name: GPIO22
+    module_pad: IO22
+    board_label: "22"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio1
+    header: j3
+    row: 1
+    index: 4
+    chip_name: GPIO1
+    module_pad: TXD0
+    board_label: "TX"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0TXD, default: true }
+    safe: caution
+    note: "Wired to the CP2102N USB-to-UART chip, which uploads firmware and shows logs."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 39 }
+  - id: gpio3
+    header: j3
+    row: 1
+    index: 5
+    chip_name: GPIO3
+    module_pad: RXD0
+    board_label: "RX"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0RXD, default: true }
+    safe: caution
+    note: "Wired to the CP2102N USB-to-UART chip, which uploads firmware and shows logs."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 39 }
+  - id: gpio21
+    header: j3
+    row: 1
+    index: 6
+    chip_name: GPIO21
+    module_pad: IO21
+    board_label: "21"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gnd-j3-7
+    header: j3
+    row: 1
+    index: 7
+    module_pad: GND
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+  - id: gpio19
+    header: j3
+    row: 1
+    index: 8
+    chip_name: GPIO19
+    module_pad: IO19
+    board_label: "19"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio18
+    header: j3
+    row: 1
+    index: 9
+    chip_name: GPIO18
+    module_pad: IO18
+    board_label: "18"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio5
+    header: j3
+    row: 1
+    index: 10
+    chip_name: GPIO5
+    module_pad: IO5
+    board_label: "5"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    strapping: { role: sdio-timing, at: reset }
+    safe: caution
+    note: "Read at reset with GPIO15 to set SDIO slave timing."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 16 }
+  - id: gpio17
+    header: j3
+    row: 1
+    index: 11
+    chip_name: GPIO17
+    module_pad: IO17
+    board_label: "17"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    safe: ok
+    note: "Free on this version; only boards with WROVER modules reserve it."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio16
+    header: j3
+    row: 1
+    index: 12
+    chip_name: GPIO16
+    module_pad: IO16
+    board_label: "16"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    safe: ok
+    note: "Free on this version; only boards with WROVER modules reserve it."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio4
+    header: j3
+    row: 1
+    index: 13
+    chip_name: GPIO4
+    module_pad: IO4
+    board_label: "4"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH0 }
+      - { type: touch, signal: TOUCH_CH0 }
+    safe: ok
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+  - id: gpio0
+    header: j3
+    row: 1
+    index: 14
+    chip_name: GPIO0
+    module_pad: IO0
+    board_label: "0"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH1 }
+      - { type: touch, signal: TOUCH_CH1 }
+      - { type: boot }
+    strapping: { role: boot-mode, must_be: high, at: reset }
+    safe: caution
+    note: "Read at reset: high (the default) runs the program in flash; low, with GPIO2 low, starts download mode. The Boot button pulls it low."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 14 }
+      - { source: s2, section: "Functional Description" }
+  - id: gpio2
+    header: j3
+    row: 1
+    index: 15
+    chip_name: GPIO2
+    module_pad: IO2
+    board_label: "2"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH2 }
+      - { type: touch, signal: TOUCH_CH2 }
+    strapping: { role: boot-mode, at: reset }
+    safe: caution
+    note: "Read at reset with GPIO0. Any level runs the program in flash; download mode needs it low."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 14 }
+  - id: gpio15
+    header: j3
+    row: 1
+    index: 16
+    chip_name: GPIO15
+    module_pad: IO15
+    board_label: "15"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH3 }
+      - { type: touch, signal: TOUCH_CH3 }
+      - { type: jtag, signal: MTDO }
+    strapping: { role: boot-log, at: reset }
+    safe: caution
+    note: "Read at reset: high (the default) prints boot messages on TX, low turns them off. With GPIO5 it also sets SDIO slave timing."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s1, page: 28 }
+      - { source: s1, page: 13 }
+      - { source: s1, page: 16 }
+  - id: d1
+    header: j3
+    row: 1
+    index: 17
+    board_label: "D1"
+    direction: nc
+    safe: avoid
+    note: "Not connected on this version: it goes to module pad 22, which the ESP32-WROOM-32E leaves unconnected. The guide's GPIO8 applies to boards with older modules."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: d0
+    header: j3
+    row: 1
+    index: 18
+    board_label: "D0"
+    direction: nc
+    safe: avoid
+    note: "Not connected on this version: it goes to module pad 21, which the ESP32-WROOM-32E leaves unconnected. The guide's GPIO7 applies to boards with older modules."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
+  - id: clk
+    header: j3
+    row: 1
+    index: 19
+    board_label: "CLK"
+    direction: nc
+    safe: avoid
+    note: "Not connected on this version: it goes to module pad 20, which the ESP32-WROOM-32E leaves unconnected. The guide's GPIO6 applies to boards with older modules."
+    cites:
+      - { source: s2, section: "Header Block, J3" }
+      - { source: s4, page: 5 }
+      - { source: s3, page: 1 }
+      - { source: s1, page: 11 }
+      - { source: s1, page: 12 }
