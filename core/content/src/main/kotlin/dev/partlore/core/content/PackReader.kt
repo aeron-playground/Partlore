@@ -4,6 +4,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteException
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.sqlite.driver.bundled.SQLITE_OPEN_READONLY
+import dev.partlore.core.model.CategoryPage
 import dev.partlore.core.model.CategoryTile
 import dev.partlore.core.model.ContentProblem
 import dev.partlore.core.model.ContentResult
@@ -26,6 +27,27 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
             categories = categories.filter {
                 it.parentId == null
             }.sortedWith(CATEGORY_ORDER).map { tile(it, categories, counts) },
+        )
+    }
+
+    fun category(id: String): CategoryPage? {
+        val categories = categories()
+        val category = categories.firstOrNull { it.id == id } ?: return null
+        val counts = directCounts()
+        val children = categories.filter { it.parentId == id }.sortedWith(CATEGORY_ORDER)
+        val ids = subtree(id, categories)
+        val parts = cards("p.category_id IN (${ids.joinToString { "?" }})", ids)
+        return CategoryPage(
+            id = category.id,
+            name = category.name,
+            children = children.map { tile(it, categories, counts) },
+            tags = parts.flatMap { it.tags }.distinct().sortedBy { it.label.lowercase() },
+            parts = parts,
+            partsByChild =
+            children.associate { child ->
+                val under = subtree(child.id, categories).toSet()
+                child.id to parts.filter { it.categoryId in under }.map { it.id }.toSet()
+            },
         )
     }
 
