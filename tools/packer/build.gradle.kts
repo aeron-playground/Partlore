@@ -1,11 +1,13 @@
 plugins {
     id("partlore.jvm.library")
+    application
 }
 
 dependencies {
     implementation(project(":tools:validator"))
     implementation(project(":core:packformat"))
     implementation(libs.androidx.sqlite.bundled)
+    implementation(libs.jackson.databind)
     testImplementation(testFixtures(project(":tools:validator")))
 }
 
@@ -15,3 +17,36 @@ tasks.withType<Test>().configureEach {
     systemProperty("partlore.schemaDir", schemaDir.asFile.absolutePath)
     inputs.dir(schemaDir).withPathSensitivity(PathSensitivity.RELATIVE)
 }
+
+application {
+    mainClass = "dev.partlore.tools.packer.MainKt"
+}
+
+val contentDir = rootProject.layout.projectDirectory.dir("content")
+val preview = providers.gradleProperty("preview").isPresent
+val packDir = rootProject.layout.buildDirectory.dir(if (preview) "content/preview" else "content/pack")
+
+val packContent =
+    tasks.register<JavaExec>("packContent") {
+        group = "build"
+        description = "Builds the content pack and manifest.json (-Ppreview: a preview pack with drafts)."
+        classpath = sourceSets.main.get().runtimeClasspath
+        mainClass = application.mainClass
+        workingDir = rootProject.projectDir
+        args(
+            "pack",
+            "--content",
+            "content",
+            "--out",
+            packDir
+                .get()
+                .asFile
+                .relativeTo(rootProject.projectDir)
+                .path,
+        )
+        if (preview) args("--preview")
+        inputs.dir(contentDir).withPathSensitivity(PathSensitivity.RELATIVE)
+        outputs.dir(packDir)
+    }
+
+tasks.named("check") { dependsOn(packContent) }
