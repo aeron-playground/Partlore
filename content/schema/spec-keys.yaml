@@ -15,6 +15,11 @@ keys:
     type: range
     unit: V
     description: The lowest and highest voltage the board's power input survives.
+  - key: supply.current_needed
+    label: Supply current needed
+    type: number
+    unit: A
+    description: The least current the power supply must be able to deliver.
   - key: io.logic_level
     label: Logic level
     type: number
@@ -48,6 +53,10 @@ keys:
     type: number
     unit: KB
     description: Working memory on the chip.
+  - key: psram.size
+    label: PSRAM
+    type: text
+    description: Extra RAM for the processor, with every size the maker sells when sizes differ by ordering code.
   - key: eeprom.size
     label: EEPROM
     type: number
@@ -74,3 +83,8 @@ keys:
     label: USB bridge
     type: text
     description: The chip that turns USB into the serial port the main chip uses.
+  - key: temperature.storage
+    label: Storage temperature
+    type: range
+    unit: °C
+    description: The temperature range the part may be stored in without power.

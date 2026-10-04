@@ -16,6 +16,13 @@ val schemaDir = rootProject.layout.projectDirectory.dir("content/schema")
 tasks.withType<Test>().configureEach {
     systemProperty("partlore.schemaDir", schemaDir.asFile.absolutePath)
     inputs.dir(schemaDir).withPathSensitivity(PathSensitivity.RELATIVE)
+    systemProperty(
+        "partlore.contentDir",
+        rootProject.layout.projectDirectory
+            .dir("content")
+            .asFile.absolutePath,
+    )
+    inputs.dir(rootProject.layout.projectDirectory.dir("content")).withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 application {
