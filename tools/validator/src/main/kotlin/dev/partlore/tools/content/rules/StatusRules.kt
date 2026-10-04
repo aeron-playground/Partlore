@@ -22,7 +22,9 @@ class StatusRules(private val today: LocalDate) {
             }
         }
         if (mode == Mode.RELEASE) {
-            content.parts.filter { Shipping.partShips(it, mode) }.forEach { releaseLinks(it, content, d) }
+            // One lookup table for all parts: building it per part would grow with the square of the count.
+            val byId = content.parts.associateBy { it.id }
+            content.parts.filter { Shipping.partShips(it, mode) }.forEach { releaseLinks(it, byId, d) }
         }
     }
 
@@ -63,8 +65,7 @@ class StatusRules(private val today: LocalDate) {
         null
     }
 
-    private fun releaseLinks(part: Part, content: Content, d: Diagnostics) {
-        val parts = content.parts.associateBy { it.id }
+    private fun releaseLinks(part: Part, parts: Map<String, Part>, d: Diagnostics) {
         val targets = listOfNotNull(part.uses?.let { "uses" to it }) + part.related.map { "related" to it }
         targets.mapNotNull { (field, id) -> parts[id]?.let { field to it } }
             .filterNot { (_, target) -> Shipping.partShips(target, Mode.RELEASE) }
