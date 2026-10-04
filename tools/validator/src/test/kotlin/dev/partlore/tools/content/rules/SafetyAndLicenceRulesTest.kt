@@ -2,6 +2,7 @@ package dev.partlore.tools.content.rules
 
 import dev.partlore.tools.content.testing.ContentFixture
 import dev.partlore.tools.content.testing.ContentFixture.Companion.BOARD_DIR
+import dev.partlore.tools.content.testing.assertNoProblems
 import dev.partlore.tools.content.testing.assertProblem
 import dev.partlore.tools.content.testing.problems
 import org.junit.Before
@@ -40,6 +41,13 @@ class SafetyAndLicenceRulesTest {
     fun anIoPinNeedsAVoltage() {
         fixture.edit(pins) { it.replaceFirst("    voltage: 3.3\n", "") }
         assertProblem(fixture.problems(), pins, fixture.lineOf(pins, "- id: gpio1"), "needs a voltage")
+    }
+
+    @Test
+    fun aPowerPinMayLeaveOutTheVoltage() {
+        // A supply input like VIN accepts a range (6 to 20 V), not one voltage.
+        fixture.edit(pins) { it.replace("direction: ground", "direction: power") }
+        assertNoProblems(fixture.problems())
     }
 
     @Test

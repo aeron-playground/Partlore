@@ -8,7 +8,9 @@ import dev.partlore.tools.content.model.SpecValue
 /** Rules whose violation could mislead someone into wiring something wrong. */
 object SafetyRules {
     private val NO_FUNCTIONS = setOf("power", "ground", "nc")
-    private val NO_VOLTAGE = setOf("ground", "nc")
+
+    // Signal pins need a voltage; a supply pin like VIN may accept a range, which part.yaml gives.
+    private val SIGNALS = setOf("io", "in", "out")
     private val INPUTS = setOf("io", "in")
 
     fun check(content: Content, d: Diagnostics) = content.parts.forEach { part ->
@@ -26,7 +28,7 @@ object SafetyRules {
         if (pin.direction in NO_FUNCTIONS && pin.functions.isNotEmpty()) {
             add("pin ${pin.id} is ${pin.direction}: it can't have functions")
         }
-        if (pin.direction !in NO_VOLTAGE && pin.voltage == null) add("pin ${pin.id} needs a voltage")
+        if (pin.direction in SIGNALS && pin.voltage == null) add("pin ${pin.id} needs a voltage")
         if (pin.direction in INPUTS && pin.fiveVTolerant == null) add("pin ${pin.id} needs five_v_tolerant")
     }
 
