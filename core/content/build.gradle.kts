@@ -19,3 +19,17 @@ tasks.withType<Test>().configureEach {
     systemProperty("partlore.schemaDir", schemaDir.asFile.absolutePath)
     inputs.dir(schemaDir).withPathSensitivity(PathSensitivity.RELATIVE)
 }
+
+tasks.register<Test>("speedTest") {
+    group = "verification"
+    description = "Packs 5,000 generated parts and checks that each screen reads in under 20 ms (CI)."
+    testClassesDirs =
+        sourceSets.test
+            .get()
+            .output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    filter { includeTestsMatching("*SpeedTest") }
+    systemProperty("partlore.speedTest", "true")
+    maxHeapSize = "1g"
+    testLogging { showStandardStreams = true }
+}
