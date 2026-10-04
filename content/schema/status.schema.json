@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Status",
+  "description": "How far a file has been checked, and by whom.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["level"],
+  "properties": {
+    "level": {
+      "description": "draft: work in progress. imported: copied by a tool from an open dataset, not checked by a person. checked: one person checked every value against its cited place. verified: two different people did. needs-review: a source changed or a problem was reported. disputed: sources disagree.",
+      "enum": ["draft", "imported", "checked", "verified", "needs-review", "disputed"]
+    },
+    "checked_by": {
+      "description": "GitHub handles of the people who checked (checked: 1 or more, verified: 2 or more).",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" }
+    },
+    "checked_on": { "description": "Date of the check.", "$ref": "common.schema.json#/$defs/date" },
+    "against": {
+      "description": "Ids of the sources the check used.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/sourceId" }
+    },
+    "imported_from": {
+      "description": "For imported files: which importer, which source, where in it, and when.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["importer", "source", "ref", "on"],
+      "properties": {
+        "importer": { "description": "Name of the importer.", "$ref": "common.schema.json#/$defs/slug" },
+        "source": { "description": "Id of the dataset source.", "$ref": "common.schema.json#/$defs/sourceId" },
+        "ref": { "description": "Where in the dataset.", "$ref": "common.schema.json#/$defs/ref" },
+        "on": { "description": "Date of the import.", "$ref": "common.schema.json#/$defs/date" }
+      }
+    },
+    "note": { "description": "What is wrong (needs-review and disputed).", "type": "string", "minLength": 1 }
+  }
+}

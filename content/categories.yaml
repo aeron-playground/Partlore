@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=schema/categories.schema.json
+categories:
+  - id: boards
+    name: Boards
+    sort: 1
+  - id: esp32-boards
+    name: ESP32 boards
+    parent: boards
+    sort: 1
+  - id: arduino-boards
+    name: Arduino boards
+    parent: boards
+    sort: 2
+  - id: modules
+    name: Modules
+    sort: 2
+  - id: wifi-modules
+    name: Wi-Fi modules
+    parent: modules
+    sort: 1

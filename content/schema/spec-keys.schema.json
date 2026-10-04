@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Spec keys",
+  "description": "Every spec key parts may use, with its label, type and unit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["keys"],
+  "properties": {
+    "keys": {
+      "description": "Every key.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "label", "type", "description"],
+        "properties": {
+          "key": { "description": "dot.separated, lowercase.", "type": "string", "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)+$" },
+          "label": { "description": "Label shown in the app.", "type": "string", "minLength": 1 },
+          "type": { "description": "range: min/typ/max. number: one value. text: words. bool: true or false.", "enum": ["range", "number", "text", "bool"] },
+          "unit": { "description": "Unit for range and number keys; none for counts.", "type": "string", "minLength": 1 },
+          "description": { "description": "What the value means.", "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
