@@ -44,7 +44,7 @@ private fun mapPin(node: JsonNode, file: String): Pin = Pin(
     },
     strapping =
     node.get("strapping")?.takeUnless { it.isNull }?.let {
-        Strapping(it.text("role"), it.text("must_be"), it.text("at"))
+        Strapping(it.text("role"), it.textOrNull("must_be"), it.text("at"))
     },
     safe = node.text("safe"),
     note = node.textOrNull("note"),

@@ -50,6 +50,14 @@ class ChecklistTest {
     }
 
     @Test
+    fun aStrappingPinWithoutALevelReadsCleanly() {
+        val fixture = ContentFixture(tmp.newFolder("content")).apply { addBoard() }
+        fixture.edit("parts/testmaker/test-board/pins.yaml") { it.replace("must_be: high, ", "") }
+        val text = Checklist.render(Validator(fixture.root, TODAY).validate(Mode.PREVIEW).content.parts.single())
+        assertTrue(text, text.contains("strapping boot-mode at reset"))
+    }
+
+    @Test
     fun everyLineIsATickBoxWithItsFileAndLine() {
         assertTrue(checklist().contains("- [ ] `pins.yaml:"))
     }

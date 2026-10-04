@@ -53,7 +53,7 @@ private fun describe(pin: Pin): String = listOfNotNull(
     pin.functions.takeIf { it.isNotEmpty() }?.joinToString(", ") { f ->
         f.type + f.signal?.let { " $it" }.orEmpty() + if (f.isDefault) " (default)" else ""
     },
-    pin.strapping?.let { "strapping ${it.role}: ${it.mustBe} at ${it.at}" },
+    pin.strapping?.let { "strapping ${it.role}" + it.mustBe?.let { level -> ": $level" }.orEmpty() + " at ${it.at}" },
     "safe ${pin.safe}",
 ).joinToString(" · ")
 

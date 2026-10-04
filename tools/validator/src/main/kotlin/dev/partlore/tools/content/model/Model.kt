@@ -85,7 +85,8 @@ data class Header(
 
 data class PinFunction(val type: String, val signal: String?, val isDefault: Boolean)
 
-data class Strapping(val role: String, val mustBe: String, val at: String)
+/** [mustBe] is the level a normal start needs; null when any level works or the source doesn't say. */
+data class Strapping(val role: String, val mustBe: String?, val at: String)
 
 data class Pin(
     val id: String,

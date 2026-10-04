@@ -76,6 +76,17 @@ class ContentLoaderTest {
     }
 
     @Test
+    fun aStrappingPinMayLeaveOutTheLevelItNeeds() {
+        fixture.addBoard()
+        fixture.edit("$BOARD_DIR/pins.yaml") { it.replace("must_be: high, ", "") }
+        val (content, problems) = load()
+        assertEquals(emptyList<Diagnostic>(), problems)
+        val strapping = content.parts.single().pins!!.pins[1].strapping
+        assertEquals("boot-mode", strapping?.role)
+        assertEquals(null, strapping?.mustBe)
+    }
+
+    @Test
     fun theIdMustMatchItsFolder() {
         fixture.addBoard()
         fixture.edit("$BOARD_DIR/part.yaml") { it.replace("id: $BOARD", "id: testmaker/other-board") }

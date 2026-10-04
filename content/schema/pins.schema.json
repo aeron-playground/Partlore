@@ -60,10 +60,10 @@
           "description": "For pins read at reset to choose how the chip starts.",
           "type": ["object", "null"],
           "additionalProperties": false,
-          "required": ["role", "must_be", "at"],
+          "required": ["role", "at"],
           "properties": {
             "role": { "description": "What it chooses, for example boot-mode.", "$ref": "common.schema.json#/$defs/slug" },
-            "must_be": { "description": "The level a normal start needs.", "enum": ["high", "low"] },
+            "must_be": { "description": "The level a normal start needs, when the source states one. Leave out when any level works or the source doesn't say.", "enum": ["high", "low"] },
             "at": { "description": "When the chip reads it.", "enum": ["reset"] }
           }
         },
