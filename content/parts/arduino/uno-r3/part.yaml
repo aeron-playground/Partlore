@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../schema/part.schema.json
+id: arduino/uno-r3
+kind: board
+name: Arduino UNO R3
+aliases: [Arduino UNO Rev3, A000066]
+manufacturer: Arduino
+category: arduino-boards
+tags: [5v-logic, usb-b]
+summary: Arduino's classic board with an ATmega328P, 14 digital and 6 analog pins, USB-B and a DC power jack.
+specs:
+  - { key: io.logic_level, unit: V, value: 5, source: s1, page: 11 }
+  - { key: io.current_per_pin, unit: mA, value: 20, source: s2, page: 1 }
+  - { key: cpu.clock_max, unit: MHz, value: 16, source: s1, page: 2 }
+  - { key: flash.size, value: "32 kB", source: s1, page: 2 }
+  - { key: sram.size, unit: KB, value: 2, source: s1, page: 2 }
+  - { key: eeprom.size, unit: KB, value: 1, source: s1, page: 2 }
+  - { key: usb.connector, value: "USB-B", source: s1, page: 7 }
+  - { key: usb.bridge, value: "ATmega16U2", source: s1, page: 7 }
+  - key: temperature.operating
+    unit: °C
+    min: -40
+    max: 85
+    condition: "Conservative limits for the whole board"
+    source: s1
+    page: 6
+absolute_max:
+  - { key: input.voltage_limit, unit: V, min: 6, max: 20, condition: "VIN pin", source: s1, page: 6 }
+  - { key: input.voltage_limit, unit: V, max: 5.5, condition: "USB connector", source: s1, page: 6 }
+  - { key: io.current_per_pin, unit: mA, value: 40, condition: "ATmega328P", source: s4, page: 308 }
+  - { key: io.current_total, unit: mA, value: 200, condition: "Through the ATmega328P's VCC and GND pins", source: s4, page: 308 }
+status:
+  level: draft

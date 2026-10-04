@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../../../schema/sources.schema.json
+sources:
+  - id: s1
+    type: user-guide
+    title: Arduino UNO R3 User Manual (SKU A000066)
+    publisher: Arduino
+    url: https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf
+    version: "Modified 01/10/2026"
+    retrieved: 2026-10-04
+    sha256: "f2e92bf8d47aa00f102ef7a93602fa0f528fcc82a412564a8f62cf4f3d5b51d5"
+    license: link-only
+  - id: s2
+    type: pinout
+    title: Arduino UNO R3 Full Pinout
+    publisher: Arduino
+    url: https://docs.arduino.cc/resources/pinouts/A000066-full-pinout.pdf
+    version: "Last update 6 Oct 2022"
+    retrieved: 2026-10-04
+    sha256: "088b4d7d776abf443cb050c31875221aa5fc7f0533470b33e035c249cf240007"
+    license: CC-BY-SA-4.0
+  - id: s3
+    type: schematic
+    title: Arduino UNO Rev3 schematic
+    publisher: Arduino
+    url: https://docs.arduino.cc/resources/schematics/A000066-schematics.pdf
+    version: "UNO-TH_Rev3e, 06/03/19"
+    retrieved: 2026-10-04
+    sha256: "2c1041200352485393108e03c5117a07d4ea03954654485526c2c56cd01f7a42"
+    license: CC-BY-SA-4.0
+  - id: s4
+    type: datasheet
+    title: ATmega48A/PA/88A/PA/168A/PA/328/P Data Sheet
+    publisher: Microchip Technology
+    url: https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf
+    version: "DS40002061B"
+    retrieved: 2026-10-04
+    sha256: "b9b9d83cda56a95d999ea8d54fe5a540748ae9020e5e7ae19b913d384ba9320e"
+    license: link-only
+  - id: s5
+    type: dataset
+    title: Arduino UNO R3 CAD files (Eagle)
+    publisher: Arduino
+    url: https://docs.arduino.cc/static/6bb7a3ca51ebee82a252f60c0b418787/A000066-cad-files.zip
+    version: "UNO-TH_Rev3e"
+    retrieved: 2026-10-04
+    sha256: "532b306cb153846eafc0ca9fe991d7a4dfa0c52dcefafa2efeaebf4b845ec820"
+    license: CC-BY-SA-4.0
