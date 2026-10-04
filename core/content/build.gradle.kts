@@ -1,5 +1,6 @@
 plugins {
     id("partlore.jvm.library")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 dependencies {
@@ -7,6 +8,7 @@ dependencies {
     implementation(project(":core:packformat"))
     implementation(libs.androidx.sqlite.bundled)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(project(":tools:packer"))
     testImplementation(testFixtures(project(":tools:validator")))
     testImplementation(libs.kotlinx.coroutines.test)
