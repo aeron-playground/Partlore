@@ -10,6 +10,7 @@ import dev.partlore.core.model.ContentProblem
 import dev.partlore.core.model.ContentResult
 import dev.partlore.core.model.LibraryHome
 import dev.partlore.core.model.PartCard
+import dev.partlore.core.model.PartPage
 import dev.partlore.core.model.Tag
 import dev.partlore.core.model.VerificationLevel
 import dev.partlore.core.packformat.PackFormat
@@ -50,6 +51,8 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
             },
         )
     }
+
+    fun part(id: String): PartPage? = PartQueries(db).part(id, meta("pack_version").orEmpty())
 
     override fun close() = db.close()
 
