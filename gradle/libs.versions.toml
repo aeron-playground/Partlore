@@ -4,6 +4,9 @@ kotlin = "2.4.20"
 compose-bom = "2026.09.00"
 activity-compose = "1.13.0"
 androidx-sqlite = "2.7.1"
+jackson = "3.2.3"
+networknt-jsonschema = "3.0.8"
+slf4j = "2.0.20"
 datastore = "1.2.1"
 koin = "4.2.2"
 kotlinx-coroutines = "1.11.0"
@@ -49,6 +52,12 @@ androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runt
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
 androidx-compose-material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+
+# Content tools (not shipped in the app)
+networknt-jsonschema = { module = "com.networknt:json-schema-validator", version.ref = "networknt-jsonschema" }
+jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-dataformat-yaml = { module = "tools.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 
 # Tests
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
