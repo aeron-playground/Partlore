@@ -1,21 +1,10 @@
 package dev.partlore.tools.content.load
 
-import dev.partlore.tools.content.model.GotchaFile
 import dev.partlore.tools.content.model.I2cAddress
 import dev.partlore.tools.content.model.Part
-import dev.partlore.tools.content.model.PinFile
 import dev.partlore.tools.content.model.Scalar
-import dev.partlore.tools.content.model.Source
 import dev.partlore.tools.content.model.SpecValue
 import tools.jackson.databind.JsonNode
-
-/** The other files of a part, already mapped. */
-internal data class PartFiles(
-    val sources: List<Source>,
-    val pins: PinFile?,
-    val gotchas: GotchaFile?,
-    val article: String?,
-)
 
 private const val HEX = 16
 
