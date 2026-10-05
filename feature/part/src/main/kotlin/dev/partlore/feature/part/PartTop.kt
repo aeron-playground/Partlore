@@ -62,7 +62,7 @@ private fun Hero(page: PartPage, actions: PartActions, modifier: Modifier = Modi
         page.uses?.let { base ->
             PlTextButton(stringResource(R.string.part_built_on, base.name), onClick = { actions.openPart(base.id) })
         }
-        PlStatusBadge(weakest.level, checkers = weakest.checkedBy.size, onClick = actions.showStatus)
+        PlStatusBadge(weakest.level, onClick = actions.showStatus)
         Text(page.summary, style = typography.bodyL, color = colors.textPrimary)
     }
 }

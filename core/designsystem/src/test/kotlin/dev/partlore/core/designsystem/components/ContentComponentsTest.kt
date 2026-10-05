@@ -52,13 +52,13 @@ class ContentComponentsTest {
             PartloreTheme {
                 androidx.compose.foundation.layout.Column {
                     PlStatusBadge(VerificationLevel.Draft)
-                    PlStatusBadge(VerificationLevel.Checked, checkers = 2)
+                    PlStatusBadge(VerificationLevel.Checked)
                     PlStatusBadge(VerificationLevel.Disputed)
                 }
             }
         }
         compose.onNodeWithText("Not checked yet").assertExists()
-        compose.onNodeWithText("Checked by 2 people").assertExists()
+        compose.onNodeWithText("Checked").assertExists()
         compose.onNodeWithText("Sources disagree").assertExists()
     }
 

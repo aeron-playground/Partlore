@@ -83,7 +83,7 @@ private fun FileStatusRow(
                 color = PartloreTheme.colors.textPrimary,
                 modifier = Modifier.weight(1f),
             )
-            PlStatusBadge(status.level, checkers = status.checkedBy.size, onClick = onClick)
+            PlStatusBadge(status.level, onClick = onClick)
         }
         CheckedLine(status, sources)
     }

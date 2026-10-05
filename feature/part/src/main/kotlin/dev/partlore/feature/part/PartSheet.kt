@@ -58,7 +58,7 @@ private fun StatusExplained(
     val typography = PartloreTheme.typography
     Column(modifier, verticalArrangement = Arrangement.spacedBy(PartloreTheme.spacing.space4)) {
         Text(file, style = typography.title, color = colors.textPrimary)
-        PlStatusBadge(status.level, checkers = status.checkedBy.size)
+        PlStatusBadge(status.level)
         Text(stringResource(status.level.help()), style = typography.bodyM, color = colors.textPrimary)
         CheckedLine(status, sources)
         status.note?.let { Text(it, style = typography.caption, color = colors.textSecondary) }

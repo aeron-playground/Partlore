@@ -53,9 +53,7 @@ private fun ListSamples(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.spacedBy(spacing.space8),
             verticalArrangement = Arrangement.spacedBy(spacing.space8),
         ) {
-            VerificationLevel.entries.forEach { level ->
-                PlStatusBadge(level, checkers = if (level == VerificationLevel.Verified) 2 else 1)
-            }
+            VerificationLevel.entries.forEach { PlStatusBadge(it) }
         }
         PlPartCard(
             name = "Example DevBoard V1",

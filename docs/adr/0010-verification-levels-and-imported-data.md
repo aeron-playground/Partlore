@@ -30,3 +30,10 @@ of the app, and bulk data from open datasets will arrive faster than people can 
   imported parts.
 - The library can grow from open datasets without lowering the bar for pinouts.
 - "Check this pinout" becomes a clear way for the community to help.
+
+## Update 2026-10-05
+
+The status badge shows only the level, for example "Checked" or "Verified", without a count of
+people. Who checked each file, when, and against which sources is still shown on the part's page,
+in the Sources section and the status sheet. The badge still shows the least checked of the part's
+files.

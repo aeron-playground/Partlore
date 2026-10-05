@@ -1,5 +1,6 @@
 package dev.partlore.core.designsystem.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -23,12 +23,7 @@ import dev.partlore.core.model.VerificationLevel
 
 /** How far a part's data has been checked: a glyph and words, never colour alone. */
 @Composable
-fun PlStatusBadge(
-    level: VerificationLevel,
-    modifier: Modifier = Modifier,
-    checkers: Int? = null,
-    onClick: (() -> Unit)? = null,
-) {
+fun PlStatusBadge(level: VerificationLevel, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
     val spacing = PartloreTheme.spacing
     val look = statusLook(level, PartloreTheme.colors)
     Row(
@@ -44,7 +39,7 @@ fun PlStatusBadge(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         PlGlyphIcon(look.glyph, look.content, cutout = look.background)
-        Text(statusLabel(level, checkers), style = PartloreTheme.typography.label, color = look.content)
+        Text(stringResource(statusLabel(level)), style = PartloreTheme.typography.label, color = look.content)
     }
 }
 
@@ -62,27 +57,13 @@ private fun statusLook(level: VerificationLevel, colors: PartloreColors): Status
     else -> StatusLook(PlGlyph.Half, colors.warning, colors.warningContainer)
 }
 
-@Composable
-private fun statusLabel(level: VerificationLevel, checkers: Int?): String = when (level) {
-    VerificationLevel.Draft -> stringResource(R.string.pl_status_draft)
-
-    VerificationLevel.Imported -> stringResource(R.string.pl_status_imported)
-
-    VerificationLevel.Checked ->
-        if (checkers != null && checkers > 0) {
-            pluralStringResource(R.plurals.pl_status_checked_by, checkers, checkers)
-        } else {
-            stringResource(R.string.pl_status_checked)
-        }
-
-    VerificationLevel.Verified ->
-        if (checkers != null && checkers > 0) {
-            pluralStringResource(R.plurals.pl_status_verified_by, checkers, checkers)
-        } else {
-            stringResource(R.string.pl_status_verified)
-        }
-
-    VerificationLevel.NeedsReview -> stringResource(R.string.pl_status_needs_review)
-
-    VerificationLevel.Disputed -> stringResource(R.string.pl_status_disputed)
+/** The words for each level. Who checked, when and against what is on the Part page, not on the badge. */
+@StringRes
+private fun statusLabel(level: VerificationLevel): Int = when (level) {
+    VerificationLevel.Draft -> R.string.pl_status_draft
+    VerificationLevel.Imported -> R.string.pl_status_imported
+    VerificationLevel.Checked -> R.string.pl_status_checked
+    VerificationLevel.Verified -> R.string.pl_status_verified
+    VerificationLevel.NeedsReview -> R.string.pl_status_needs_review
+    VerificationLevel.Disputed -> R.string.pl_status_disputed
 }
