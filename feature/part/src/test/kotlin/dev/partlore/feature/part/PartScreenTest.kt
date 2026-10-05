@@ -148,6 +148,18 @@ class PartScreenTest {
     }
 
     @Test
+    fun aCheckedPartSaysCheckedWithoutACount() {
+        val checked = FileStatus(VerificationLevel.Checked, listOf("alice"), "2026-10-04", listOf("s1"), null)
+        show(
+            ContentResult.Ok(
+                SampleContent.devBoard.copy(partStatus = checked, pinsStatus = checked, gotchasStatus = checked),
+            ),
+        )
+        compose.onAllNodesWithText("Checked").onFirst().assertExists()
+        compose.onNodeWithText("Checked by 1 person").assertDoesNotExist()
+    }
+
+    @Test
     fun theStatusBadgeExplainsItself() {
         show()
         compose.onAllNodesWithText("Not checked yet").onFirst().performClick()
