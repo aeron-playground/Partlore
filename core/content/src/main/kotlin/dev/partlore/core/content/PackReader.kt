@@ -82,22 +82,24 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
         }
 
     /**
-     * Part cards matching [where] (SQL over the `part` table), A–Z, with their status level and tags.
+     * Part cards matching [where] (SQL over the `part` table), A–Z, with tags and the level of their
+     * least checked file.
      * The parts are picked and sorted first; status and tags are then looked up for those parts only,
      * so a screen that shows 12 cards never reads the statuses or tags of the whole pack.
      */
     private fun cards(where: String, args: List<String> = emptyList(), limit: Int = Int.MAX_VALUE): List<PartCard> {
         val rows =
             db.query(
-                "SELECT p.id, p.name, p.kind, p.category_id, s.level FROM " +
-                    "(SELECT id, name, kind, category_id FROM part WHERE $where " +
-                    "ORDER BY name COLLATE NOCASE, id LIMIT $limit) p " +
-                    // CROSS JOIN keeps the picked parts as the outer loop instead of a scan of every status.
-                    "CROSS JOIN status s ON s.part_id = p.id AND s.file = 'part' " +
-                    "ORDER BY p.name COLLATE NOCASE, p.id",
+                "SELECT id, name, kind, category_id FROM part WHERE $where " +
+                    "ORDER BY name COLLATE NOCASE, id LIMIT $limit",
                 args,
-            ) { CardRow(it.text(), it.text(), it.text(), it.text(), it.text()) }
+            ) { CardRow(it.text(), it.text(), it.text(), it.text()) }
         val ids = rows.map { it.id }
+        // Every file's level (part, pins, gotchas): a card shows the least checked one, as the Part page does.
+        val levels =
+            db.query("SELECT part_id, level FROM status WHERE part_id IN (${ids.joinToString { "?" }})", ids) {
+                it.text() to VerificationLevel.fromPack(it.text())
+            }.groupBy({ it.first }, { it.second })
         val tags =
             db.query(
                 "SELECT pt.part_id, t.id, t.label FROM part_tag pt JOIN tag t ON t.id = pt.tag_id " +
@@ -111,7 +113,7 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
                 row.name,
                 row.kind,
                 row.categoryId,
-                VerificationLevel.fromPack(row.level),
+                VerificationLevel.weakestOf(levels[row.id].orEmpty()),
                 tags[row.id].orEmpty(),
             )
         }
@@ -119,13 +121,7 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
 
     private data class CategoryRow(val id: String, val parentId: String?, val name: String, val sort: Int?)
 
-    private data class CardRow(
-        val id: String,
-        val name: String,
-        val kind: String,
-        val categoryId: String,
-        val level: String,
-    )
+    private data class CardRow(val id: String, val name: String, val kind: String, val categoryId: String)
 
     companion object {
         private const val STARTER_BOARDS = 12

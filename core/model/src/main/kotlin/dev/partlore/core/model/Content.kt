@@ -10,9 +10,17 @@ enum class VerificationLevel(val packName: String) {
     Disputed("disputed"),
     ;
 
+    /** How far this level can be trusted, least first: Disputed 0 … Verified 5. */
+    val trust: Int get() = TRUST_ORDER.indexOf(this)
+
     companion object {
+        private val TRUST_ORDER = listOf(Disputed, NeedsReview, Draft, Imported, Checked, Verified)
+
         /** A level this app doesn't know (a newer pack) counts as Draft: never claim more checking than we know. */
         fun fromPack(name: String?): VerificationLevel = entries.firstOrNull { it.packName == name } ?: Draft
+
+        /** The least trusted of a part's file levels; what a card or page shows. No levels at all count as Draft. */
+        fun weakestOf(levels: Iterable<VerificationLevel>): VerificationLevel = levels.minByOrNull { it.trust } ?: Draft
     }
 }
 

@@ -66,4 +66,22 @@ class PackReaderLibraryTest {
             assertTrue(home.starterBoards.isEmpty())
         }
     }
+
+    // A card must never claim more checking than the page it opens (which leads with its weakest file).
+    @Test
+    fun aCardShowsItsLeastCheckedFile() {
+        val pack =
+            buildPack(tmp) {
+                write("categories.yaml", TREE)
+                write("tags.yaml", TAGS)
+                board("testmaker/zeta-board", "Zeta Board", "esp32-boards")
+                edit("parts/testmaker/zeta-board/gotchas.yaml") {
+                    it.replaceFirst("  level: checked", "  level: disputed\n  note: Two sources disagree in this test.")
+                }
+            }
+        openPack(pack).use { reader ->
+            assertEquals(VerificationLevel.Disputed, reader.library().starterBoards.single().level)
+            assertEquals(VerificationLevel.Disputed, checkNotNull(reader.category("boards")).parts.single().level)
+        }
+    }
 }

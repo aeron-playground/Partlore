@@ -18,6 +18,17 @@ class ContentModelTest {
     }
 
     @Test
+    fun theWeakestLevelWins() {
+        val levels = listOf(VerificationLevel.Verified, VerificationLevel.Disputed, VerificationLevel.Checked)
+        assertEquals(VerificationLevel.Disputed, VerificationLevel.weakestOf(levels))
+        assertEquals(
+            VerificationLevel.Draft,
+            VerificationLevel.weakestOf(listOf(VerificationLevel.Checked, VerificationLevel.Draft)),
+        )
+        assertEquals(VerificationLevel.Draft, VerificationLevel.weakestOf(emptyList()))
+    }
+
+    @Test
     fun unknownSeveritiesShowAsCaution() {
         assertEquals(Severity.Danger, Severity.fromPack("danger"))
         assertEquals(Severity.Caution, Severity.fromPack("critical"))
