@@ -26,4 +26,7 @@ specs:
   - { key: usb.connector, value: "Micro-USB", source: s2, section: Functional Description }
   - { key: usb.bridge, value: "CP2102N", source: s3, page: 1 }
 status:
-  level: draft
+  level: checked
+  checked_by: [aeron-gh]
+  checked_on: 2026-10-05
+  against: [s1, s2, s3]

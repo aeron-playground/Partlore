@@ -31,4 +31,16 @@ class RealContentTest {
         val ids = query(result.file, "SELECT id FROM part ORDER BY id").map { it.single() }
         assertEquals(listOf("arduino/uno-r3", "espressif/esp32-devkitc-v4-wroom-32e", "espressif/esp32-wroom-32e"), ids)
     }
+
+    // The seed parts are checked, so the release pack (what release builds bundle) carries all of each part.
+    @Test
+    fun theSeedPartsShipInFullInReleasePacks() {
+        val release = (Packer(content, tmp.newFolder()).pack(Mode.RELEASE) as Packer.Result.Packed).file
+        val preview = (Packer(content, tmp.newFolder()).pack(Mode.PREVIEW) as Packer.Result.Packed).file
+        assertEquals("3", single(release, "SELECT count(*) FROM part"))
+        listOf("pin", "gotcha", "spec", "source").forEach { table ->
+            val sql = "SELECT count(*) FROM $table"
+            assertEquals(table, single(preview, sql), single(release, sql))
+        }
+    }
 }

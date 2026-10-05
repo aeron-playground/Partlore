@@ -29,4 +29,7 @@ absolute_max:
   - { key: io.current_per_pin, unit: mA, value: 40, condition: "ATmega328P", source: s4, page: 308 }
   - { key: io.current_total, unit: mA, value: 200, condition: "Through the ATmega328P's VCC and GND pins", source: s4, page: 308 }
 status:
-  level: draft
+  level: checked
+  checked_by: [aeron-gh]
+  checked_on: 2026-10-05
+  against: [s1, s2, s4]
