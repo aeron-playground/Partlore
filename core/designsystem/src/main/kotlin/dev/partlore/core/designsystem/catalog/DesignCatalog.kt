@@ -41,6 +41,7 @@ fun DesignCatalog(modifier: Modifier = Modifier) {
         SpacingShapeCatalog()
         ElevationCatalog()
         ComponentsCatalog()
+        ContentCatalog()
     }
 }
 

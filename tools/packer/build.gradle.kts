@@ -71,3 +71,19 @@ tasks.register<Test>("scaleTest") {
     maxHeapSize = "1g"
     testLogging { showStandardStreams = true }
 }
+
+// Packs for the app: preview (drafts included) for debug builds, release (checked only) for release builds.
+listOf("Preview" to true, "Release" to false).forEach { (name, preview) ->
+    tasks.register<JavaExec>("pack${name}Asset") {
+        group = "build"
+        description = "Builds the ${name.lowercase()} pack the app bundles."
+        classpath = sourceSets.main.get().runtimeClasspath
+        mainClass = application.mainClass
+        workingDir = rootProject.projectDir
+        val out = layout.buildDirectory.dir("packs/${name.lowercase()}")
+        args("pack", "--content", "content", "--out", out.get().asFile.path)
+        if (preview) args("--preview")
+        inputs.dir(contentDir).withPathSensitivity(PathSensitivity.RELATIVE)
+        outputs.dir(out)
+    }
+}

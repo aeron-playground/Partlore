@@ -41,10 +41,11 @@ jobs:
       - uses: ./.github/actions/setup
       # verifyRoborazzi* compares screenshots with the committed ones. The app has flavors, so its
       # task is verifyRoborazziPlayDebug. validateContent and packContent check content/; scaleTest
-      # packs 5,000 generated parts and checks the speed targets.
+      # packs 5,000 generated parts and checks the speed targets; speedTest reads pages from that
+      # size of pack and checks each read stays under 20 ms.
       - run: >-
           ./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug
-          validateContent packContent :tools:packer:scaleTest
+          validateContent packContent :tools:packer:scaleTest :core:content:speedTest
       - if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -60,7 +61,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - run: ./gradlew assemblePlayDebug assembleFossDebug
+      # The unsigned F-Droid release build runs R8, so shrinking problems show up before a release.
+      - run: ./gradlew assemblePlayDebug assembleFossDebug assembleFossRelease
       # A pack with drafts included, and a checklist per part, for reviewing content pull requests.
       - run: ./gradlew :tools:packer:packContent -Ppreview :tools:validator:contentChecklist
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_title">Library</string>
+    <string name="library_search_hint">Search parts, pins, I²C addresses…</string>
+    <string name="library_preview_note">Preview build: includes parts nobody has checked yet.</string>
+    <string name="library_starter_boards">Starter boards</string>
+    <string name="library_categories">Categories</string>
+    <plurals name="library_part_count">
+        <item quantity="one">%d part</item>
+        <item quantity="other">%d parts</item>
+    </plurals>
+    <string name="library_empty">No parts yet.</string>
+    <string name="library_how_to_add">How to add a part</string>
+    <string name="category_all">All</string>
+    <string name="category_empty">No parts here yet.</string>
+    <string name="category_contribute">Contribute a part</string>
+    <string name="category_no_match">No parts match these filters.</string>
+    <string name="category_clear_filters">Clear filters</string>
+    <string name="category_not_found">This category isn\'t in your content pack.</string>
+</resources>

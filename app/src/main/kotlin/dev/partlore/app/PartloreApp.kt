@@ -3,12 +3,12 @@ package dev.partlore.app
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.partlore.app.shell.PartloreShell
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.feature.onboarding.OnboardingRoute
-import dev.partlore.feature.settings.SettingsRoute
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -21,9 +21,8 @@ fun PartloreApp(modifier: Modifier = Modifier, viewModel: MainViewModel = koinVi
         motionPreference = settings.motion.toMotionPreference(),
     ) {
         if (settings.onboardingDone) {
-            PartloreShell(settings = { onBack ->
-                SettingsRoute(versionName = BuildConfig.VERSION_NAME, onBack = onBack)
-            }, modifier = modifier)
+            val screens = remember { appScreens(BuildConfig.VERSION_NAME) }
+            PartloreShell(screens = screens, modifier = modifier)
         } else {
             OnboardingRoute(modifier = modifier)
         }

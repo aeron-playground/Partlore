@@ -15,11 +15,7 @@ import dev.partlore.core.designsystem.components.PlIcons
 import dev.partlore.core.designsystem.components.PlTopBar
 import dev.partlore.core.designsystem.theme.PartloreTheme
 
-// Start pages for each tab. Library, Search and Tools fill up in later build steps.
-
-@Composable
-fun LibraryHomeScreen(modifier: Modifier = Modifier) =
-    TabHome(stringResource(R.string.tab_library), stringResource(R.string.library_empty), PlIcons.Library, modifier)
+// Start pages for the tabs that don't have content yet. Search and Tools fill up in later build steps.
 
 @Composable
 fun SearchHomeScreen(modifier: Modifier = Modifier) =

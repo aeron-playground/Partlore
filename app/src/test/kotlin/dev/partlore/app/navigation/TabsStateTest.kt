@@ -59,4 +59,13 @@ class TabsStateTest {
     fun backAtLibrarysStartPageLetsTheAppClose() {
         assertFalse(newState().back())
     }
+
+    @Test
+    fun openingAPageThatIsAlreadyOpenGoesBackToIt() {
+        val tabs = newState()
+        tabs.navigate(PartKey("a/one"))
+        tabs.navigate(PartKey("b/two"))
+        tabs.navigate(PartKey("a/one"))
+        assertEquals(listOf(LibraryHomeKey, PartKey("a/one")), tabs.currentStack)
+    }
 }

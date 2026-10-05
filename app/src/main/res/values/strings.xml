@@ -5,7 +5,6 @@
     <string name="tab_search">Search</string>
     <string name="tab_tools">Tools</string>
     <string name="tab_bench">Bench</string>
-    <string name="library_empty">Parts arrive with the first content pack.</string>
     <string name="search_empty">Search opens up when the first parts are in.</string>
     <string name="tools_empty">The LED resistor and voltage divider calculators are on their way.</string>
     <string name="bench_title">My Bench</string>

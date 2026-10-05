@@ -25,11 +25,9 @@ class PartloreShellTest {
 
     @get:Rule val rules: RuleChain = RuleChain.outerRule(registerComponentActivity()).around(compose)
 
-    private val fakeSettings: @androidx.compose.runtime.Composable (() -> Unit) -> Unit = { Text("Settings page") }
-
     @Test
     fun benchGearOpensSettingsAndReselectingBenchGoesBack() {
-        compose.setContent { PartloreTheme { PartloreShell(settings = fakeSettings) } }
+        compose.setContent { PartloreTheme { PartloreShell(screens = fakeScreens()) } }
         compose.onNodeWithText("Bench").performClick()
         compose.onNodeWithContentDescription("Settings").performClick()
         compose.onNodeWithText("Settings page").assertExists()
@@ -39,11 +37,11 @@ class PartloreShellTest {
 
     @Test
     fun aHiddenTabKeepsItsPageAndItsState() {
-        val counterPage: @androidx.compose.runtime.Composable (() -> Unit) -> Unit = {
+        val counterPage: @androidx.compose.runtime.Composable (ShellNav) -> Unit = {
             var taps by rememberSaveable { mutableIntStateOf(0) }
             PlButton("Tapped $taps", onClick = { taps++ })
         }
-        compose.setContent { PartloreTheme { PartloreShell(settings = counterPage) } }
+        compose.setContent { PartloreTheme { PartloreShell(screens = fakeScreens(settings = counterPage)) } }
         compose.onNodeWithText("Bench").performClick()
         compose.onNodeWithContentDescription("Settings").performClick()
         compose.onNodeWithText("Tapped 0").performClick()
@@ -55,10 +53,20 @@ class PartloreShellTest {
     @Test
     fun theOpenPageSurvivesRecreation() {
         val restore = StateRestorationTester(compose)
-        restore.setContent { PartloreTheme { PartloreShell(settings = fakeSettings) } }
+        restore.setContent { PartloreTheme { PartloreShell(screens = fakeScreens()) } }
         compose.onNodeWithText("Bench").performClick()
         compose.onNodeWithContentDescription("Settings").performClick()
         restore.emulateSavedInstanceStateRestore()
         compose.onNodeWithText("Settings page").assertExists()
+    }
+
+    @Test
+    fun libraryPagesStackUpAndBackClosesTheTopOne() {
+        compose.setContent { PartloreTheme { PartloreShell(screens = fakeScreens()) } }
+        compose.onNodeWithText("Open boards").performClick()
+        compose.onNodeWithText("Open the dev board").performClick()
+        compose.onNodeWithText("Part example/devboard-v1").assertExists()
+        compose.onNodeWithText("Go back").performClick()
+        compose.onNodeWithText("Category boards").assertExists()
     }
 }

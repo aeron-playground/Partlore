@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    api(project(":core:content"))
     api(project(":core:userdata"))
     api(libs.junit)
     api(libs.robolectric)
