@@ -41,6 +41,7 @@ This file is ignored by git.
 | `./gradlew validateContent` | Check every part in `content/` |
 | `./gradlew packContent` | Build the content pack (`-Ppreview` includes drafts) |
 | `./gradlew contentChecklist -Ppart=<maker>/<part>` | Write a page-grouped checklist for checking a part |
+| `./gradlew :core:content:speedTest` | Read pages from a 5,000-part pack and check each read stays under 20 ms |
 
 ### Project layout
 
@@ -52,6 +53,7 @@ This file is ignored by git.
 | `core:userdata` | What the user chooses, saved on the device |
 | `core:testing` | Test helpers and fakes |
 | `core:packformat` | The tables of the content pack, shared by the packer and the app |
+| `core:content` | Reads the content pack in the app, and installs the pack bundled in the APK |
 | `feature:*` | One screen or flow each, for example `feature:settings` |
 | `tools:validator` | Checks the files in `content/` (runs on your computer, not in the app) |
 | `tools:packer` | Builds the content pack from `content/` |
@@ -65,8 +67,8 @@ A feature module depends only on `core:*` modules. Only `app` knows about naviga
 | Check | What it runs |
 |---|---|
 | `lint` | `./gradlew spotlessCheck detekt lint` |
-| `test` | `./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug validateContent packContent :tools:packer:scaleTest` (unit tests, screenshots, content checks, and packing 5,000 generated parts against the speed targets) |
-| `build` | Debug APKs for both flavors, and the preview content pack with checklists as an artifact |
+| `test` | `./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug validateContent packContent :tools:packer:scaleTest :core:content:speedTest` (unit tests, screenshots, content checks, and the speed targets for packing and reading 5,000 parts) |
+| `build` | Debug APKs for both flavors, an unsigned F-Droid release build (checks R8), and the preview content pack with checklists as an artifact |
 | `dco` | Every commit has a matching `Signed-off-by` |
 | `dependency-review` | New dependencies have no known high-severity vulnerabilities |
 | `pr-title` | The PR title follows the commit format |

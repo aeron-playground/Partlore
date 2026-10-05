@@ -12,7 +12,7 @@ body:
     id: part_id
     attributes:
       label: Part ID
-      description: The part's ID, for example `esp32-wroom-32e`.
+      description: The part's ID, for example `espressif/esp32-wroom-32e`.
     validations:
       required: true
   - type: input
@@ -24,7 +24,7 @@ body:
     id: pack_version
     attributes:
       label: Content pack version
-      description: Settings → Content in the app.
+      description: Shown at the bottom of every part page in the app.
   - type: textarea
     id: problem
     attributes:
