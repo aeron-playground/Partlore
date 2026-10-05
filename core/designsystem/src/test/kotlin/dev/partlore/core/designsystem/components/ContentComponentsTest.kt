@@ -31,6 +31,7 @@ import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(RobolectricTestRunner::class)
@@ -150,7 +151,9 @@ class ContentComponentsTest {
         compose.onNodeWithText("IO0").assertExists()
     }
 
+    // A phone-wide screen: Robolectric's default is 320 dp, narrower than the card at 200 %.
     @Test
+    @Config(qualifiers = "w411dp-h891dp-xhdpi")
     fun aCompactCardGrowsWithTheTextSize() {
         compose.setContent {
             val density = LocalDensity.current
@@ -161,7 +164,7 @@ class ContentComponentsTest {
                 }
             }
         }
-        // 152 dp at 100 % text: the name and the badge would break mid-word at 200 %.
-        compose.onNode(hasClickAction() and hasText("Example Board")).assertWidthIsEqualTo(304.dp)
+        // 176 dp at 100 % text (one-line "Not checked yet"), twice that at 200 %, so nothing breaks mid-word.
+        compose.onNode(hasClickAction() and hasText("Example Board")).assertWidthIsEqualTo(352.dp)
     }
 }
