@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pl_back">Back</string>
+    <string name="pl_status_draft">Not checked yet</string>
+    <string name="pl_status_imported">Imported, pins not checked</string>
+    <string name="pl_status_checked">Checked</string>
+    <string name="pl_status_verified">Verified</string>
+    <string name="pl_status_needs_review">Needs review</string>
+    <string name="pl_status_disputed">Sources disagree</string>
+    <plurals name="pl_status_checked_by">
+        <item quantity="one">Checked by %d person</item>
+        <item quantity="other">Checked by %d people</item>
+    </plurals>
+    <plurals name="pl_status_verified_by">
+        <item quantity="one">Verified by %d person</item>
+        <item quantity="other">Verified by %d people</item>
+    </plurals>
+    <string name="pl_content_error">Content couldn\'t be loaded.</string>
+    <string name="pl_content_too_new">This content needs a newer version of the app.</string>
+    <string name="pl_content_error_help">Reinstalling the app usually fixes this. If you report it, include the details.</string>
+    <string name="pl_copy_details">Copy details</string>
 </resources>
