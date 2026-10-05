@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
@@ -22,7 +24,11 @@ fun PlSheet(onDismiss: () -> Unit, modifier: Modifier = Modifier, content: @Comp
         containerColor = PartloreTheme.colors.surfaceRaised,
     ) {
         Column(
-            Modifier.fillMaxWidth().padding(start = spacing.space16, end = spacing.space16, bottom = spacing.space32),
+            // Scrolls when the content is taller than the screen (200 % text, landscape).
+            Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(start = spacing.space16, end = spacing.space16, bottom = spacing.space32),
             verticalArrangement = Arrangement.spacedBy(spacing.space12),
             content = content,
         )

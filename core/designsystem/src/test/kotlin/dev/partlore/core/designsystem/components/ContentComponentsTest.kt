@@ -1,5 +1,6 @@
 package dev.partlore.core.designsystem.components
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
@@ -9,7 +10,9 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.assertWidthIsEqualTo
+import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.longClick
@@ -180,5 +183,12 @@ class ContentComponentsTest {
         }
         // 411 dp wide, 8 dp between two cells: 201.5 dp each; the label sits inside 8 dp of padding on both sides.
         compose.onNodeWithContentDescription("Logic: 3.3 V").assertWidthIsEqualTo(185.5.dp)
+    }
+
+    // At 200 % text or in landscape a sheet is taller than the screen; its end must stay reachable.
+    @Test
+    fun sheetContentScrolls() {
+        compose.setContent { PartloreTheme { PlSheet(onDismiss = {}) { Text("Inside the sheet") } } }
+        compose.onNode(hasScrollAction() and hasAnyDescendant(hasText("Inside the sheet"))).assertExists()
     }
 }
