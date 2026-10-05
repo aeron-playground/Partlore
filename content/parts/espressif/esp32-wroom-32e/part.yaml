@@ -51,4 +51,7 @@ absolute_max:
   - { key: io.current_total, unit: mA, value: 1200, source: s2, page: 51 }
   - { key: temperature.storage, unit: °C, min: -40, max: 105, source: s1, page: 28 }
 status:
-  level: draft
+  level: checked
+  checked_by: [aeron-gh]
+  checked_on: 2026-10-05
+  against: [s1, s2]
