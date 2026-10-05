@@ -1,5 +1,8 @@
 package dev.partlore.core.content
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import androidx.sqlite.driver.bundled.SQLITE_OPEN_READWRITE
+import androidx.sqlite.execSQL
 import dev.partlore.core.model.ContentProblem
 import dev.partlore.core.model.ContentResult
 import dev.partlore.tools.content.testing.ContentFixture.Companion.BOARD
@@ -10,6 +13,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import java.io.File
+import java.io.IOException
 
 class PackContentRepositoryTest {
     @get:Rule val tmp = TemporaryFolder()
@@ -80,5 +85,60 @@ class PackContentRepositoryTest {
         repo.category("test-boards")
         repo.part(BOARD)
         assertEquals(1, installs)
+    }
+
+    // Damage that shows only after the pack opened (here a missing table) also gets one re-copy.
+    @Test
+    fun aPackDamagedAfterOpeningIsRecopiedOnce() = runTest {
+        val good = buildPack(tmp) { addBoard() }
+        val damaged = withoutTagTable(good)
+        val calls = mutableListOf<Boolean>()
+        val repo =
+            PackContentRepository(
+                { force ->
+                    calls += force
+                    InstallResult.Ready(if (force) good else damaged, replaced = force)
+                },
+                StandardTestDispatcher(testScheduler),
+            )
+        assertTrue(repo.library() is ContentResult.Ok)
+        assertEquals(listOf(false, true), calls)
+    }
+
+    @Test
+    fun aPackThatStaysDamagedIsRecopiedOnlyOncePerRun() = runTest {
+        val damaged = withoutTagTable(buildPack(tmp) { addBoard() })
+        val calls = mutableListOf<Boolean>()
+        val repo =
+            PackContentRepository(
+                { force ->
+                    calls += force
+                    InstallResult.Ready(damaged, replaced = force)
+                },
+                StandardTestDispatcher(testScheduler),
+            )
+        assertTrue(repo.library() is ContentResult.Failed)
+        assertTrue(repo.library() is ContentResult.Failed)
+        assertEquals(listOf(false, true, false), calls)
+    }
+
+    private fun withoutTagTable(pack: File): File {
+        val copy = File(tmp.newFolder(), "damaged.db")
+        pack.copyTo(copy)
+        BundledSQLiteDriver().open(copy.path, SQLITE_OPEN_READWRITE).use { it.execSQL("DROP TABLE part_tag") }
+        return copy
+    }
+
+    // A full disk or a storage error while installing shows the error screen instead of crashing the app.
+    @Test
+    fun anInstallerThatThrowsGivesAFailedResult() = runTest {
+        val errors = listOf(IOException("No space left on device"), SecurityException("Storage not allowed"))
+        errors.forEach { error ->
+            val repo = PackContentRepository({ throw error }, StandardTestDispatcher(testScheduler))
+            val result = repo.library()
+            assertTrue("$error gave $result", result is ContentResult.Failed)
+            assertEquals(ContentProblem.Damaged, (result as ContentResult.Failed).problem)
+            assertTrue(result.detail, error.message.orEmpty() in result.detail)
+        }
     }
 }
