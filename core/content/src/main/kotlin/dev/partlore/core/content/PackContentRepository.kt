@@ -1,6 +1,5 @@
 package dev.partlore.core.content
 
-import androidx.sqlite.SQLiteException
 import dev.partlore.core.model.CategoryPage
 import dev.partlore.core.model.ContentProblem
 import dev.partlore.core.model.ContentResult
@@ -35,13 +34,12 @@ class PackContentRepository(
         }
     }
 
-    private fun <T : Any> ask(open: PackReader, query: (PackReader) -> T?): ContentResult<T> = try {
-        query(open)?.let { ContentResult.Ok(it) } ?: ContentResult.NotFound
-    } catch (e: SQLiteException) {
-        reader = null
-        open.close()
-        ContentResult.Failed(ContentProblem.Damaged, e.message.orEmpty())
-    }
+    private fun <T : Any> ask(open: PackReader, query: (PackReader) -> T?): ContentResult<T> =
+        catchingSqlite<ContentResult<T>>({ query(open)?.let { ContentResult.Ok(it) } ?: ContentResult.NotFound }) { e ->
+            reader = null
+            open.close()
+            ContentResult.Failed(ContentProblem.Damaged, e.message.orEmpty())
+        }
 
     private fun openReader(): ContentResult<PackReader> {
         reader?.let { return ContentResult.Ok(it) }

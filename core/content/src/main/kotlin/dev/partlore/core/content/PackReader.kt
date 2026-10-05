@@ -1,7 +1,6 @@
 package dev.partlore.core.content
 
 import androidx.sqlite.SQLiteConnection
-import androidx.sqlite.SQLiteException
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.sqlite.driver.bundled.SQLITE_OPEN_READONLY
 import dev.partlore.core.model.CategoryPage
@@ -152,19 +151,14 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
             }
         }
 
-        private fun connect(file: File): SQLiteConnection? = try {
-            BundledSQLiteDriver().open(file.path, SQLITE_OPEN_READONLY)
-        } catch (_: SQLiteException) {
-            null
-        }
+        private fun connect(file: File): SQLiteConnection? =
+            catchingSqlite({ BundledSQLiteDriver().open(file.path, SQLITE_OPEN_READONLY) }) { null }
 
-        private fun schemaVersion(db: SQLiteConnection): Int? = try {
+        private fun schemaVersion(db: SQLiteConnection): Int? = catchingSqlite({
             db.query("SELECT value FROM meta WHERE key = 'schema_version'") {
                 it.text()
             }.firstOrNull()?.toIntOrNull()
-        } catch (_: SQLiteException) {
-            null
-        }
+        }) { null }
 
         private fun describe(problem: ContentProblem?, file: File, version: Int?): String = when (problem) {
             ContentProblem.Missing -> "No content pack at ${file.path}"
