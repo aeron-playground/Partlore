@@ -19,4 +19,9 @@
     <string name="pl_content_too_new">This content needs a newer version of the app.</string>
     <string name="pl_content_error_help">Reinstalling the app usually fixes this. If you report it, include the details.</string>
     <string name="pl_copy_details">Copy details</string>
+    <string name="pl_severity_danger">Danger</string>
+    <string name="pl_severity_caution">Caution</string>
+    <string name="pl_severity_info">Good to know</string>
+    <string name="pl_show_source">Show source</string>
+    <string name="pl_copy_value">Copy value</string>
 </resources>

@@ -1,15 +1,28 @@
 package dev.partlore.core.designsystem.components
 
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertHeightIsAtLeast
+import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.assertWidthIsEqualTo
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.longClick
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.ContentProblem
 import dev.partlore.core.model.ContentResult
+import dev.partlore.core.model.Severity
 import dev.partlore.core.model.VerificationLevel
 import dev.partlore.core.testing.registerComponentActivity
 import org.junit.Assert.assertEquals
@@ -76,5 +89,79 @@ class ContentComponentsTest {
     fun aNewerPackSaysTheAppNeedsUpdating() {
         compose.setContent { PartloreTheme { PlErrorState(ContentResult.Failed(ContentProblem.TooNew, "format 2")) } }
         compose.onNodeWithText("This content needs a newer version of the app.").assertExists()
+    }
+
+    @Test
+    fun specRowsOpenTheirSourceAndCopyOnLongPress() {
+        val shown = mutableListOf<Int>()
+        val copied = mutableListOf<Int>()
+        compose.setContent {
+            PartloreTheme {
+                PlSpecTable(
+                    rows = listOf(PlSpecRow("Logic level", "3.3 V", null, "Source: Example Datasheet, page 28")),
+                    onShowSource = { shown += it },
+                    onCopy = { copied += it },
+                )
+            }
+        }
+        val row = compose.onNodeWithContentDescription("Logic level: 3.3 V. Source: Example Datasheet, page 28")
+        row.assertHeightIsAtLeast(48.dp)
+        row.performClick()
+        row.performTouchInput { longClick() }
+        assertEquals(listOf(0), shown)
+        assertEquals(listOf(0), copied)
+    }
+
+    @Test
+    fun glanceCellsReadAsLabelAndValue() {
+        compose.setContent { PartloreTheme { PlGlanceGrid(listOf(PlGlanceItem("Logic", "3.3 V"))) } }
+        compose.onNodeWithContentDescription("Logic: 3.3 V").assertExists()
+    }
+
+    @Test
+    fun sectionChipsAreTabs() {
+        var picked = -1
+        compose.setContent {
+            PartloreTheme {
+                PlSectionChips(listOf("Specs", "Gotchas"), selectedIndex = 0, onSelect = {
+                    picked =
+                        it
+                })
+            }
+        }
+        compose.onNodeWithText("Specs").assertIsSelected().assert(hasRole(Role.Tab))
+        compose.onNodeWithText("Gotchas").performClick()
+        assertEquals(1, picked)
+    }
+
+    @Test
+    fun gotchaCardsNameTheirSeverity() {
+        compose.setContent {
+            PartloreTheme {
+                PlGotchaCard(
+                    "Keep IO0 high at reset",
+                    "Low starts download mode.",
+                    Severity.Caution,
+                    pins = listOf("IO0"),
+                )
+            }
+        }
+        compose.onNodeWithText("Caution").assertExists()
+        compose.onNodeWithText("IO0").assertExists()
+    }
+
+    @Test
+    fun aCompactCardGrowsWithTheTextSize() {
+        compose.setContent {
+            val density = LocalDensity.current
+            CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 2f)) {
+                PartloreTheme {
+                    PlPartCard("Example Board", "Wi-Fi", "board", VerificationLevel.Checked, onClick = {
+                    }, compact = true)
+                }
+            }
+        }
+        // 152 dp at 100 % text: the name and the badge would break mid-word at 200 %.
+        compose.onNode(hasClickAction() and hasText("Example Board")).assertWidthIsEqualTo(304.dp)
     }
 }

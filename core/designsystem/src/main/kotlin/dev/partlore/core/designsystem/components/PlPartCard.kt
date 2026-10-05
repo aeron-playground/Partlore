@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import dev.partlore.core.designsystem.theme.PartloreLayout
@@ -30,6 +31,9 @@ import dev.partlore.core.designsystem.theme.partloreElevation
 import dev.partlore.core.model.VerificationLevel
 
 private const val PRESSED_SCALE = 0.97f
+
+// The carousel card grows with the text size (up to twice as wide), so names and badges don't break mid-word.
+private const val MAX_TEXT_GROWTH = 2f
 
 /** A part in a list (wide) or a carousel (compact). Presses down slightly when touched. */
 @Composable
@@ -44,6 +48,7 @@ fun PlPartCard(
 ) {
     val colors = PartloreTheme.colors
     val motion = PartloreTheme.motion
+    val compactWidth = PartloreLayout.starterCardWidth * LocalDensity.current.fontScale.coerceIn(1f, MAX_TEXT_GROWTH)
     val spacing = PartloreTheme.spacing
     val shape = PartloreTheme.shapes.md
     val source = remember { MutableInteractionSource() }
@@ -66,7 +71,7 @@ fun PlPartCard(
             .padding(spacing.space12)
     if (compact) {
         Column(
-            modifier.width(PartloreLayout.starterCardWidth).then(card),
+            modifier.width(compactWidth).then(card),
             verticalArrangement = Arrangement.spacedBy(spacing.space8),
         ) {
             PlPartArt(kind, Modifier.size(PartloreLayout.artSmall))

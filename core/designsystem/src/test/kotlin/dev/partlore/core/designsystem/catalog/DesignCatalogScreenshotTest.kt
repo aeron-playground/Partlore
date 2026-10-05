@@ -22,6 +22,9 @@ private const val TABLET = "w840dp-h1200dp-mdpi"
 // 200% text makes sections taller than a phone screen; a tall screen captures all of it.
 private const val PHONE_TALL = "w411dp-h2400dp-xhdpi"
 
+// The content catalog at 200 % text is about twice as tall.
+private const val PHONE_XTALL = "w411dp-h4800dp-xhdpi"
+
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(qualifiers = PHONE)
@@ -83,6 +86,18 @@ class DesignCatalogScreenshotTest {
     @Test
     @Config(qualifiers = PHONE_TALL)
     fun componentsLightFont200() = shot("components_light_font200", Light, fontScale = 2f) { ComponentsCatalog() }
+
+    @Test
+    @Config(qualifiers = PHONE_TALL)
+    fun contentLight() = shot("content_light", Light) { ContentCatalog() }
+
+    @Test
+    @Config(qualifiers = PHONE_TALL)
+    fun contentDark() = shot("content_dark", Dark) { ContentCatalog() }
+
+    @Test
+    @Config(qualifiers = PHONE_XTALL)
+    fun contentLightFont200() = shot("content_light_font200", Light, fontScale = 2f) { ContentCatalog() }
 
     private fun shot(name: String, mode: PartloreThemeMode, fontScale: Float = 1f, content: @Composable () -> Unit) =
         captureRoboImage("src/test/screenshots/$name.png") {
