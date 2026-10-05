@@ -167,4 +167,18 @@ class ContentComponentsTest {
         // 176 dp at 100 % text (one-line "Not checked yet"), twice that at 200 %, so nothing breaks mid-word.
         compose.onNode(hasClickAction() and hasText("Example Board")).assertWidthIsEqualTo(352.dp)
     }
+
+    // Three columns are too narrow for big text: "Bluetooth" broke mid-word at 200 %.
+    @Test
+    @Config(qualifiers = "w411dp-h891dp-xhdpi")
+    fun theGlanceGridUsesTwoColumnsWithLargeText() {
+        compose.setContent {
+            val density = LocalDensity.current
+            CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 2f)) {
+                PartloreTheme { PlGlanceGrid(listOf(PlGlanceItem("Logic", "3.3 V"), PlGlanceItem("GPIO", "26"))) }
+            }
+        }
+        // 411 dp wide, 8 dp between two cells: 201.5 dp each; the label sits inside 8 dp of padding on both sides.
+        compose.onNodeWithContentDescription("Logic: 3.3 V").assertWidthIsEqualTo(185.5.dp)
+    }
 }

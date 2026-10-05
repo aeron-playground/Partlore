@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -24,6 +25,10 @@ import dev.partlore.core.designsystem.theme.PartloreTheme
 
 private const val COMPACT_COLUMNS = 3
 private const val EXPANDED_COLUMNS = 6
+private const val LARGE_TEXT_COLUMNS = 2
+
+// From 200 % text (as the spec table) a value like "Bluetooth" doesn't fit a third of a phone.
+private const val LARGE_FONT_SCALE = 2f
 
 /** One fact in the at-a-glance strip. [danger] shows the value in the danger colour. */
 data class PlGlanceItem(
@@ -38,7 +43,15 @@ data class PlGlanceItem(
 fun PlGlanceGrid(items: List<PlGlanceItem>, modifier: Modifier = Modifier) {
     val spacing = PartloreTheme.spacing
     BoxWithConstraints(modifier.fillMaxWidth()) {
-        val columns = if (maxWidth >= PartloreLayout.expandedWidth) EXPANDED_COLUMNS else COMPACT_COLUMNS
+        val expanded = maxWidth >= PartloreLayout.expandedWidth
+        val largeText = LocalDensity.current.fontScale >= LARGE_FONT_SCALE
+        val columns =
+            when {
+                expanded && largeText -> COMPACT_COLUMNS
+                expanded -> EXPANDED_COLUMNS
+                largeText -> LARGE_TEXT_COLUMNS
+                else -> COMPACT_COLUMNS
+            }
         Column(verticalArrangement = Arrangement.spacedBy(spacing.space8)) {
             items.chunked(columns).forEach { row ->
                 Row(Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(spacing.space8)) {
