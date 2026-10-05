@@ -21,4 +21,12 @@ class BundledAssetsTest {
         val file = checkNotNull(Regex("\"file\" : \"([^\"]+)\"").find(manifest)).groupValues[1]
         assets.open("content/$file").use { assertTrue(it.read() >= 0) }
     }
+
+    @Test
+    fun bundledPackReadsTheSameAssets() {
+        val bundled = assets.bundledPack()
+        val manifest = bundled.readManifest()
+        val file = checkNotNull(Regex("\"file\" : \"([^\"]+)\"").find(manifest)).groupValues[1]
+        bundled.open(file).use { assertTrue(it.read() >= 0) }
+    }
 }

@@ -12,3 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable data object BenchHomeKey : NavKey
 
 @Serializable data object SettingsKey : NavKey
+
+@Serializable data class CategoryKey(val id: String) : NavKey
+
+@Serializable data class PartKey(val id: String) : NavKey

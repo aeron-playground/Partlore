@@ -28,23 +28,23 @@ private const val TABLET = "w840dp-h1200dp-mdpi"
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(qualifiers = PHONE)
 class ShellScreenshotTest {
-    @Test fun libraryLight() = shot("shell_library_light", Light) { PartloreShell(settings = {}) }
+    @Test fun libraryLight() = shot("shell_library_light", Light) { PartloreShell(screens = sampleScreens()) }
 
-    @Test fun libraryDark() = shot("shell_library_dark", Dark) { PartloreShell(settings = {}) }
+    @Test fun libraryDark() = shot("shell_library_dark", Dark) { PartloreShell(screens = sampleScreens()) }
 
-    @Test fun libraryBench() = shot("shell_library_bench", Bench) { PartloreShell(settings = {}) }
+    @Test fun libraryBench() = shot("shell_library_bench", Bench) { PartloreShell(screens = sampleScreens()) }
 
     @Test fun libraryLightFont200() = shot("shell_library_light_font200", Light, fontScale = 2f) {
-        PartloreShell(settings = {})
+        PartloreShell(screens = sampleScreens())
     }
 
     @Test fun benchTabLight() = shot("shell_bench_tab_light", Light) {
-        PartloreShell(settings = {}, tabs = startingOn(Tab.Bench))
+        PartloreShell(screens = sampleScreens(), tabs = startingOn(Tab.Bench))
     }
 
     @Test
     @Config(qualifiers = TABLET)
-    fun libraryTabletLight() = shot("shell_library_tablet_light", Light) { PartloreShell(settings = {}) }
+    fun libraryTabletLight() = shot("shell_library_tablet_light", Light) { PartloreShell(screens = sampleScreens()) }
 
     private fun startingOn(tab: Tab) =
         TabsState(Tab.entries.associateWith { mutableStateListOf<NavKey>(it.root) }, mutableStateOf(tab))

@@ -31,8 +31,15 @@ class TabsState(
         }
     }
 
+    /** Opens [key]. A page already open in this tab is brought back instead: Navigation 3 needs unique keys. */
     fun navigate(key: NavKey) {
-        stacks.getValue(current).add(key)
+        val stack = stacks.getValue(current)
+        val open = stack.indexOf(key)
+        if (open < 0) {
+            stack.add(key)
+        } else {
+            while (stack.lastIndex > open) stack.removeAt(stack.lastIndex)
+        }
     }
 
     fun back(): Boolean {
