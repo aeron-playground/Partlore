@@ -30,7 +30,7 @@ class PinDotTest {
     fun theLegendNamesEveryKindAndMark() {
         compose.setContent { PartloreTheme { PlPinLegend() } }
         listOf(
-            "Power", "Ground", "I²C", "SPI", "UART", "ADC", "PWM", "Touch", "Do not use", "GPIO",
+            "Power", "Ground", "I²C", "SPI", "UART", "ADC", "PWM", "Touch", "Do not use", "GPIO or other",
             "Strapping pin", "Caution", "Input only",
         ).forEach { compose.onNodeWithText(it, substring = false).assertExists() }
     }

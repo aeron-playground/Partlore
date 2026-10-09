@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import com.github.takahirom.roborazzi.captureRoboImage
+import dev.partlore.core.designsystem.theme.PartloreRedLight
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.designsystem.theme.PartloreThemeMode
 import dev.partlore.core.designsystem.theme.PartloreThemeMode.Bench
@@ -98,6 +99,26 @@ class DesignCatalogScreenshotTest {
     @Test
     @Config(qualifiers = PHONE_XTALL)
     fun contentLightFont200() = shot("content_light_font200", Light, fontScale = 2f) { ContentCatalog() }
+
+    @Test fun pinoutLight() = shot("pinout_light", Light) { PinoutCatalog() }
+
+    @Test fun pinoutDark() = shot("pinout_dark", Dark) { PinoutCatalog() }
+
+    @Test fun pinoutBench() = shot("pinout_bench", Bench) { PinoutCatalog() }
+
+    @Test fun pinoutRedLight() = shot("pinout_red_light", Dark) { PartloreRedLight(enabled = true) { PinoutCatalog() } }
+
+    @Test
+    @Config(qualifiers = PHONE_TALL)
+    fun pinoutLightFont200() = shot("pinout_light_font200", Light, fontScale = 2f) { PinoutCatalog() }
+
+    @Test
+    @Config(qualifiers = TABLET)
+    fun pinoutLightTablet() = shot("pinout_light_tablet", Light) { PinoutCatalog() }
+
+    @Test
+    @Config(qualifiers = PHONE_TALL)
+    fun pinoutColourBlindLight() = shot("pinout_colour_blind_light", Light) { PinoutColourBlindCatalog() }
 
     private fun shot(name: String, mode: PartloreThemeMode, fontScale: Float = 1f, content: @Composable () -> Unit) =
         captureRoboImage("src/test/screenshots/$name.png") {

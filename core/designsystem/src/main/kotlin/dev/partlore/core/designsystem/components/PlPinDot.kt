@@ -34,7 +34,7 @@ private const val HATCH_ALPHA = 0.5f
 
 /**
  * One pin: a dot in its kind's colour with its glyph (colour is never the only signal). Strapping
- * pins get a dashed ring, do-not-use pins a hatch. Decorative for TalkBack: the pin's button says it all.
+ * pins get a dashed ring and a ⚠, do-not-use pins a hatch. Decorative for TalkBack: the pin's button says it all.
  */
 @Composable
 fun PlPinDot(
@@ -62,6 +62,12 @@ fun PlPinDot(
     Box(modifier.size(dotSize(large)).clearAndSetSemantics {}, contentAlignment = Alignment.Center) {
         Canvas(Modifier.matchParentSize()) { drawDot(kind, look, strapping) }
         glyphText(kind)?.let { Text(it, style = PartloreTheme.typography.label, color = pin.ink, maxLines = 1) }
+        if (strapping) {
+            val mark = colors.pins.strapping
+            Canvas(Modifier.align(Alignment.TopStart).size(PartloreLayout.pinBadge)) {
+                drawWarningMark(mark.fill, mark.ink)
+            }
+        }
         if (caution) Badge("!", Modifier.align(Alignment.TopEnd))
         if (inputOnly) Badge(stringResource(R.string.pl_pin_glyph_input), Modifier.align(Alignment.BottomEnd))
     }

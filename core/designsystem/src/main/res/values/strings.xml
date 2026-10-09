@@ -26,7 +26,7 @@
     <string name="pl_pin_pwm">PWM</string>
     <string name="pl_pin_touch">Touch</string>
     <string name="pl_pin_do_not_use">Do not use</string>
-    <string name="pl_pin_gpio">GPIO</string>
+    <string name="pl_pin_gpio">GPIO or other</string>
     <string name="pl_pin_strapping">Strapping pin</string>
     <string name="pl_pin_caution">Caution</string>
     <string name="pl_pin_input_only">Input only</string>
