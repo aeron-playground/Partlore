@@ -13,6 +13,10 @@ headers:
     pitch_mm: 1.27
     source: s1
     page: 40
+    edges:
+      - { edge: left, pins: 14, first: top, source: s1, page: 10 }
+      - { edge: bottom, pins: 10, first: left, source: s1, page: 10 }
+      - { edge: right, pins: 14, first: bottom, source: s1, page: 10 }
 pins:
   - id: gnd-1
     header: pads

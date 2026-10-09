@@ -13,6 +13,8 @@ headers:
     pitch_mm: 2.54
     source: s5
     ref: "UNO-TH_Rev3e.brd, element POWER (8x1F-H8.5, package 1X08)"
+    edges:
+      - { edge: bottom, pins: 8, first: left, order: 1, source: s5, ref: "UNO-TH_Rev3e.brd, element POWER" }
   - id: analog
     label: AD
     type: socket
@@ -21,6 +23,8 @@ headers:
     pitch_mm: 2.54
     source: s5
     ref: "UNO-TH_Rev3e.brd, element AD (6x1F-H8.5, package 1X06)"
+    edges:
+      - { edge: bottom, pins: 6, first: left, order: 2, source: s5, ref: "UNO-TH_Rev3e.brd, element AD" }
   - id: digital-low
     label: IOL
     type: socket
@@ -29,6 +33,8 @@ headers:
     pitch_mm: 2.54
     source: s5
     ref: "UNO-TH_Rev3e.brd, element IOL (8x1F-H8.5, package 1X08)"
+    edges:
+      - { edge: top, pins: 8, first: right, order: 2, source: s5, ref: "UNO-TH_Rev3e.brd, element IOL" }
   - id: digital-high
     label: IOH
     type: socket
@@ -37,6 +43,8 @@ headers:
     pitch_mm: 2.54
     source: s5
     ref: "UNO-TH_Rev3e.brd, element IOH (10x1F-H8.5, package 1X10)"
+    edges:
+      - { edge: top, pins: 10, first: right, order: 1, source: s5, ref: "UNO-TH_Rev3e.brd, element IOH" }
   - id: icsp
     label: ICSP
     type: header
@@ -45,6 +53,8 @@ headers:
     pitch_mm: 2.54
     source: s5
     ref: "UNO-TH_Rev3e.brd, element ICSP (3x2 M, package 2X03)"
+    edges:
+      - { edge: inside, run: vertical, pins: 3, first: top, row1: left, source: s5, ref: "UNO-TH_Rev3e.brd, element ICSP" }
 pins:
   - id: nc
     header: power

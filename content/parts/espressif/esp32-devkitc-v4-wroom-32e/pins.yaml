@@ -13,6 +13,8 @@ headers:
     pitch_mm: 2.54
     source: s5
     page: 1
+    edges:
+      - { edge: left, pins: 19, first: top, source: s4, page: 1 }
   - id: j3
     label: J3
     type: header
@@ -21,6 +23,8 @@ headers:
     pitch_mm: 2.54
     source: s5
     page: 1
+    edges:
+      - { edge: right, pins: 19, first: top, source: s4, page: 1 }
 pins:
   - id: 3v3
     header: j2
