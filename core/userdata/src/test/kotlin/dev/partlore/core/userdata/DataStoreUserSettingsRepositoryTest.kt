@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import dev.partlore.core.model.BuildInterest
 import dev.partlore.core.model.MotionSetting
+import dev.partlore.core.model.PinLabelMode
 import dev.partlore.core.model.ThemeSetting
 import dev.partlore.core.model.UserSettings
 import kotlinx.coroutines.CoroutineScope
@@ -62,6 +63,20 @@ class DataStoreUserSettingsRepositoryTest {
             ),
             reopened.settings.first(),
         )
+    }
+
+    @Test
+    fun pinoutChoicesAreRemembered() = runTest(UnconfinedTestDispatcher()) {
+        val firstScope = CoroutineScope(Job() + UnconfinedTestDispatcher(testScheduler))
+        val first = DataStoreUserSettingsRepository(newStore(firstScope))
+        first.setPinLabel(PinLabelMode.Arduino)
+        first.setKeepScreenOn(false)
+        first.setRedLight(true)
+        firstScope.cancel()
+        val again = DataStoreUserSettingsRepository(newStore(backgroundScope)).settings.first()
+        assertEquals(PinLabelMode.Arduino, again.pinLabel)
+        assertEquals(false, again.keepScreenOn)
+        assertEquals(true, again.redLight)
     }
 
     @Test

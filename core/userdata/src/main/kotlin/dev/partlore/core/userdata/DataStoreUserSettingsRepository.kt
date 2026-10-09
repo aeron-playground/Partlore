@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import dev.partlore.core.model.BuildInterest
 import dev.partlore.core.model.MotionSetting
+import dev.partlore.core.model.PinLabelMode
 import dev.partlore.core.model.ThemeSetting
 import dev.partlore.core.model.UserSettings
 import kotlinx.coroutines.flow.Flow
@@ -45,6 +46,18 @@ class DataStoreUserSettingsRepository(private val store: DataStore<Preferences>)
             it[Keys.INTERESTS] = interests.mapTo(mutableSetOf()) { interest -> interest.name }
         }
     }
+
+    override suspend fun setPinLabel(mode: PinLabelMode) {
+        store.edit { it[Keys.PIN_LABEL] = mode.name }
+    }
+
+    override suspend fun setKeepScreenOn(on: Boolean) {
+        store.edit { it[Keys.KEEP_SCREEN_ON] = on }
+    }
+
+    override suspend fun setRedLight(on: Boolean) {
+        store.edit { it[Keys.RED_LIGHT] = on }
+    }
 }
 
 // Saved names are part of the on-device format: renaming a key or an enum value needs a migration.
@@ -55,6 +68,9 @@ private object Keys {
     val SOUNDS = booleanPreferencesKey("sounds")
     val ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
     val INTERESTS = stringSetPreferencesKey("interests")
+    val PIN_LABEL = stringPreferencesKey("pin_label")
+    val KEEP_SCREEN_ON = booleanPreferencesKey("keep_screen_on")
+    val RED_LIGHT = booleanPreferencesKey("red_light")
 }
 
 private fun Preferences.toUserSettings(): UserSettings {
@@ -66,6 +82,9 @@ private fun Preferences.toUserSettings(): UserSettings {
         sounds = this[Keys.SOUNDS] ?: defaults.sounds,
         onboardingDone = this[Keys.ONBOARDING_DONE] ?: defaults.onboardingDone,
         interests = this[Keys.INTERESTS].orEmpty().mapNotNullTo(mutableSetOf()) { enumOrNull<BuildInterest>(it) },
+        pinLabel = enumOrNull<PinLabelMode>(this[Keys.PIN_LABEL]),
+        keepScreenOn = this[Keys.KEEP_SCREEN_ON],
+        redLight = this[Keys.RED_LIGHT] ?: defaults.redLight,
     )
 }
 
