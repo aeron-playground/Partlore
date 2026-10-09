@@ -8,12 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import dev.partlore.core.designsystem.components.PlButton
 import dev.partlore.core.designsystem.components.PlCard
 import dev.partlore.core.designsystem.components.PlStatusBadge
 import dev.partlore.core.designsystem.components.PlTextButton
+import dev.partlore.core.designsystem.components.rememberLinkOpener
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.FileStatus
 import dev.partlore.core.model.PartPage
@@ -22,9 +22,9 @@ import dev.partlore.core.model.SourceItem
 /** Every source with its licence, how far each file is checked, and the ways to fix a mistake. */
 @Composable
 internal fun SourcesBlock(page: PartPage, actions: PartActions, modifier: Modifier = Modifier) {
-    val uri = LocalUriHandler.current
+    val openLink = rememberLinkOpener()
     Column(modifier, verticalArrangement = Arrangement.spacedBy(PartloreTheme.spacing.space12)) {
-        page.sources.forEach { source -> SourceCard(source, onOpen = { uri.openUri(source.url) }) }
+        page.sources.forEach { source -> SourceCard(source, onOpen = { openLink(source.url) }) }
         FileStatusRow(stringResource(R.string.part_file_part), page.partStatus, page.sources, actions.showStatus)
         page.pinsStatus?.let {
             FileStatusRow(stringResource(R.string.part_file_pins), it, page.sources, actions.showStatus)
@@ -34,10 +34,10 @@ internal fun SourcesBlock(page: PartPage, actions: PartActions, modifier: Modifi
         }
         PlButton(
             stringResource(R.string.part_report_problem),
-            onClick = { uri.openUri(GithubLinks.reportProblem(page.id, page.packVersion)) },
+            onClick = { openLink(GithubLinks.reportProblem(page.id, page.packVersion)) },
         )
         PlTextButton(stringResource(R.string.part_edit_on_github), onClick = {
-            uri.openUri(GithubLinks.editOnGithub(page.id))
+            openLink(GithubLinks.editOnGithub(page.id))
         })
         Text(
             stringResource(R.string.part_pack_version, page.packVersion),

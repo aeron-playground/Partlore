@@ -1,6 +1,7 @@
 package dev.partlore.core.designsystem.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import dev.partlore.core.designsystem.theme.PartloreLayout
+import dev.partlore.core.designsystem.theme.PartloreStroke
 import dev.partlore.core.designsystem.theme.PartloreTheme
 
 /** Looks like a search field; tapping it opens the Search tab. */
@@ -30,6 +32,8 @@ fun PlSearchField(hint: String, onClick: () -> Unit, modifier: Modifier = Modifi
             .heightIn(min = PartloreLayout.touchTarget)
             .clip(PartloreTheme.shapes.full)
             .background(colors.surfaceSunken)
+            // In the Bench theme the sunken fill is almost the page colour; the outline keeps the field visible.
+            .border(PartloreStroke.hairline, colors.outline, PartloreTheme.shapes.full)
             .clickable(role = Role.Button, onClick = onClick)
             .padding(horizontal = PartloreTheme.spacing.space16),
         horizontalArrangement = Arrangement.spacedBy(PartloreTheme.spacing.space8),

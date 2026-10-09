@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -19,6 +18,7 @@ import dev.partlore.core.designsystem.components.PlSegmented
 import dev.partlore.core.designsystem.components.PlSwitchRow
 import dev.partlore.core.designsystem.components.PlTextButton
 import dev.partlore.core.designsystem.components.PlTopBar
+import dev.partlore.core.designsystem.components.rememberLinkOpener
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.MotionSetting
 import dev.partlore.core.model.ThemeSetting
@@ -85,8 +85,8 @@ fun SettingsScreen(
             BodyText(stringResource(R.string.settings_privacy_body))
             SectionLabel(stringResource(R.string.settings_about))
             BodyText(stringResource(R.string.settings_version, versionName))
-            val uriHandler = LocalUriHandler.current
-            PlTextButton(stringResource(R.string.settings_source_code), onClick = { uriHandler.openUri(SOURCE_URL) })
+            val openLink = rememberLinkOpener()
+            PlTextButton(stringResource(R.string.settings_source_code), onClick = { openLink(SOURCE_URL) })
         }
     }
 }

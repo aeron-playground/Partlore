@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +30,7 @@ import dev.partlore.core.designsystem.components.PlIcons
 import dev.partlore.core.designsystem.components.PlPartCard
 import dev.partlore.core.designsystem.components.PlSearchField
 import dev.partlore.core.designsystem.components.PlTopBar
+import dev.partlore.core.designsystem.components.rememberLinkOpener
 import dev.partlore.core.designsystem.theme.PartloreLayout
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.ContentProblem
@@ -160,12 +160,12 @@ private fun PreviewNote(modifier: Modifier = Modifier) {
 
 @Composable
 private fun EmptyLibrary(modifier: Modifier = Modifier) {
-    val uri = LocalUriHandler.current
+    val openLink = rememberLinkOpener()
     PlEmptyState(
         message = stringResource(R.string.library_empty),
         modifier = modifier,
         icon = PlIcons.Library,
         actionLabel = stringResource(R.string.library_how_to_add),
-        onAction = { uri.openUri(HOW_TO_ADD_URL) },
+        onAction = { openLink(HOW_TO_ADD_URL) },
     )
 }

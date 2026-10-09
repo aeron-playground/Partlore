@@ -58,7 +58,8 @@ fun OnboardingScreen(onFinish: (Set<BuildInterest>) -> Unit, modifier: Modifier 
     val spacing = PartloreTheme.spacing
     Column(modifier.fillMaxSize().background(PartloreTheme.colors.bg).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().padding(horizontal = spacing.space8), horizontalArrangement = Arrangement.End) {
-            PlTextButton(stringResource(R.string.onboarding_skip), onClick = { onFinish(emptySet()) })
+            // Skip ends onboarding but keeps any interests already picked.
+            PlTextButton(stringResource(R.string.onboarding_skip), onClick = { onFinish(interests) })
         }
         HorizontalPager(
             state = pager,

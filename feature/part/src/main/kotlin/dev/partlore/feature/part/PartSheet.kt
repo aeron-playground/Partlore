@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import dev.partlore.core.designsystem.components.PlButton
 import dev.partlore.core.designsystem.components.PlSheet
 import dev.partlore.core.designsystem.components.PlStatusBadge
+import dev.partlore.core.designsystem.components.rememberLinkOpener
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.Cite
 import dev.partlore.core.model.FileStatus
@@ -88,7 +88,7 @@ internal fun CheckedLine(status: FileStatus, sources: List<SourceItem>, modifier
 @Composable
 internal fun SourceSheetContent(cite: Cite, sources: List<SourceItem>, modifier: Modifier = Modifier) {
     val source = sources.firstOrNull { it.id == cite.sourceId }
-    val uri = LocalUriHandler.current
+    val openLink = rememberLinkOpener()
     val colors = PartloreTheme.colors
     val typography = PartloreTheme.typography
     Column(modifier, verticalArrangement = Arrangement.spacedBy(PartloreTheme.spacing.space8)) {
@@ -106,7 +106,7 @@ internal fun SourceSheetContent(cite: Cite, sources: List<SourceItem>, modifier:
                 color = colors.textSecondary,
             )
             Text(licenceText(source.license), style = typography.caption, color = colors.textSecondary)
-            PlButton(stringResource(R.string.part_open_source), onClick = { uri.openUri(source.url) })
+            PlButton(stringResource(R.string.part_open_source), onClick = { openLink(source.url) })
         }
     }
 }
