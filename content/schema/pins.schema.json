@@ -15,7 +15,7 @@
       "description": "One header, socket or row of pads.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "label", "type", "rows", "pins_per_row", "pitch_mm", "source"],
+      "required": ["id", "label", "type", "rows", "pins_per_row", "pitch_mm", "source", "edges"],
       "properties": {
         "id": { "description": "Id used by pins in this file.", "$ref": "common.schema.json#/$defs/slug" },
         "label": { "description": "The name on the board or in the source, for example J2.", "type": "string", "minLength": 1 },
@@ -26,7 +26,29 @@
         "source": { "description": "Source id.", "$ref": "common.schema.json#/$defs/sourceId" },
         "page": { "description": "Page in a PDF source.", "$ref": "common.schema.json#/$defs/page" },
         "section": { "description": "Heading on a web page source.", "$ref": "common.schema.json#/$defs/section" },
-        "ref": { "description": "Path in a dataset source.", "$ref": "common.schema.json#/$defs/ref" }
+        "ref": { "description": "Path in a dataset source.", "$ref": "common.schema.json#/$defs/ref" },
+        "edges": {
+          "description": "Where the header runs on the board, in pin order. Several runs when it wraps around a module.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["edge", "pins", "first", "source"],
+            "properties": {
+              "edge": { "description": "Board edge, or inside for a header away from the edges.", "enum": ["left", "right", "top", "bottom", "inside"] },
+              "run": { "description": "Only for inside: the direction the pins run.", "enum": ["vertical", "horizontal"] },
+              "pins": { "description": "Pin positions along this run.", "type": "integer", "minimum": 1 },
+              "first": { "description": "Which end of the run its first position is at.", "enum": ["top", "bottom", "left", "right"] },
+              "row1": { "description": "Only for 2-row headers: the side row 1 lies on.", "enum": ["top", "bottom", "left", "right"] },
+              "order": { "description": "Sorts runs that share an edge (top to bottom, left to right).", "type": "integer", "minimum": 1 },
+              "source": { "description": "Source id.", "$ref": "common.schema.json#/$defs/sourceId" },
+              "page": { "description": "Page in a PDF source.", "$ref": "common.schema.json#/$defs/page" },
+              "section": { "description": "Heading on a web page source.", "$ref": "common.schema.json#/$defs/section" },
+              "ref": { "description": "Path in a dataset source.", "$ref": "common.schema.json#/$defs/ref" }
+            }
+          }
+        }
       }
     },
     "pin": {

@@ -1,6 +1,7 @@
 package dev.partlore.tools.content.load
 
 import dev.partlore.tools.content.model.Header
+import dev.partlore.tools.content.model.HeaderRun
 import dev.partlore.tools.content.model.Pin
 import dev.partlore.tools.content.model.PinFile
 import dev.partlore.tools.content.model.PinFunction
@@ -21,6 +22,18 @@ private fun mapHeader(node: JsonNode, file: String): Header = Header(
     rows = node.int("rows"),
     pinsPerRow = node.int("pins_per_row"),
     pitchMm = node.get("pitch_mm").doubleValue(),
+    cite = mapCite(node, file),
+    runs = node.items("edges").map { mapRun(it, file) },
+    pos = node.pos(file),
+)
+
+private fun mapRun(node: JsonNode, file: String): HeaderRun = HeaderRun(
+    edge = node.text("edge"),
+    run = node.textOrNull("run"),
+    pins = node.int("pins"),
+    first = node.text("first"),
+    row1 = node.textOrNull("row1"),
+    order = node.intOrNull("order"),
     cite = mapCite(node, file),
     pos = node.pos(file),
 )

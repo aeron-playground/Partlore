@@ -6,6 +6,7 @@ import dev.partlore.tools.content.diag.Severity
 import dev.partlore.tools.content.load.ContentLoader
 import dev.partlore.tools.content.model.Content
 import dev.partlore.tools.content.rules.CitationRules
+import dev.partlore.tools.content.rules.HeaderRunRules
 import dev.partlore.tools.content.rules.LicenceRules
 import dev.partlore.tools.content.rules.PartLinkRules
 import dev.partlore.tools.content.rules.PinLayoutRules
@@ -30,6 +31,7 @@ class Validator(private val contentDir: File, private val today: LocalDate = lat
         CitationRules.check(content, diagnostics)
         PartLinkRules.check(content, diagnostics)
         PinLayoutRules.check(content, diagnostics)
+        HeaderRunRules.check(content, diagnostics)
         SafetyRules.check(content, diagnostics)
         LicenceRules.check(content, diagnostics)
         StatusRules(today).check(content, mode, diagnostics)

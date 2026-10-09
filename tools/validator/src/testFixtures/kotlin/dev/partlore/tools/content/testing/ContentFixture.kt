@@ -144,6 +144,8 @@ class ContentFixture(val root: File) {
                 pitch_mm: 2.54
                 source: s1
                 page: 5
+                edges:
+                  - { edge: left, pins: __COUNT__, first: top, source: s1, page: 5 }
             pins:
               - id: gpio1
                 header: j1
