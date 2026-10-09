@@ -191,4 +191,13 @@ class ContentComponentsTest {
         compose.setContent { PartloreTheme { PlSheet(onDismiss = {}) { Text("Inside the sheet") } } }
         compose.onNode(hasScrollAction() and hasAnyDescendant(hasText("Inside the sheet"))).assertExists()
     }
+
+    // Colour and an icon alone don't say "danger" to everyone, and TalkBack read only the title and text.
+    @Test
+    fun theDangerBannerSaysDanger() {
+        compose.setContent {
+            PartloreTheme { PlDangerBanner("Power the board from one source only", "Never two at once.") }
+        }
+        compose.onNodeWithText("Danger").assertExists()
+    }
 }
