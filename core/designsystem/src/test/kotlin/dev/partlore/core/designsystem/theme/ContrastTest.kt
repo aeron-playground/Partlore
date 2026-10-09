@@ -20,6 +20,20 @@ class ContrastTest {
     @Test
     fun benchColorsMeetTheirTargets() = assertScheme("bench", BenchColors)
 
+    @Test
+    fun redLightColorsMeetTheirTargets() = assertScheme("red light", RedLightColors)
+
+    @Test
+    fun pinGlyphsAreReadableOnEveryPinColour() {
+        listOf("light" to LightColors, "dark" to DarkColors, "bench" to BenchColors, "red light" to RedLightColors)
+            .forEach { (name, c) ->
+                PinKind.entries.forEach { kind ->
+                    val pin = c.pins.of(kind)
+                    assertPair("$name $kind ink", pin.ink, pin.fill, AA)
+                }
+            }
+    }
+
     private fun assertScheme(name: String, c: PartloreColors) {
         val backgrounds = listOf(
             "bg" to c.bg,

@@ -17,4 +17,20 @@
     <string name="pl_severity_info">Good to know</string>
     <string name="pl_show_source">Show source</string>
     <string name="pl_copy_value">Copy value</string>
+    <string name="pl_pin_power">Power</string>
+    <string name="pl_pin_ground">Ground</string>
+    <string name="pl_pin_i2c">I²C</string>
+    <string name="pl_pin_spi">SPI</string>
+    <string name="pl_pin_uart">UART</string>
+    <string name="pl_pin_adc">ADC</string>
+    <string name="pl_pin_pwm">PWM</string>
+    <string name="pl_pin_touch">Touch</string>
+    <string name="pl_pin_do_not_use">Do not use</string>
+    <string name="pl_pin_gpio">GPIO</string>
+    <string name="pl_pin_strapping">Strapping pin</string>
+    <string name="pl_pin_caution">Caution</string>
+    <string name="pl_pin_input_only">Input only</string>
+    <string name="pl_pin_glyph_input">IN</string>
+    <string name="pl_pin_glyph_uart">TX</string>
+    <string name="pl_pin_glyph_touch">T</string>
 </resources>
