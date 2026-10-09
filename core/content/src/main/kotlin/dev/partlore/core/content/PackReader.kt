@@ -158,7 +158,11 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
 
         private fun describe(problem: ContentProblem?, file: File, version: Int?): String = when (problem) {
             ContentProblem.Missing -> "No content pack at ${file.path}"
-            ContentProblem.TooNew -> "Pack format $version is newer than this app's ${PackFormat.SCHEMA_VERSION}"
+
+            ContentProblem.TooNew ->
+                "The content pack at ${file.path} has format $version, " +
+                    "newer than this app's ${PackFormat.SCHEMA_VERSION}"
+
             else -> "The content pack at ${file.path} can't be read (format ${version ?: "unknown"})"
         }
     }
