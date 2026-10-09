@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import dev.partlore.core.content.ContentLinks
 import dev.partlore.core.designsystem.components.PlButton
 import dev.partlore.core.designsystem.components.PlCard
 import dev.partlore.core.designsystem.components.PlStatusBadge
@@ -34,10 +35,10 @@ internal fun SourcesBlock(page: PartPage, actions: PartActions, modifier: Modifi
         }
         PlButton(
             stringResource(R.string.part_report_problem),
-            onClick = { openLink(GithubLinks.reportProblem(page.id, page.packVersion)) },
+            onClick = { openLink(ContentLinks.reportProblem(page.id, page.packVersion)) },
         )
         PlTextButton(stringResource(R.string.part_edit_on_github), onClick = {
-            openLink(GithubLinks.editOnGithub(page.id))
+            openLink(ContentLinks.editOnGithub(page.id))
         })
         Text(
             stringResource(R.string.part_pack_version, page.packVersion),

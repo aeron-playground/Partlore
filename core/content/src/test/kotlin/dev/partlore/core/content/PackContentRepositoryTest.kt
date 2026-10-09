@@ -32,6 +32,19 @@ class PackContentRepositoryTest {
     }
 
     @Test
+    fun aPinoutComesThroughTheRepository() = runTest {
+        val pack = buildPack(tmp) { addBoard() }
+        val repo =
+            PackContentRepository({
+                InstallResult.Ready(pack, replaced = false)
+            }, StandardTestDispatcher(testScheduler))
+        val result = repo.pinout(BOARD)
+        assertTrue(result is ContentResult.Ok)
+        assertEquals(3, (result as ContentResult.Ok).value.pins.size)
+        assertEquals(ContentResult.NotFound, repo.pinout("testmaker/nothing"))
+    }
+
+    @Test
     fun anInstallFailureBecomesAFailedResult() = runTest {
         val repo =
             PackContentRepository(

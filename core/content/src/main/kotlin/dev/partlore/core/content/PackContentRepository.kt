@@ -5,6 +5,7 @@ import dev.partlore.core.model.ContentProblem
 import dev.partlore.core.model.ContentResult
 import dev.partlore.core.model.LibraryHome
 import dev.partlore.core.model.PartPage
+import dev.partlore.core.model.Pinout
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,6 +28,8 @@ class PackContentRepository(
     override suspend fun category(id: String): ContentResult<CategoryPage> = read { it.category(id) }
 
     override suspend fun part(id: String): ContentResult<PartPage> = read { it.part(id) }
+
+    override suspend fun pinout(partId: String): ContentResult<Pinout> = read { it.pinout(partId) }
 
     private suspend fun <T : Any> read(query: (PackReader) -> T?): ContentResult<T> = withContext(dispatcher) {
         val first = readOnce(query, force = false)
@@ -64,8 +67,6 @@ class PackContentRepository(
         return result
     }
 
-    private fun ContentResult<*>.isDamaged() = this is ContentResult.Failed && problem == ContentProblem.Damaged
-
     private fun open(force: Boolean): ContentResult<PackReader> = when (val installed = installSafely(force)) {
         is InstallResult.Ready -> PackReader.open(installed.file)
         is InstallResult.KeptPrevious -> PackReader.open(installed.file)
@@ -81,3 +82,5 @@ class PackContentRepository(
         InstallResult.Failed(ContentProblem.Damaged, "The content pack can't be installed: ${e.message}")
     }
 }
+
+private fun ContentResult<*>.isDamaged() = this is ContentResult.Failed && problem == ContentProblem.Damaged
