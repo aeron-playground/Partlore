@@ -41,6 +41,7 @@ class SpeedTest {
                     "library" to median { reader.library() },
                     "category" to median { reader.category("cat-07") },
                     "part" to median { reader.part("scale/board-2500") },
+                    "pinout" to median { reader.pinout("scale/board-2500") },
                 )
             println("speed: " + timings.entries.joinToString { "%s %.2f ms".format(it.key, it.value) })
             timings.forEach { (name, ms) -> assertTrue("$name took $ms ms", ms < LIMIT_MS) }

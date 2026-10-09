@@ -158,6 +158,7 @@ data class PartPage(
     val pinsStatus: FileStatus?,
     val gotchasStatus: FileStatus?,
     val packVersion: String,
+    val pinout: Pinout? = null,
 ) {
     val dangerCount: Int get() = gotchas.count { it.severity == Severity.Danger }
 }
