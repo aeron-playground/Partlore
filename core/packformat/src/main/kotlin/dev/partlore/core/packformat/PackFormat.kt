@@ -5,7 +5,7 @@ package dev.partlore.core.packformat
  * Any change to [ddl] raises [SCHEMA_VERSION]. Citations are always source_id, page, section, ref.
  */
 object PackFormat {
-    const val SCHEMA_VERSION: Int = 1
+    const val SCHEMA_VERSION: Int = 2
     const val MANIFEST_FILE: String = "manifest.json"
     const val CONTENT_LICENSE: String = "CC-BY-SA-4.0"
 
@@ -75,6 +75,13 @@ object PackFormat {
                 part_id TEXT NOT NULL, id TEXT NOT NULL, label TEXT NOT NULL, type TEXT NOT NULL,
                 rows INTEGER NOT NULL, pins_per_row INTEGER NOT NULL, pitch_mm REAL NOT NULL,
                 source_id TEXT NOT NULL, page INTEGER, section TEXT, ref TEXT, PRIMARY KEY (part_id, id)
+            ) WITHOUT ROWID
+            """.trimIndent(),
+            """
+            CREATE TABLE header_edge (
+                part_id TEXT NOT NULL, header_id TEXT NOT NULL, seq INTEGER NOT NULL, edge TEXT NOT NULL,
+                run TEXT, pins INTEGER NOT NULL, first TEXT NOT NULL, row1 TEXT, ord INTEGER,
+                source_id TEXT NOT NULL, page INTEGER, section TEXT, ref TEXT, PRIMARY KEY (part_id, header_id, seq)
             ) WITHOUT ROWID
             """.trimIndent(),
             """
