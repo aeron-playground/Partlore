@@ -13,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.partlore.core.designsystem.components.PlChip
@@ -21,6 +20,7 @@ import dev.partlore.core.designsystem.components.PlEmptyState
 import dev.partlore.core.designsystem.components.PlErrorState
 import dev.partlore.core.designsystem.components.PlPartCard
 import dev.partlore.core.designsystem.components.PlTopBar
+import dev.partlore.core.designsystem.components.rememberLinkOpener
 import dev.partlore.core.designsystem.theme.PartloreSprings
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.ContentResult
@@ -129,7 +129,7 @@ private fun ChipRow(modifier: Modifier = Modifier, content: @Composable () -> Un
 
 @Composable
 private fun NoParts(filtered: Boolean, onAction: (CategoryAction) -> Unit, modifier: Modifier = Modifier) {
-    val uri = LocalUriHandler.current
+    val openLink = rememberLinkOpener()
     if (filtered) {
         PlEmptyState(
             message = stringResource(R.string.category_no_match),
@@ -142,7 +142,7 @@ private fun NoParts(filtered: Boolean, onAction: (CategoryAction) -> Unit, modif
             message = stringResource(R.string.category_empty),
             modifier = modifier,
             actionLabel = stringResource(R.string.category_contribute),
-            onAction = { uri.openUri(HOW_TO_ADD_URL) },
+            onAction = { openLink(HOW_TO_ADD_URL) },
         )
     }
 }

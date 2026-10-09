@@ -11,6 +11,7 @@
     <string name="pl_content_too_new">This content needs a newer version of the app.</string>
     <string name="pl_content_error_help">Reinstalling the app usually fixes this. If you report it, include the details.</string>
     <string name="pl_copy_details">Copy details</string>
+    <string name="pl_no_browser">No app on this phone can open links. The link was copied.</string>
     <string name="pl_severity_danger">Danger</string>
     <string name="pl_severity_caution">Caution</string>
     <string name="pl_severity_info">Good to know</string>
