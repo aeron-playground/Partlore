@@ -38,6 +38,15 @@ class OnboardingScreenTest {
     }
 
     @Test
+    fun skipKeepsTheInterestsAlreadyPicked() {
+        val finished = mutableListOf<Set<BuildInterest>>()
+        compose.setContent { PartloreTheme { OnboardingScreen(onFinish = { finished += it }, initialPage = 3) } }
+        compose.onNodeWithText("ESP32").performClick()
+        compose.onNodeWithText("Skip").performClick()
+        assertEquals(listOf(setOf(BuildInterest.Esp32)), finished)
+    }
+
+    @Test
     fun startSavesTheChosenInterests() {
         val finished = mutableListOf<Set<BuildInterest>>()
         compose.setContent { PartloreTheme { OnboardingScreen(onFinish = { finished += it }, initialPage = 3) } }
