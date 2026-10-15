@@ -47,7 +47,7 @@ jobs:
           ./gradlew test verifyRoborazziDebug verifyRoborazziPlayDebug
           validateContent packContent :tools:packer:scaleTest :core:content:speedTest
       - if: failure()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: screenshot-diffs
           path: "**/build/outputs/roborazzi/**"
@@ -65,7 +65,7 @@ jobs:
       - run: ./gradlew assemblePlayDebug assembleFossDebug assembleFossRelease
       # A pack with drafts included, and a checklist per part, for reviewing content pull requests.
       - run: ./gradlew :tools:packer:packContent -Ppreview :tools:validator:contentChecklist
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: content-preview
           path: |
