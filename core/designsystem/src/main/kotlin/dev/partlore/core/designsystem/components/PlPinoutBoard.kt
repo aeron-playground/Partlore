@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.MultiContentMeasurePolicy
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
@@ -62,21 +63,8 @@ fun PlPinoutBoard(
     zoom: PlZoomState? = null,
     onPinClick: ((String) -> Unit)? = null,
 ) {
-    val scope = rememberCoroutineScope()
-    val motion = PartloreTheme.motion
     val placed = board.pins.filter { it.pinId in pins }
-    val click: ((String) -> Unit)? =
-        onPinClick?.let { pick ->
-            { id: String ->
-                if (zoom == null ||
-                    zoom.tapsPick
-                ) {
-                    pick(id)
-                } else {
-                    scope.launch { zoom.zoomTo(1f, motion.spring(PartloreSprings.glide)) }
-                }
-            }
-        }
+    val click = pinTap(onPinClick, zoom)
     val cell = cellSize(large)
     Layout(
         contents =
@@ -85,14 +73,8 @@ fun PlPinoutBoard(
             {
                 placed.forEach { p ->
                     key(p.pinId) {
-                        PinCell(
-                            pins.getValue(p.pinId),
-                            p.pinId in dimmed,
-                            p.pinId == selected,
-                            large,
-                            click,
-                            Modifier.glide(p, cell),
-                        )
+                        val pin = pins.getValue(p.pinId)
+                        PinCell(pin, p.pinId in dimmed, p.pinId == selected, large, click, Modifier.glide(p, cell))
                     }
                 }
             },
@@ -105,7 +87,28 @@ fun PlPinoutBoard(
             },
         ),
         modifier = if (zoom != null) modifier.zoomable(zoom) else modifier,
-    ) { (outline, cells, labels), _ ->
+        measurePolicy = boardMeasurePolicy(board, placed, cell),
+    )
+}
+
+/** Picks the pin; below 1× the pins are smaller than a finger, so a tap zooms to 1× instead. */
+@Composable
+private fun pinTap(onPinClick: ((String) -> Unit)?, zoom: PlZoomState?): ((String) -> Unit)? {
+    val scope = rememberCoroutineScope()
+    val motion = PartloreTheme.motion
+    if (onPinClick == null) return null
+    return { id ->
+        if (zoom == null || zoom.tapsPick) {
+            onPinClick(id)
+        } else {
+            scope.launch { zoom.zoomTo(1f, motion.spring(PartloreSprings.glide)) }
+        }
+    }
+}
+
+// The outline runs through the outer pin centres; each side gets a margin as wide as its widest label.
+private fun boardMeasurePolicy(board: PlacedBoard, placed: List<PlacedPin>, cell: Int) =
+    MultiContentMeasurePolicy { (outline, cells, labels), _ ->
         val cellPlaceables = cells.map { it.measure(Constraints.fixed(cell, cell)) }
         val labelPlaceables = labels.map { it.measure(Constraints()) }
         val m = Margins.of(placed, labelPlaceables)
@@ -120,7 +123,6 @@ fun PlPinoutBoard(
             }
         }
     }
-}
 
 /**
  * When a pin's cell changes (rotate), it starts where it was and springs to its new place; reduced motion jumps.
