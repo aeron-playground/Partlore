@@ -29,4 +29,21 @@ class PlZoomStateTest {
         assertEquals(PartloreLayout.PIN_MAX_ZOOM, zoom.scale)
         assertEquals(Offset(100f - 100f * PartloreLayout.PIN_MAX_ZOOM, 0f), zoom.offset)
     }
+
+    // The viewer lays the board out top-centred; a board wider than the screen opens whole.
+    @Test
+    fun aWideBoardFitsTheWidthAndStaysCentred() {
+        val zoom = PlZoomState()
+        zoom.fitWidth(boardWidth = 800, areaWidth = 400)
+        assertEquals(0.5f, zoom.scale)
+        assertEquals(Offset(200f, 0f), zoom.offset)
+    }
+
+    @Test
+    fun aBoardThatFitsStaysAtNormalSize() {
+        val zoom = PlZoomState(initialScale = 2f)
+        zoom.fitWidth(boardWidth = 300, areaWidth = 400)
+        assertEquals(1f, zoom.scale)
+        assertEquals(Offset.Zero, zoom.offset)
+    }
 }

@@ -48,6 +48,17 @@ class PlZoomState(initialScale: Float = 1f) {
         offset += pan
     }
 
+    /**
+     * For a board laid out top-centred in an area [areaWidth] wide: a wider board is shown whole (down to the
+     * smallest zoom; a tap then zooms to 1× around the pin), a board that fits is shown at 1×.
+     */
+    fun fitWidth(boardWidth: Int, areaWidth: Int) {
+        val fit = (areaWidth.toFloat() / boardWidth).coerceIn(PartloreLayout.PIN_MIN_ZOOM, 1f)
+        scale = fit
+        // Scaled from its top-left corner, it moves right by half of what it lost, so it stays centred.
+        offset = Offset(boardWidth * (1 - fit) / 2, 0f)
+    }
+
     internal suspend fun zoomTo(target: Float, around: Offset, spec: AnimationSpec<Float>) {
         animate(scale, target, animationSpec = spec) { value, _ -> zoomAround(around, value) }
     }
