@@ -1,10 +1,13 @@
 package dev.partlore.core.designsystem.catalog
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -114,7 +117,10 @@ fun PinoutCatalog(modifier: Modifier = Modifier) {
     val board = PinoutLayout.place(samplePinout, Rotation.R0)
     CatalogSection("Pinout", modifier) {
         Column(verticalArrangement = Arrangement.spacedBy(PartloreTheme.spacing.space16)) {
-            PlPinoutBoard(board, pins, selected = "boot", dimmed = setOf("clk"), onPinClick = {})
+            // Rows grow with the text size; at 200 % the board is wider than a phone and starts at its left edge.
+            Box(Modifier.horizontalScroll(rememberScrollState())) {
+                PlPinoutBoard(board, pins, selected = "boot", dimmed = setOf("clk"), onPinClick = {})
+            }
             PlPinoutPreview(board, pins, Modifier.fillMaxWidth().height(PartloreLayout.pinoutPreviewHeight))
             Column {
                 PlPinRow(pins.getValue("sda"), detail = "I²C SDA", onClick = {})

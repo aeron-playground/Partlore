@@ -64,7 +64,7 @@ fun PlPinDot(
         glyphText(kind)?.let { Text(it, style = PartloreTheme.typography.label, color = pin.ink, maxLines = 1) }
         if (strapping) {
             val mark = colors.pins.strapping
-            Canvas(Modifier.align(Alignment.TopStart).size(PartloreLayout.pinBadge)) {
+            Canvas(Modifier.align(Alignment.TopStart).size(PartloreLayout.pinBadge * growth())) {
                 drawWarningMark(mark.fill, mark.ink)
             }
         }
@@ -107,8 +107,12 @@ private fun DrawScope.hatch(ink: Color, r: Float, width: Float) {
 @Composable
 private fun dotSize(large: Boolean): Dp {
     val base = if (large) PartloreLayout.pinDotLarge else PartloreLayout.pinDot
-    return base * LocalDensity.current.fontScale.coerceIn(1f, MAX_GROWTH)
+    return base * growth()
 }
+
+// The dot and its drawn marks grow with the text size, up to twice as big.
+@Composable
+private fun growth(): Float = LocalDensity.current.fontScale.coerceIn(1f, MAX_GROWTH)
 
 @Composable
 private fun glyphText(kind: PinKind): String? = when (kind) {

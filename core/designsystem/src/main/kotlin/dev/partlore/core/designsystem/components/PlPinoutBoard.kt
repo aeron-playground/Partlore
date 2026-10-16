@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.isSpecified
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.MultiContentMeasurePolicy
@@ -91,17 +93,20 @@ fun PlPinoutBoard(
     )
 }
 
-/** Picks the pin; below 1× the pins are smaller than a finger, so a tap zooms to 1× instead. */
+/** Picks the pin; below 1× the pins are smaller than a finger, so a tap zooms to 1× around it instead. */
 @Composable
 private fun pinTap(onPinClick: ((String) -> Unit)?, zoom: PlZoomState?): ((String) -> Unit)? {
     val scope = rememberCoroutineScope()
     val motion = PartloreTheme.motion
     if (onPinClick == null) return null
     return { id ->
-        if (zoom == null || zoom.tapsPick) {
+        val press = zoom?.press ?: Offset.Unspecified
+        // TalkBack sends no finger position, so its users pick the pin at any zoom.
+        if (zoom == null || zoom.tapsPick || !press.isSpecified) {
             onPinClick(id)
         } else {
-            scope.launch { zoom.zoomTo(1f, motion.spring(PartloreSprings.glide)) }
+            zoom.press = Offset.Unspecified
+            scope.launch { zoom.zoomTo(1f, press, motion.spring(PartloreSprings.glide)) }
         }
     }
 }
@@ -264,20 +269,3 @@ private fun Modifier.readUpward(): Modifier = this
         val p = measurable.measure(constraints)
         layout(p.height, p.width) { p.place(-(p.width - p.height) / 2, (p.width - p.height) / 2) }
     }.rotate(READ_UPWARD)
-
-/** The whole board scaled down to fit, for the part page. Not interactive. */
-@Composable
-fun PlPinoutPreview(board: PlacedBoard, pins: Map<String, PlBoardPin>, modifier: Modifier = Modifier) {
-    Layout(content = { PlPinoutBoard(board, pins) }, modifier = modifier) { measurables, constraints ->
-        val p = measurables.single().measure(Constraints())
-        val width = if (constraints.hasBoundedWidth) constraints.maxWidth else p.width
-        val height = if (constraints.hasBoundedHeight) constraints.maxHeight else p.height
-        val fit = minOf(1f, width / p.width.toFloat(), height / p.height.toFloat())
-        layout(width, height) {
-            p.placeWithLayer((width - p.width) / 2, (height - p.height) / 2) {
-                scaleX = fit
-                scaleY = fit
-            }
-        }
-    }
-}

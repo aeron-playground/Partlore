@@ -1,6 +1,8 @@
 package dev.partlore.core.designsystem.components
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
@@ -8,7 +10,11 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.pinch
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.designsystem.theme.PinKind
 import dev.partlore.core.model.BoardEdge
@@ -26,12 +32,19 @@ import dev.partlore.core.model.RunAxis
 import dev.partlore.core.model.Side
 import dev.partlore.core.testing.registerComponentActivity
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+
+private const val PINCH_START = 20f
+private const val PINCH_END = 80f
+
+// Touch slop takes a few pixels before a pinch starts; the point between the fingers may drift by that much.
+private const val PINCH_TOLERANCE = 3f
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "w411dp-h891dp-xhdpi")
@@ -99,6 +112,48 @@ class PinoutBoardTest {
         compose.waitForIdle()
         assertEquals(emptyList<String>(), picked)
         assertEquals(1f, zoom.scale)
+    }
+
+    // The design: below 1× a tap zooms to 1× around that spot, so the tapped pin stays under the finger.
+    @Test
+    fun aTapBelowNormalZoomKeepsThePinUnderTheFinger() {
+        val zoom = PlZoomState(initialScale = 0.5f)
+        compose.setContent { PartloreTheme { PlPinoutBoard(board, pins, zoom = zoom, onPinClick = {}) } }
+        val gnd = compose.onNodeWithContentDescription("GND. Ground")
+        val before = gnd.fetchSemanticsNode().boundsInRoot.center
+        gnd.performClick()
+        compose.waitForIdle()
+        assertNear(before, gnd.fetchSemanticsNode().boundsInRoot.center)
+    }
+
+    @Test
+    fun aPinchZoomsAroundTheFingers() {
+        val zoom = PlZoomState()
+        compose.setContent { PartloreTheme { PlPinoutBoard(board, pins, zoom = zoom, onPinClick = {}) } }
+        val gnd = compose.onNodeWithContentDescription("GND. Ground")
+        val c = gnd.fetchSemanticsNode().boundsInRoot.center
+        val near = Offset(PINCH_START, 0f)
+        val far = Offset(PINCH_END, 0f)
+        compose.onRoot().performTouchInput { pinch(c - near, c - far, c + near, c + far) }
+        compose.waitForIdle()
+        assertTrue("zoomed in: ${zoom.scale}", zoom.scale > 1f)
+        assertNear(c, gnd.fetchSemanticsNode().boundsInRoot.center, PINCH_TOLERANCE)
+    }
+
+    // TalkBack sends a click without a finger position; a TalkBack user picks the pin at any zoom.
+    @Test
+    fun aTalkBackClickBelowNormalZoomPicks() {
+        val picked = mutableListOf<String>()
+        val zoom = PlZoomState(initialScale = 0.5f)
+        compose.setContent { PartloreTheme { PlPinoutBoard(board, pins, zoom = zoom, onPinClick = { picked += it }) } }
+        compose.onNodeWithContentDescription("GND. Ground").performSemanticsAction(SemanticsActions.OnClick)
+        assertEquals(listOf("gnd"), picked)
+        assertEquals(0.5f, zoom.scale)
+    }
+
+    private fun assertNear(expected: Offset, actual: Offset, tolerance: Float = 1f) {
+        assertEquals("x", expected.x, actual.x, tolerance)
+        assertEquals("y", expected.y, actual.y, tolerance)
     }
 
     @Test
