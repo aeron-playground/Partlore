@@ -2,7 +2,7 @@
 status:
   level: checked
   checked_by: [aeron-gh]
-  checked_on: 2026-10-05
+  checked_on: 2026-10-16
   against: [s1, s2, s3, s4, s5]
 headers:
   - id: power
