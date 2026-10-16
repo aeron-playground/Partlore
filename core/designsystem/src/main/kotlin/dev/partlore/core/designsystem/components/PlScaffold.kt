@@ -19,7 +19,7 @@ fun PlScaffold(
     showNavigation: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    // A full-screen page (the pinout viewer) hides the bar or rail; otherwise the same choice as the scaffold's default.
+    // A full-screen page (the pinout viewer) hides the bar or rail; otherwise the scaffold's own choice.
     val layout = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfoV2())
     NavigationSuiteScaffold(
         navigationSuiteItems = {
