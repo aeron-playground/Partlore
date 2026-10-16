@@ -60,13 +60,33 @@ class PartScreenTest {
         }
         compose.setContent {
             CompositionLocalProvider(LocalUriHandler provides uri) {
-                PartloreTheme { PartScreen(state, onBack = {}, onOpenPart = { opened += it }) }
+                PartloreTheme {
+                    PartScreen(state, onBack = {}, onOpenPart = { opened += it }, onOpenPinout = {
+                        opened +=
+                            "pinout:$it"
+                    })
+                }
             }
         }
     }
 
     private fun scrollTo(matcher: SemanticsMatcher) =
         compose.onNode(hasScrollToIndexAction()).performScrollToNode(matcher)
+
+    @Test
+    fun aPartWithPinsShowsAPreviewThatOpensTheViewer() {
+        show()
+        scrollTo(hasText("Open pinout"))
+        compose.onNodeWithText("8 pins · 2 headers").assertExists()
+        compose.onNodeWithText("Open pinout").performClick()
+        assertEquals(listOf("pinout:example/devboard-v1"), opened)
+    }
+
+    @Test
+    fun aPartWithoutPinsHasNoPinoutSection() {
+        show(ContentResult.Ok(SampleContent.devBoard.copy(pinout = null)))
+        compose.onNodeWithText("Open pinout").assertDoesNotExist()
+    }
 
     @Test
     fun theHeroLeadsWithTheLeastCheckedStatus() {

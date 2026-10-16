@@ -3,23 +3,31 @@ package dev.partlore.feature.part
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import dev.partlore.core.designsystem.components.PlButton
 import dev.partlore.core.designsystem.components.PlCard
 import dev.partlore.core.designsystem.components.PlGotchaCard
+import dev.partlore.core.designsystem.components.PlPinoutPreview
 import dev.partlore.core.designsystem.components.PlSpecRow
 import dev.partlore.core.designsystem.components.PlSpecTable
+import dev.partlore.core.designsystem.components.rememberBoardPins
 import dev.partlore.core.designsystem.theme.PartloreLayout
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.PartPage
 import dev.partlore.core.model.PartRef
+import dev.partlore.core.model.PinoutLayout
 import dev.partlore.core.model.SourceItem
 import dev.partlore.core.model.SpecRow
+import dev.partlore.core.model.labelMode
 
 @Composable
 internal fun PartSectionBlock(
@@ -37,6 +45,7 @@ internal fun PartSectionBlock(
         )
         when (section) {
             PartSection.Specs -> SpecsBlock(page, actions)
+            PartSection.Pinout -> PinoutBlock(page, actions)
             PartSection.I2c -> I2cBlock(page, actions)
             PartSection.Gotchas -> GotchasBlock(page, actions)
             PartSection.Related -> RelatedBlock(page, actions)
@@ -132,5 +141,26 @@ private fun RelatedGroup(title: String, parts: List<PartRef>, actions: PartActio
                 Text(ref.name, style = PartloreTheme.typography.title, color = colors.textPrimary)
             }
         }
+    }
+}
+
+/** A small, still picture of the board with its size; the button opens the viewer. */
+@Composable
+private fun PinoutBlock(page: PartPage, actions: PartActions, modifier: Modifier = Modifier) {
+    val pinout = page.pinout ?: return
+    val board = remember(pinout) { PinoutLayout.place(pinout, PinoutLayout.defaultRotation(pinout)) }
+    val pins = rememberBoardPins(pinout, pinout.labelMode(null))
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(PartloreTheme.spacing.space12)) {
+        PlPinoutPreview(board, pins, Modifier.fillMaxWidth().height(PartloreLayout.pinoutPreviewHeight))
+        Text(
+            stringResource(
+                R.string.part_pinout_size,
+                pluralStringResource(R.plurals.part_pin_count, pinout.pins.size, pinout.pins.size),
+                pluralStringResource(R.plurals.part_header_count, pinout.headers.size, pinout.headers.size),
+            ),
+            style = PartloreTheme.typography.caption,
+            color = PartloreTheme.colors.textSecondary,
+        )
+        PlButton(stringResource(R.string.part_open_pinout), onClick = actions.openPinout)
     }
 }

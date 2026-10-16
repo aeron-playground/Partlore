@@ -44,6 +44,7 @@ import org.koin.core.parameter.parametersOf
 /** The sections below the top area, in reading order. */
 internal enum class PartSection(@StringRes val chip: Int, @StringRes val title: Int) {
     Specs(R.string.part_section_specs, R.string.part_key_specs),
+    Pinout(R.string.part_section_pinout, R.string.part_section_pinout),
     I2c(R.string.part_section_i2c, R.string.part_i2c_title),
     Gotchas(R.string.part_section_gotchas, R.string.part_section_gotchas),
     Related(R.string.part_section_related, R.string.part_section_related),
@@ -54,6 +55,7 @@ internal enum class PartSection(@StringRes val chip: Int, @StringRes val title: 
 internal fun PartPage.sections(): List<PartSection> = PartSection.entries.filter { section ->
     when (section) {
         PartSection.Specs -> specs.isNotEmpty() || absoluteMax.isNotEmpty()
+        PartSection.Pinout -> pinout != null
         PartSection.I2c -> i2c.isNotEmpty()
         PartSection.Gotchas -> gotchas.isNotEmpty()
         PartSection.Related -> uses != null || related.isNotEmpty() || usedBy.isNotEmpty()
@@ -68,6 +70,7 @@ internal class PartActions(
     val showStatus: () -> Unit,
     val copy: (String) -> Unit,
     val goTo: (PartSection) -> Unit,
+    val openPinout: () -> Unit,
 )
 
 @Composable
@@ -77,10 +80,11 @@ fun PartRoute(
     onOpenPart: (String) -> Unit,
     modifier: Modifier = Modifier,
     appVersion: String? = null,
+    onOpenPinout: (String) -> Unit = {},
     viewModel: PartViewModel = koinViewModel(parameters = { parametersOf(id) }),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    PartScreen(state, onBack, onOpenPart, modifier, appVersion)
+    PartScreen(state, onBack, onOpenPart, modifier, appVersion, onOpenPinout)
 }
 
 @Composable
@@ -90,10 +94,11 @@ fun PartScreen(
     onOpenPart: (String) -> Unit,
     modifier: Modifier = Modifier,
     appVersion: String? = null,
+    onOpenPinout: (String) -> Unit = {},
 ) {
     Column(modifier.fillMaxSize().background(PartloreTheme.colors.bg)) {
         if (state is ContentResult.Ok) {
-            PartContent(state.value, onBack, onOpenPart)
+            PartContent(state.value, onBack, onOpenPart, onOpenPinout)
         } else {
             PlTopBar(title = "", onBack = onBack)
             when (state) {
@@ -110,6 +115,7 @@ private fun PartContent(
     page: PartPage,
     onBack: () -> Unit,
     onOpenPart: (String) -> Unit,
+    onOpenPinout: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spacing = PartloreTheme.spacing
@@ -118,7 +124,8 @@ private fun PartContent(
     val scrolled by remember { derivedStateOf { list.firstVisibleItemIndex > 0 } }
     val current by remember(sections) { derivedStateOf { currentSection(list, sections.size) } }
     var sheet by remember { mutableStateOf<PartSheet?>(null) }
-    val actions = rememberPartActions(list, sections, onOpenPart, onSheet = { sheet = it })
+    val openPinout = remember(page.id, onOpenPinout) { { onOpenPinout(page.id) } }
+    val actions = rememberPartActions(list, sections, onOpenPart, openPinout, onSheet = { sheet = it })
     Column(modifier) {
         PlTopBar(title = if (scrolled) page.name else "", onBack = onBack)
         SectionChipsBar(scrolled, sections, current, onSelect = actions.goTo)
@@ -147,12 +154,13 @@ private fun rememberPartActions(
     list: LazyListState,
     sections: List<PartSection>,
     onOpenPart: (String) -> Unit,
+    openPinout: () -> Unit,
     onSheet: (PartSheet) -> Unit,
 ): PartActions {
     val scope = rememberCoroutineScope()
     val clipboard = LocalClipboard.current
     val reduced = PartloreTheme.motion.reduced
-    return remember(list, sections, onOpenPart, reduced) {
+    return remember(list, sections, onOpenPart, openPinout, reduced) {
         PartActions(
             openPart = onOpenPart,
             showSource = { onSheet(PartSheet.Source(it)) },
@@ -163,6 +171,7 @@ private fun rememberPartActions(
                 val index = sections.indexOf(section) + 1
                 scope.launch { if (reduced) list.scrollToItem(index) else list.animateScrollToItem(index) }
             },
+            openPinout = openPinout,
         )
     }
 }
