@@ -54,7 +54,7 @@ This file is ignored by git.
 | `core:testing` | Test helpers and fakes |
 | `core:packformat` | The tables of the content pack, shared by the packer and the app |
 | `core:content` | Reads the content pack in the app, and installs the pack bundled in the APK |
-| `feature:*` | One screen or flow each, for example `feature:settings` |
+| `feature:*` | One screen or flow each, for example `feature:settings` or `feature:pinout` (the pinout viewer) |
 | `tools:validator` | Checks the files in `content/` (runs on your computer, not in the app) |
 | `tools:packer` | Builds the content pack from `content/` |
 | `build-logic` | Shared build settings (convention plugins) |
