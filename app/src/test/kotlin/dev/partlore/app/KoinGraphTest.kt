@@ -9,6 +9,7 @@ import dev.partlore.feature.library.CategoryViewModel
 import dev.partlore.feature.library.LibraryHomeViewModel
 import dev.partlore.feature.onboarding.OnboardingViewModel
 import dev.partlore.feature.part.PartViewModel
+import dev.partlore.feature.pinout.PinoutViewModel
 import dev.partlore.feature.settings.SettingsViewModel
 import org.junit.After
 import org.junit.Assert.assertNotNull
@@ -43,6 +44,7 @@ class KoinGraphTest {
         assertNotNull(koin.get<LibraryHomeViewModel>())
         assertNotNull(koin.get<CategoryViewModel> { parametersOf("boards") })
         assertNotNull(koin.get<PartViewModel> { parametersOf("example/devboard-v1") })
+        assertNotNull(koin.get<PinoutViewModel> { parametersOf("example/devboard-v1") })
     }
 
     @Test

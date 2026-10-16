@@ -7,6 +7,7 @@ import dev.partlore.core.userdata.userDataModule
 import dev.partlore.feature.library.libraryModule
 import dev.partlore.feature.onboarding.onboardingModule
 import dev.partlore.feature.part.partModule
+import dev.partlore.feature.pinout.pinoutModule
 import dev.partlore.feature.settings.settingsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
@@ -29,4 +30,13 @@ private val contentModule =
     }
 
 val appModules =
-    listOf(userDataModule, contentModule, settingsModule, onboardingModule, libraryModule, partModule, appModule)
+    listOf(
+        userDataModule,
+        contentModule,
+        settingsModule,
+        onboardingModule,
+        libraryModule,
+        partModule,
+        pinoutModule,
+        appModule,
+    )

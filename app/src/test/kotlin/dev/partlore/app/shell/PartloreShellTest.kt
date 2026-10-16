@@ -69,4 +69,15 @@ class PartloreShellTest {
         compose.onNodeWithText("Go back").performClick()
         compose.onNodeWithText("Category boards").assertExists()
     }
+
+    @Test
+    fun aPartOpensItsPinoutAndBackReturns() {
+        compose.setContent { PartloreTheme { PartloreShell(screens = fakeScreens()) } }
+        compose.onNodeWithText("Open boards").performClick()
+        compose.onNodeWithText("Open the dev board").performClick()
+        compose.onNodeWithText("Open pinout").performClick()
+        compose.onNodeWithText("Pinout example/devboard-v1").assertExists()
+        compose.onNodeWithText("Close pinout").performClick()
+        compose.onNodeWithText("Part example/devboard-v1").assertExists()
+    }
 }

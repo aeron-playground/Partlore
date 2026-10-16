@@ -10,6 +10,7 @@ import dev.partlore.feature.library.CategoryScreen
 import dev.partlore.feature.library.CategoryState
 import dev.partlore.feature.library.LibraryHomeScreen
 import dev.partlore.feature.part.PartScreen
+import dev.partlore.feature.pinout.PinoutScreen
 
 /** Stand-in pages that say which page is open and offer a button to move on. */
 internal fun fakeScreens(settings: @Composable (ShellNav) -> Unit = { Text("Settings page") }) = ShellScreens(
@@ -24,6 +25,13 @@ internal fun fakeScreens(settings: @Composable (ShellNav) -> Unit = { Text("Sett
         Column {
             Text("Part $id")
             PlButton("Go back", onClick = nav.back)
+            PlButton("Open pinout", onClick = { nav.openPinout(id) })
+        }
+    },
+    pinout = { id, nav ->
+        Column {
+            Text("Pinout $id")
+            PlButton("Close pinout", onClick = nav.back)
         }
     },
     settings = settings,
@@ -37,6 +45,9 @@ internal fun sampleScreens() = ShellScreens(
     category = { _, nav ->
         CategoryScreen(ContentResult.Ok(CategoryState(SampleContent.boards)), nav.back, nav.openPart, onAction = {})
     },
-    part = { _, nav -> PartScreen(ContentResult.Ok(SampleContent.devBoard), nav.back, nav.openPart) },
+    part = { _, nav ->
+        PartScreen(ContentResult.Ok(SampleContent.devBoard), nav.back, nav.openPart, onOpenPinout = nav.openPinout)
+    },
+    pinout = { _, nav -> PinoutScreen(ContentResult.NotFound, onBack = nav.back, onAction = {}) },
     settings = {},
 )
