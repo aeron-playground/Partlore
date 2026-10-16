@@ -20,6 +20,7 @@ import dev.partlore.core.model.FileStatus
 import dev.partlore.core.model.PinLabelMode
 import dev.partlore.core.model.PinoutLayout
 import dev.partlore.core.model.Rotation
+import dev.partlore.core.model.Strapping
 import dev.partlore.core.model.VerificationLevel
 import dev.partlore.core.testing.SampleContent
 import dev.partlore.core.testing.registerComponentActivity
@@ -96,6 +97,27 @@ class PinoutScreenTest {
         compose.onNodeWithText("Strapping pin").assertExists()
         val note = "Its level at reset decides how the chip starts (boot-mode). It must be low for a normal start."
         compose.onNodeWithText(note).assertExists()
+    }
+
+    // A newer pack may send a level this app doesn't know: it says the level matters, never a guessed "low".
+    @Test
+    fun anUnknownStrappingLevelIsNotShownAsLow() {
+        val odd = Strapping("boot-mode", "floating", "reset")
+        val base = state(selected = "io2")
+        val pinout = base.pinout.copy(
+            pins = base.pinout.pins.map {
+                if (it.id ==
+                    "io2"
+                ) {
+                    it.copy(strapping = odd)
+                } else {
+                    it
+                }
+            },
+        )
+        show(base.copy(pinout = pinout, selected = pinout.pins.single { it.id == "io2" }))
+        compose.onNodeWithText("Its level at reset decides how the chip starts (boot-mode).").assertExists()
+        compose.onNodeWithText("must be", substring = true).assertDoesNotExist()
     }
 
     @Test

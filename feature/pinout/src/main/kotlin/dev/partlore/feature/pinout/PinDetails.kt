@@ -89,11 +89,18 @@ private fun Functions(pin: PinInfo) {
 
 @Composable
 private fun StrappingNote(strapping: Strapping) {
+    // Only the two levels this app knows get a "must be"; any other value says the level matters, never a guess.
+    val level =
+        when (strapping.mustBe) {
+            "high" -> R.string.pinout_level_high
+            "low" -> R.string.pinout_level_low
+            else -> null
+        }
     val text =
-        strapping.mustBe?.let { level ->
-            val word = stringResource(if (level == "high") R.string.pinout_level_high else R.string.pinout_level_low)
-            stringResource(R.string.pinout_strapping_must_be, word, strapping.at, strapping.role)
-        } ?: stringResource(R.string.pinout_strapping_any, strapping.at, strapping.role)
+        level?.let {
+            stringResource(R.string.pinout_strapping_must_be, stringResource(it), strapping.at, strapping.role)
+        }
+            ?: stringResource(R.string.pinout_strapping_any, strapping.at, strapping.role)
     Section(R.string.pinout_strapping_title) {
         Text(text, style = PartloreTheme.typography.bodyM, color = PartloreTheme.colors.textPrimary)
     }
