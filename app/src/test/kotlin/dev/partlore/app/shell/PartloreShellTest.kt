@@ -80,4 +80,17 @@ class PartloreShellTest {
         compose.onNodeWithText("Close pinout").performClick()
         compose.onNodeWithText("Part example/devboard-v1").assertExists()
     }
+
+    // The viewer gets the whole screen, and red light can't leave a bright tab bar under it.
+    @Test
+    fun thePinoutViewerHidesTheTabs() {
+        compose.setContent { PartloreTheme { PartloreShell(screens = fakeScreens()) } }
+        compose.onNodeWithText("Open boards").performClick()
+        compose.onNodeWithText("Open the dev board").performClick()
+        compose.onNodeWithText("Bench").assertExists()
+        compose.onNodeWithText("Open pinout").performClick()
+        compose.onNodeWithText("Bench").assertDoesNotExist()
+        compose.onNodeWithText("Close pinout").performClick()
+        compose.onNodeWithText("Bench").assertExists()
+    }
 }

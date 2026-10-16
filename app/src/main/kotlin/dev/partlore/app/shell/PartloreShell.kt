@@ -75,6 +75,7 @@ fun PartloreShell(screens: ShellScreens, modifier: Modifier = Modifier, tabs: Ta
             })
         },
         modifier = modifier,
+        showNavigation = tabs.currentStack.lastOrNull() !is PinoutKey,
     ) {
         // NavDisplay handles Back while a tab has pages above its start page; this handles the start page.
         BackHandler(enabled = tabs.current != Tab.Library && tabs.currentStack.size == 1) { tabs.back() }
