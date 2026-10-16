@@ -8,6 +8,7 @@ import dev.partlore.core.model.Rotation
 import dev.partlore.tools.content.ship.Mode
 import dev.partlore.tools.packer.Packer
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -60,5 +61,35 @@ class RealPinoutTest {
         val analog = p.pins.filter { it.headerId == "analog" }.map { board.cellOf(it).first }
         assertEquals(analog.min(), board.cellOf(a0).first)
         assertEquals(38, board.pins.size)
+    }
+
+    // Every run's pin 1, so a flipped `first` or `row1` on any real run fails here.
+    @Test
+    fun wroomPads1And15And38StartTheirRuns() {
+        val p = pinout("espressif/esp32-wroom-32e")
+        val board = PinoutLayout.place(p, Rotation.R0)
+        assertEquals(0 to 1, board.cellOf(p.pins.single { it.index == 1 }))
+        assertEquals(1 to board.rows - 1, board.cellOf(p.pins.single { it.index == 15 }))
+        assertEquals(board.columns - 1 to 1, board.cellOf(p.pins.single { it.index == 38 }))
+    }
+
+    @Test
+    fun unoHeadersStartWhereTheBoardShowsThem() {
+        val p = pinout("arduino/uno-r3")
+        val board = PinoutLayout.place(p, Rotation.R0)
+        fun xs(header: String) = p.pins.filter { it.headerId == header }.map { board.cellOf(it).first }
+        fun pin1(header: String, row: Int = 1) =
+            board.cellOf(p.pins.single { it.headerId == header && it.index == 1 && it.row == row })
+        // IOH starts with D8 at its right end and sits left of IOL on the top edge.
+        assertEquals(xs("digital-high").max() to 0, pin1("digital-high"))
+        assertTrue(xs("digital-high").max() < xs("digital-low").min())
+        // POWER starts with NC at its left end and sits left of AD on the bottom edge.
+        assertEquals(xs("power").min() to board.rows - 1, pin1("power"))
+        assertTrue(xs("power").max() < xs("analog").min())
+        // ICSP: pin 1 (CIPO) at the top of the left line, row 2 beside it on the right.
+        val icsp = p.pins.filter { it.headerId == "icsp" }.map { board.cellOf(it) }
+        val cipo = pin1("icsp")
+        assertEquals(icsp.minOf { it.first } to icsp.minOf { it.second }, cipo)
+        assertEquals(cipo.first + 1 to cipo.second, pin1("icsp", row = 2))
     }
 }
