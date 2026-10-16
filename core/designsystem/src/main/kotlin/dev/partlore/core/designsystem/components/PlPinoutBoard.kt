@@ -33,8 +33,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import dev.partlore.core.designsystem.theme.PartloreLayout
@@ -73,10 +75,12 @@ fun PlPinoutBoard(
         listOf(
             { Outline() },
             {
-                placed.forEach { p ->
+                placed.forEachIndexed { order, p ->
                     key(p.pinId) {
                         val pin = pins.getValue(p.pinId)
-                        PinCell(pin, p.pinId in dimmed, p.pinId == selected, large, click, Modifier.glide(p, cell))
+                        // TalkBack follows `placed`: header by header, along each header from pin 1.
+                        val reading = Modifier.semantics { traversalIndex = order.toFloat() }
+                        PinCell(pin, p.pinId in dimmed, p.pinId == selected, large, click, reading.glide(p, cell))
                     }
                 }
             },
@@ -88,7 +92,7 @@ fun PlPinoutBoard(
                 }
             },
         ),
-        modifier = if (zoom != null) modifier.zoomable(zoom) else modifier,
+        modifier = (if (zoom != null) modifier.zoomable(zoom) else modifier).semantics { isTraversalGroup = true },
         measurePolicy = boardMeasurePolicy(board, placed, cell),
     )
 }

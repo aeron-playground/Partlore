@@ -9,6 +9,7 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
@@ -154,6 +155,40 @@ class PinoutBoardTest {
     private fun assertNear(expected: Offset, actual: Offset, tolerance: Float = 1f) {
         assertEquals("x", expected.x, actual.x, tolerance)
         assertEquals("y", expected.y, actual.y, tolerance)
+    }
+
+    // Focus moves along each header, not row by row across the board.
+    @Test
+    fun talkBackGoesHeaderByHeader() {
+        val right = HeaderRun(BoardEdge.Right, RunAxis.Vertical, 2, Side.Top, null, null, cite)
+        val two =
+            pinout.copy(
+                headers = pinout.headers + PinHeader("j2", "J2", "header", 1, 2, 2.54, listOf(right), cite),
+                pins = pinout.pins + listOf(sda.copy(id = "r1", headerId = "j2"), gnd.copy(id = "r2", headerId = "j2")),
+            )
+        val all = pins + mapOf(
+            "r1" to PlBoardPin("r1", "R1", false, "R1", PinKind.Gpio, false, false, false),
+            "r2" to PlBoardPin("r2", "R2", false, "R2", PinKind.Gpio, false, false, false),
+        )
+        compose.setContent {
+            PartloreTheme { PlPinoutBoard(PinoutLayout.place(two, Rotation.R0), all, onPinClick = {}) }
+        }
+        compose.onNode(SemanticsMatcher.expectValue(SemanticsProperties.IsTraversalGroup, true)).assertExists()
+        val order =
+            listOf("D21. GPIO21. I²C SDA", "GND. Ground", "R1", "R2").map { name ->
+                compose.onNodeWithContentDescription(
+                    name,
+                ).fetchSemanticsNode().config[SemanticsProperties.TraversalIndex]
+            }
+        assertEquals(order.sorted(), order)
+        assertEquals(order.distinct(), order)
+    }
+
+    // On the part page the preview is a picture; its caption and the Open pinout button say what it shows.
+    @Test
+    fun aPreviewIsNotReadPinByPin() {
+        compose.setContent { PartloreTheme { PlPinoutPreview(board, pins) } }
+        compose.onAllNodesWithContentDescription("GND", substring = true).assertCountEquals(0)
     }
 
     @Test
