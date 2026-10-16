@@ -34,6 +34,25 @@ class ContrastTest {
             }
     }
 
+    // Pins are buttons: each dot needs 3:1 against the board and the page, from its fill or from its edge ring.
+    @Test
+    fun everyPinDotStandsOutFromTheBoardAndThePage() {
+        listOf("light" to LightColors, "dark" to DarkColors, "bench" to BenchColors, "red light" to RedLightColors)
+            .forEach { (name, c) ->
+                PinKind.entries.forEach { kind ->
+                    val outline = c.pinEdge(kind) ?: c.pins.of(kind).fill
+                    assertPair("$name $kind on surface", outline, c.surface, NON_TEXT_CONTRAST)
+                    assertPair("$name $kind on bg", outline, c.bg, NON_TEXT_CONTRAST)
+                }
+            }
+    }
+
+    @Test
+    fun onlyFaintDotsGetAnEdge() {
+        assertTrue("light GPIO needs an edge", LightColors.pinEdge(PinKind.Gpio) != null)
+        assertTrue("light I²C stands out by itself", LightColors.pinEdge(PinKind.I2c) == null)
+    }
+
     private fun assertScheme(name: String, c: PartloreColors) {
         val backgrounds = listOf(
             "bg" to c.bg,

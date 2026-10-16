@@ -72,3 +72,16 @@ internal val RedLightPins =
         doNotUse = PinColor(Color(0xFF3A1210), Color(0xFFFF6B5E)),
         gpio = PinColor(Color(0xFF2A0F0C), Color(0xFFFF8A80)),
     )
+
+/** WCAG's minimum for parts of a control, such as a pin dot against the board. */
+internal const val NON_TEXT_CONTRAST = 3f
+
+/**
+ * A pin dot is a button: when its fill fades into the board or the page (plain GPIO is the outline's
+ * colour in light mode), it gets a thin edge in the secondary text colour, which always stands out.
+ */
+internal fun PartloreColors.pinEdge(kind: PinKind): Color? {
+    val fill = pins.of(kind).fill
+    val faint = contrastRatio(fill, surface) < NON_TEXT_CONTRAST || contrastRatio(fill, bg) < NON_TEXT_CONTRAST
+    return if (faint) textSecondary else null
+}

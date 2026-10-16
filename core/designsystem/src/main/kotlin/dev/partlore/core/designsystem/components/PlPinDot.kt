@@ -24,9 +24,11 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Dp
 import dev.partlore.core.designsystem.R
 import dev.partlore.core.designsystem.theme.PartloreLayout
+import dev.partlore.core.designsystem.theme.PartloreStroke
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.designsystem.theme.PinColor
 import dev.partlore.core.designsystem.theme.PinKind
+import dev.partlore.core.designsystem.theme.pinEdge
 
 private const val MAX_GROWTH = 2f
 private const val HATCH_LINES = 4
@@ -47,18 +49,9 @@ fun PlPinDot(
 ) {
     val colors = PartloreTheme.colors
     val pin = colors.pins.of(kind)
-    val look = DotLook(
-        pin,
-        colors.bg,
-        colors.pins.strapping.fill,
-        if (kind ==
-            PinKind.Pwm
-        ) {
-            colors.textPrimary
-        } else {
-            pin.ink
-        },
-    )
+    // PWM is drawn outlined, so its glyph sits on the background, not on the fill.
+    val glyph = if (kind == PinKind.Pwm) colors.textPrimary else pin.ink
+    val look = DotLook(pin, colors.bg, colors.pins.strapping.fill, glyph, colors.pinEdge(kind))
     Box(modifier.size(dotSize(large)).clearAndSetSemantics {}, contentAlignment = Alignment.Center) {
         Canvas(Modifier.matchParentSize()) { drawDot(kind, look, strapping) }
         glyphText(kind)?.let { Text(it, style = PartloreTheme.typography.label, color = pin.ink, maxLines = 1) }
@@ -73,7 +66,7 @@ fun PlPinDot(
     }
 }
 
-private data class DotLook(val pin: PinColor, val bg: Color, val strap: Color, val glyph: Color)
+private data class DotLook(val pin: PinColor, val bg: Color, val strap: Color, val glyph: Color, val edge: Color?)
 
 private fun DrawScope.drawDot(kind: PinKind, look: DotLook, strapping: Boolean) {
     val ring = PartloreLayout.pinRing.toPx()
@@ -84,6 +77,8 @@ private fun DrawScope.drawDot(kind: PinKind, look: DotLook, strapping: Boolean) 
     } else {
         drawCircle(look.pin.fill, r)
     }
+    // A faint fill gets a thin edge, so the dot still stands out from the board.
+    look.edge?.let { drawCircle(it, r, style = Stroke(PartloreStroke.hairline.toPx())) }
     if (kind == PinKind.DoNotUse) hatch(look.pin.ink, r, ring / 2)
     if (strapping) {
         val dash = PartloreLayout.pinDash.toPx()
