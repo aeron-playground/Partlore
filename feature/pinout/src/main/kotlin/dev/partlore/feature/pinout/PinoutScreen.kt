@@ -1,5 +1,6 @@
 package dev.partlore.feature.pinout
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -32,10 +35,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.partlore.core.designsystem.components.PlEmptyState
 import dev.partlore.core.designsystem.components.PlErrorState
+import dev.partlore.core.designsystem.components.PlIcons
 import dev.partlore.core.designsystem.components.PlPinoutBoard
 import dev.partlore.core.designsystem.components.PlSheet
 import dev.partlore.core.designsystem.components.PlStatusBadge
@@ -104,6 +109,8 @@ private fun PinoutBody(state: PinoutState, onAction: (PinoutAction) -> Unit, mod
         if (id != null) haptics.perform(PartloreHaptic.PinTap)
         onAction(PinoutAction.Select(id))
     }
+    // Back closes the open pin first (the phone sheet handles Back itself).
+    BackHandler(enabled = state.selected != null) { onAction(PinoutAction.Select(null)) }
     BoxWithConstraints(modifier.fillMaxSize()) {
         val wide = maxWidth >= PartloreLayout.expandedWidth
         Row(Modifier.fillMaxSize()) {
@@ -114,16 +121,7 @@ private fun PinoutBody(state: PinoutState, onAction: (PinoutAction) -> Unit, mod
                 PinsArea(state, select, Modifier.weight(1f))
                 Filters(state, onAction)
             }
-            if (wide && state.selected != null) {
-                PinDetails(
-                    state,
-                    Modifier
-                        .width(PartloreLayout.pinDetailsWidth)
-                        .fillMaxHeight()
-                        .verticalScroll(rememberScrollState())
-                        .padding(PartloreTheme.spacing.space16),
-                )
-            }
+            if (wide && state.selected != null) SidePanel(state, onClose = { onAction(PinoutAction.Select(null)) })
         }
         if (!wide && state.selected != null) {
             PlSheet(onDismiss = { onAction(PinoutAction.Select(null)) }) { PinDetails(state) }
@@ -135,17 +133,6 @@ private fun PinoutBody(state: PinoutState, onAction: (PinoutAction) -> Unit, mod
 private fun PinsArea(state: PinoutState, select: (String?) -> Unit, modifier: Modifier = Modifier) {
     val pins = rememberBoardPins(state.pinout, state.labelMode)
     val zoom = rememberPlZoomState()
-    var area by remember { mutableIntStateOf(0) }
-    var boardWidth by remember { mutableIntStateOf(0) }
-    var fitted by remember { mutableStateOf(false) }
-    val margin = with(LocalDensity.current) { PartloreTheme.spacing.space16.roundToPx() }
-    // Big boards and 200 % text make the board wider than the screen: it opens whole, and again after a rotate.
-    LaunchedEffect(area, boardWidth) {
-        if (area > 0 && boardWidth > 0) {
-            zoom.fitWidth(boardWidth, area - 2 * margin)
-            fitted = true
-        }
-    }
     Crossfade(
         state.table,
         modifier.fillMaxWidth().clipToBounds(),
@@ -155,24 +142,16 @@ private fun PinsArea(state: PinoutState, select: (String?) -> Unit, modifier: Mo
         if (table) {
             PinTable(state, pins, onPick = select)
         } else {
-            Box(Modifier.fillMaxSize().onSizeChanged { area = it.width }) {
-                PlPinoutBoard(
-                    board = state.board,
-                    pins = pins,
-                    modifier =
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .wrapContentSize(Alignment.TopCenter, unbounded = true)
-                        .onSizeChanged { boardWidth = it.width }
-                        // Hidden for the one frame before it is fitted, so a cut-off board never flashes.
-                        .graphicsLayer { alpha = if (fitted) 1f else 0f },
-                    dimmed = state.dimmed,
-                    selected = state.selected?.id,
-                    large = state.bench,
-                    zoom = zoom,
-                    onPinClick = select,
-                )
-            }
+            PlPinoutBoard(
+                board = state.board,
+                pins = pins,
+                modifier = Modifier.fillMaxSize(),
+                dimmed = state.dimmed,
+                selected = state.selected?.id,
+                large = state.bench,
+                zoom = zoom,
+                onPinClick = select,
+            )
         }
     }
 }
@@ -196,4 +175,29 @@ private fun NoPinout(modifier: Modifier = Modifier) {
         actionLabel = stringResource(R.string.pinout_how_to_add),
         onAction = { openLink(HOW_TO_ADD_URL) },
     )
+}
+
+/** The open pin on wide screens, beside the board, with a close button at the top. */
+@Composable
+private fun SidePanel(state: PinoutState, onClose: () -> Unit, modifier: Modifier = Modifier) {
+    Column(modifier.width(PartloreLayout.pinDetailsWidth).fillMaxHeight()) {
+        IconButton(onClick = onClose, modifier = Modifier.align(Alignment.End)) {
+            Icon(
+                painter = painterResource(PlIcons.Close),
+                contentDescription = stringResource(R.string.pinout_close),
+                tint = PartloreTheme.colors.textPrimary,
+            )
+        }
+        PinDetails(
+            state,
+            Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+                .padding(
+                    start = PartloreTheme.spacing.space16,
+                    end = PartloreTheme.spacing.space16,
+                    bottom = PartloreTheme.spacing.space16,
+                ),
+        )
+    }
 }

@@ -23,6 +23,7 @@
     <string name="pinout_none">This part has no pinout yet.</string>
     <string name="pinout_how_to_add">How to add a part</string>
     <string name="pinout_key_title">Key</string>
+    <string name="pinout_close">Close pin details</string>
     <string name="pinout_names">Names</string>
     <string name="pinout_name_chip">Chip</string>
     <string name="pinout_name_module">Module</string>

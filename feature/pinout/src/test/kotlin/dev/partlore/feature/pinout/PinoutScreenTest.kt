@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.test.junit4.v2.createComposeRule
@@ -12,7 +13,11 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.pinch
+import androidx.compose.ui.test.swipe
 import androidx.compose.ui.unit.Density
+import androidx.test.espresso.Espresso
 import dev.partlore.core.designsystem.theme.PartloreLayout
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.ContentResult
@@ -34,6 +39,11 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
+private const val TABLET = "w840dp-h1200dp-mdpi"
+private const val SIDE_STRIP = 20f
+private const val DRAG = 200f
+private const val PINCH_NEAR = 20f
+private const val PINCH_FAR = 80f
 private const val UNCHECKED = "Pins not checked yet. Check the datasheet before you wire anything."
 
 @RunWith(RobolectricTestRunner::class)
@@ -184,6 +194,62 @@ class PinoutScreenTest {
         assertTrue("scaled down: ${left.width} < $fullCell", left.width < fullCell)
         assertTrue("left edge on screen: ${left.left}", left.left >= 0f)
         assertTrue("right edge on screen: ${right.right} <= $width", right.right <= width)
+    }
+
+    // The board is narrower than the phone; a drag in the strip beside it must still move it.
+    @Test
+    fun aDragBesideTheBoardMovesIt() {
+        show(state())
+        val pin = compose.onNodeWithContentDescription("D21", substring = true)
+        val before = pin.fetchSemanticsNode().boundsInRoot
+        compose.onRoot().performTouchInput {
+            swipe(Offset(width - SIDE_STRIP, before.center.y), Offset(width - SIDE_STRIP - DRAG, before.center.y))
+        }
+        compose.waitForIdle()
+        val after = pin.fetchSemanticsNode().boundsInRoot
+        assertTrue("moved left: ${before.left} → ${after.left}", after.left < before.left - DRAG / 2)
+    }
+
+    // Switching labels changes the board's width; the zoom the user chose stays.
+    @Test
+    fun changingLabelsKeepsTheZoom() {
+        var current by mutableStateOf(state())
+        compose.setContent { PartloreTheme { PinoutScreen(ContentResult.Ok(current), onBack = {}, onAction = {}) } }
+        val pin = compose.onNodeWithContentDescription("D21", substring = true)
+        val c = pin.fetchSemanticsNode().boundsInRoot.center
+        compose.onRoot().performTouchInput {
+            pinch(
+                c - Offset(PINCH_NEAR, 0f),
+                c - Offset(PINCH_FAR, 0f),
+                c + Offset(PINCH_NEAR, 0f),
+                c + Offset(PINCH_FAR, 0f),
+            )
+        }
+        compose.waitForIdle()
+        val zoomed = pin.fetchSemanticsNode().boundsInRoot.width
+        current = current.copy(labelMode = PinLabelMode.Chip)
+        compose.waitForIdle()
+        assertEquals(
+            zoomed,
+            compose.onNodeWithContentDescription("D21", substring = true).fetchSemanticsNode().boundsInRoot.width,
+            1f,
+        )
+    }
+
+    @Test
+    @Config(qualifiers = TABLET)
+    fun theSidePanelCloses() {
+        show(state(selected = "io2"))
+        compose.onNodeWithContentDescription("Close pin details").performClick()
+        assertEquals(listOf<PinoutAction>(PinoutAction.Select(null)), actions)
+    }
+
+    @Test
+    @Config(qualifiers = TABLET)
+    fun backClosesTheSidePanel() {
+        show(state(selected = "io2"))
+        Espresso.pressBack()
+        assertEquals(listOf<PinoutAction>(PinoutAction.Select(null)), actions)
     }
 
     @Test

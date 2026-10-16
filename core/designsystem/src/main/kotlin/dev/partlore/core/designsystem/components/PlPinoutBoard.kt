@@ -70,31 +70,34 @@ fun PlPinoutBoard(
     val placed = board.pins.filter { it.pinId in pins }
     val click = pinTap(onPinClick, zoom)
     val cell = cellSize(large)
-    Layout(
-        contents =
-        listOf(
-            { Outline() },
-            {
-                placed.forEachIndexed { order, p ->
-                    key(p.pinId) {
-                        val pin = pins.getValue(p.pinId)
-                        // TalkBack follows `placed`: header by header, along each header from pin 1.
-                        val reading = Modifier.semantics { traversalIndex = order.toFloat() }
-                        PinCell(pin, p.pinId in dimmed, p.pinId == selected, large, click, reading.glide(p, cell))
+    val drawing: @Composable (Modifier) -> Unit = { drawingModifier ->
+        Layout(
+            contents =
+            listOf(
+                { Outline() },
+                {
+                    placed.forEachIndexed { order, p ->
+                        key(p.pinId) {
+                            val pin = pins.getValue(p.pinId)
+                            // TalkBack follows `placed`: header by header, along each header from pin 1.
+                            val reading = Modifier.semantics { traversalIndex = order.toFloat() }
+                            PinCell(pin, p.pinId in dimmed, p.pinId == selected, large, click, reading.glide(p, cell))
+                        }
                     }
-                }
-            },
-            {
-                placed.forEach { p ->
-                    key(p.pinId) {
-                        PinLabel(pins.getValue(p.pinId), p.labelSide, p.pinId in dimmed, Modifier.glide(p, cell))
+                },
+                {
+                    placed.forEach { p ->
+                        key(p.pinId) {
+                            PinLabel(pins.getValue(p.pinId), p.labelSide, p.pinId in dimmed, Modifier.glide(p, cell))
+                        }
                     }
-                }
-            },
-        ),
-        modifier = (if (zoom != null) modifier.zoomable(zoom) else modifier).semantics { isTraversalGroup = true },
-        measurePolicy = boardMeasurePolicy(board, placed, cell),
-    )
+                },
+            ),
+            modifier = drawingModifier.semantics { isTraversalGroup = true },
+            measurePolicy = boardMeasurePolicy(board, placed, cell),
+        )
+    }
+    if (zoom == null) drawing(modifier) else ZoomArea(zoom, board.rotation, modifier, drawing)
 }
 
 /** Picks the pin; below 1× the pins are smaller than a finger, so a tap zooms to 1× around it instead. */

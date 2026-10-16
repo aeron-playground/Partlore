@@ -7,23 +7,31 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import dev.partlore.core.designsystem.theme.PartloreLayout
 import dev.partlore.core.designsystem.theme.PartloreSprings
 import dev.partlore.core.designsystem.theme.PartloreTheme
+import dev.partlore.core.model.Rotation
 import kotlinx.coroutines.launch
 
 /**
@@ -49,14 +57,14 @@ class PlZoomState(initialScale: Float = 1f) {
     }
 
     /**
-     * For a board laid out top-centred in an area [areaWidth] wide: a wider board is shown whole (down to the
-     * smallest zoom; a tap then zooms to 1× around the pin), a board that fits is shown at 1×.
+     * For a board laid out top-centred in a zoom area [areaWidth] wide: a wider board is shown whole, [margin]
+     * from each side (down to the smallest zoom; a tap then zooms to 1× around the pin), else at 1×.
      */
-    fun fitWidth(boardWidth: Int, areaWidth: Int) {
-        val fit = (areaWidth.toFloat() / boardWidth).coerceIn(PartloreLayout.PIN_MIN_ZOOM, 1f)
+    fun fitWidth(boardWidth: Int, areaWidth: Int, margin: Int = 0) {
+        val fit = ((areaWidth - 2f * margin) / boardWidth).coerceIn(PartloreLayout.PIN_MIN_ZOOM, 1f)
         scale = fit
-        // Scaled from its top-left corner, it moves right by half of what it lost, so it stays centred.
-        offset = Offset(boardWidth * (1 - fit) / 2, 0f)
+        // The area scales from its top-left corner; moving right by half of what it lost keeps the board centred.
+        offset = Offset(areaWidth * (1 - fit) / 2, 0f)
     }
 
     internal suspend fun zoomTo(target: Float, around: Offset, spec: AnimationSpec<Float>) {
@@ -99,4 +107,38 @@ internal fun Modifier.zoomable(state: PlZoomState): Modifier {
             translationX = state.offset.x
             translationY = state.offset.y
         }
+}
+
+/**
+ * The area the board is zoomed in. Gestures cover all of it, so a drag or pinch beside the board works too;
+ * the area is scaled with the board top-centred inside. A board wider than the area is fitted when first
+ * shown, and every board after a rotate; width changes from labels, Bench mode or a side panel keep the zoom.
+ */
+@Composable
+internal fun ZoomArea(
+    zoom: PlZoomState,
+    rotation: Rotation,
+    modifier: Modifier = Modifier,
+    board: @Composable (Modifier) -> Unit,
+) {
+    var area by remember { mutableIntStateOf(0) }
+    var measured by remember { mutableStateOf<Pair<Rotation, Int>?>(null) }
+    var fittedFor by remember { mutableStateOf<Rotation?>(null) }
+    val margin = with(LocalDensity.current) { PartloreTheme.spacing.space16.roundToPx() }
+    LaunchedEffect(area, measured) {
+        val (shown, width) = measured ?: return@LaunchedEffect
+        if (area > 0 && shown != fittedFor) {
+            if (fittedFor != null || width > area) zoom.fitWidth(width, area, margin)
+            fittedFor = shown
+        }
+    }
+    Box(modifier.onSizeChanged { area = it.width }.zoomable(zoom), contentAlignment = Alignment.TopCenter) {
+        board(
+            Modifier
+                .wrapContentSize(Alignment.TopCenter, unbounded = true)
+                .onSizeChanged { measured = rotation to it.width }
+                // Hidden for the one frame before it is fitted, so a cut-off board never flashes.
+                .graphicsLayer { alpha = if (fittedFor != null) 1f else 0f },
+        )
+    }
 }
