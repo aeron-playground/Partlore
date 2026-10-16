@@ -58,12 +58,46 @@ class HeaderRunRulesTest {
         fixture.edit(pins) {
             it.replace("pins_per_row: 3", "pins_per_row: 4").replace(
                 oneRun,
-                "      - { edge: left, pins: 2, first: top, source: s1, page: 5 }\n" +
-                    "      - { edge: left, pins: 2, first: top, source: s1, page: 5 }",
+                "      - { edge: left, pins: 2, first: top, order: 1, source: s1, page: 5 }\n" +
+                    "      - { edge: left, pins: 2, first: top, order: 1, source: s1, page: 5 }",
             ) + "  - { id: extra, header: j1, row: 1, index: 4, board_label: X, direction: nc, safe: ok, " +
                 "cites: [{ source: s1, page: 5 }] }\n"
         }
         assertProblem(fixture.problems(), pins, line(), "two runs on the left edge need different orders")
+    }
+
+    // A second header on j1's edge (the Uno has IOH and IOL on the top edge): the drawing needs their order.
+    private fun secondHeaderOnTheLeft(j1Order: String, j2Order: String) = fixture.edit(pins) {
+        it.replace(oneRun, "      - { edge: left, pins: 3, first: top$j1Order, source: s1, page: 5 }").replace(
+            "\npins:\n",
+            "\n  - id: j2\n    label: J2\n    type: header\n    rows: 1\n    pins_per_row: 1\n    pitch_mm: 2.54\n" +
+                "    source: s1\n    page: 5\n    edges:\n" +
+                "      - { edge: left, pins: 1, first: top$j2Order, source: s1, page: 5 }\npins:\n",
+        ) + "  - { id: extra, header: j2, row: 1, index: 1, board_label: X, direction: nc, safe: ok, " +
+            "cites: [{ source: s1, page: 5 }] }\n"
+    }
+
+    @Test
+    fun headersThatShareAnEdgeNeedAnOrderEach() {
+        secondHeaderOnTheLeft(j1Order = "", j2Order = "")
+        assertProblem(fixture.problems(), pins, line(), "runs on the left edge need an order each")
+    }
+
+    @Test
+    fun headersThatShareAnEdgeNeedDifferentOrders() {
+        secondHeaderOnTheLeft(j1Order = ", order: 1", j2Order = ", order: 1")
+        assertProblem(
+            fixture.problems(),
+            pins,
+            fixture.lineOf(pins, "- id: j2"),
+            "two runs on the left edge need different orders",
+        )
+    }
+
+    @Test
+    fun headersThatShareAnEdgeWithTheirOrdersAreFine() {
+        secondHeaderOnTheLeft(j1Order = ", order: 1", j2Order = ", order: 2")
+        assertNoProblems(fixture.problems())
     }
 
     @Test

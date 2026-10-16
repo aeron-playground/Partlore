@@ -11,7 +11,26 @@ object HeaderRunRules {
     private val HORIZONTAL_ENDS = setOf("left", "right")
 
     fun check(content: Content, d: Diagnostics) = content.parts.forEach { part ->
-        part.pins?.headers?.forEach { header -> check(header, d) }
+        val headers = part.pins?.headers.orEmpty()
+        headers.forEach { header -> check(header, d) }
+        checkSharedEdges(headers, d)
+    }
+
+    // Runs that share an edge, from one header or several (the Uno's IOH and IOL), are drawn in their
+    // `order`; without one the drawing would have to guess.
+    private fun checkSharedEdges(headers: List<Header>, d: Diagnostics) {
+        headers
+            .flatMap { header -> header.runs.map { header to it } }
+            .groupBy { (_, run) -> run.edge }
+            .filter { it.value.size > 1 }
+            .forEach { (edge, runs) ->
+                val where = if (edge == "inside") "inside the board" else "on the $edge edge"
+                runs.filter { it.second.order == null }.map { it.first }.distinct().forEach { header ->
+                    d.error(header.pos, "runs $where need an order each")
+                }
+                runs.filter { it.second.order != null }.groupBy { it.second.order }.values.filter { it.size > 1 }
+                    .forEach { same -> d.error(same.last().first.pos, "two runs $where need different orders") }
+            }
     }
 
     private fun check(header: Header, d: Diagnostics) {
@@ -20,11 +39,6 @@ object HeaderRunRules {
             d.error(header.pos, "runs of header ${header.id} cover $covered of ${header.pinsPerRow} positions")
         }
         header.runs.forEach { run -> runProblem(header, run)?.let { d.error(header.pos, it) } }
-        header.runs
-            .filter { it.edge != "inside" }
-            .groupBy { it.edge to it.order }
-            .filter { it.value.size > 1 }
-            .forEach { (key, _) -> d.error(header.pos, "two runs on the ${key.first} edge need different orders") }
     }
 
     private fun runProblem(header: Header, run: HeaderRun): String? = directionProblem(run) ?: rowProblem(header, run)
