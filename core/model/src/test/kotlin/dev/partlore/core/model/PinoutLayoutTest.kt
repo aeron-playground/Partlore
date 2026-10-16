@@ -124,13 +124,84 @@ class PinoutLayoutTest {
     @Test
     fun aTwoRowRightEdgeHeaderStaysOnTheBoard() {
         val board = PinoutLayout.place(
-            pinout(header("j9", 3, listOf(run(BoardEdge.Right, 3, Side.Top)), rows = 2)),
+            pinout(header("j9", 3, listOf(run(BoardEdge.Right, 3, Side.Top, row1 = Side.Right)), rows = 2)),
             Rotation.R0,
         )
         assertEquals(board.columns - 1 to 1, board.at("j9-1-1"))
         assertEquals(board.columns - 2 to 1, board.at("j9-2-1"))
         assertEquals(Side.Right, board.side("j9-1-1"))
         assertEquals(Side.Left, board.side("j9-2-1"))
+    }
+
+    // Row 1 may sit on the inner line (a Raspberry Pi header has its odd pins inside): the data decides, not the edge.
+    @Test
+    fun row1OnTheInnerSidePutsRow1OnTheInnerLine() {
+        val inner = mapOf(
+            BoardEdge.Left to Side.Right,
+            BoardEdge.Top to Side.Bottom,
+            BoardEdge.Right to Side.Left,
+            BoardEdge.Bottom to Side.Top,
+        )
+        inner.forEach { (edge, side) ->
+            val first = if (edge == BoardEdge.Left || edge == BoardEdge.Right) Side.Top else Side.Left
+            val board = PinoutLayout.place(
+                pinout(header("h", 2, listOf(run(edge, 2, first, row1 = side)), rows = 2)),
+                Rotation.R0,
+            )
+            val (x1, y1) = board.at("h-1-1")
+            val (x2, y2) = board.at("h-2-1")
+            val (outer, innerLine) =
+                when (edge) {
+                    BoardEdge.Left -> x2 to x1
+                    BoardEdge.Right -> board.columns - 1 - x2 to board.columns - 1 - x1
+                    BoardEdge.Top -> y2 to y1
+                    else -> board.rows - 1 - y2 to board.rows - 1 - y1
+                }
+            assertEquals("$edge: row 2 on the outer line", 0, outer)
+            assertEquals("$edge: row 1 on the inner line", 1, innerLine)
+            assertEquals("$edge: row 1's label faces inward", side, board.side("h-1-1"))
+        }
+    }
+
+    @Test
+    fun aHeaderWithMoreThanTwoRowsIsUnplaced() {
+        val board = PinoutLayout.place(
+            pinout(header("h", 2, listOf(run(BoardEdge.Left, 2, Side.Top, row1 = Side.Left)), rows = 3)),
+            Rotation.R0,
+        )
+        assertEquals(listOf("h"), board.unplacedHeaders)
+        assertEquals(0, board.pins.size)
+    }
+
+    @Test
+    fun aTwoRowHeaderWithoutRow1IsUnplaced() {
+        val board = PinoutLayout.place(
+            pinout(header("h", 2, listOf(run(BoardEdge.Left, 2, Side.Top)), rows = 2)),
+            Rotation.R0,
+        )
+        assertEquals(listOf("h"), board.unplacedHeaders)
+    }
+
+    // A newer pack could send ends that don't fit the run's direction: never guess which way it runs.
+    @Test
+    fun endsThatDoNotFitTheRunAreUnplaced() {
+        val wrongFirst = header("a", 2, listOf(run(BoardEdge.Left, 2, Side.Left)))
+        val wrongRow1 = header("b", 2, listOf(run(BoardEdge.Right, 2, Side.Top, row1 = Side.Top)), rows = 2)
+        val board = PinoutLayout.place(pinout(wrongFirst, wrongRow1), Rotation.R0)
+        assertEquals(listOf("a", "b"), board.unplacedHeaders)
+    }
+
+    // TalkBack reads the board in this order: header by header, along each header from pin 1.
+    @Test
+    fun pinsComeHeaderByHeaderInPinOrder() {
+        val board = PinoutLayout.place(devKit, Rotation.R0)
+        val expected = (1..19).map { "j2-1-$it" } + (1..19).map { "j3-1-$it" }
+        assertEquals(expected, board.pins.map { it.pinId })
+        val twoRow = PinoutLayout.place(
+            pinout(header("h", 2, listOf(run(BoardEdge.Left, 2, Side.Top, row1 = Side.Left)), rows = 2)),
+            Rotation.R90,
+        )
+        assertEquals(listOf("h-1-1", "h-2-1", "h-1-2", "h-2-2"), twoRow.pins.map { it.pinId })
     }
 
     @Test

@@ -30,19 +30,35 @@ object PinoutLayout {
     private const val MIN_INNER = 2
 
     fun place(pinout: Pinout, rotation: Rotation): PlacedBoard {
-        val (usable, unplaced) = pinout.headers.partition { h ->
-            h.runs.isNotEmpty() &&
-                h.runs.sumOf { it.pins } == h.pinsPerRow
-        }
+        val (usable, unplaced) = pinout.headers.partition(::drawable)
         val runs = usable.flatMap { h -> h.runs.mapIndexed { i, r -> RunRef(h, r, h.runs.take(i).sumOf { it.pins }) } }
         val grid = Grid.of(runs)
+        // Header by header, along each header from pin 1 (pin 1 row 1, pin 1 row 2, pin 2 …): TalkBack reads
+        // the board in this order.
         val placed =
-            runs.flatMap { ref ->
-                val pins = pinout.pins.filter { it.headerId == ref.header.id && it.index - 1 in ref.range }
-                pins.map { grid.place(ref, it) }
+            usable.flatMap { header ->
+                val refs = runs.filter { it.header === header }
+                pinout.pins
+                    .filter { it.headerId == header.id }
+                    .sortedWith(compareBy({ it.index }, { it.row }))
+                    .mapNotNull { pin -> refs.firstOrNull { pin.index - 1 in it.range }?.let { grid.place(it, pin) } }
             }
         return turn(PlacedBoard(grid.columns, grid.rows, placed, unplaced.map { it.id }, Rotation.R0), rotation)
     }
+
+    /**
+     * Only a header the data fully describes is drawn: 1 or 2 rows, runs that add up to its pins, ends along
+     * each run and row 1's side across it. Anything else stays in the table, never drawn in a guessed order.
+     */
+    private fun drawable(h: PinHeader): Boolean = h.rows in 1..2 &&
+        h.runs.isNotEmpty() &&
+        h.runs.sumOf { it.pins } == h.pinsPerRow &&
+        h.runs.all { run -> run.first in along(run) && (h.rows == 1 || run.row1 in across(run)) }
+
+    private fun along(run: HeaderRun): Set<Side> =
+        if (run.axis == RunAxis.Vertical) setOf(Side.Top, Side.Bottom) else setOf(Side.Left, Side.Right)
+
+    private fun across(run: HeaderRun): Set<Side> = Side.entries.toSet() - along(run)
 
     /** Turned 90° when more pins sit on the top and bottom edges, so the long headers run down a phone. */
     fun defaultRotation(pinout: Pinout): Rotation {
@@ -82,7 +98,7 @@ object PinoutLayout {
             val k = pin.index - 1 - ref.range.first
             val along = if (run.first == Side.Top || run.first == Side.Left) k else run.pins - 1 - k
             val (sx, sy) = starts.getValue(ref)
-            // Line 0 is row 1's line: the outer line of an edge run, the row1 side of an inside run.
+            // Line 0 is the outer line (the left or top line of an inside run); row 1 is on the side `row1` names.
             val line = if (pin.row == 1) row1Line(run) else 1 - row1Line(run)
             val step = line * inward(run.edge)
             val vertical = run.axis == RunAxis.Vertical
@@ -91,22 +107,21 @@ object PinoutLayout {
             return PlacedPin(pin.id, x, y, labelSide(run, line))
         }
 
-        private fun row1Line(run: HeaderRun): Int =
-            if (run.edge == BoardEdge.Inside && (run.row1 == Side.Right || run.row1 == Side.Bottom)) 1 else 0
+        private fun row1Line(run: HeaderRun): Int = if (run.row1 == null || run.row1 == outerSide(run)) 0 else 1
 
         // The direction of the second line: into the board for edge runs, right/down for inside runs.
         private fun inward(edge: BoardEdge): Int = if (edge == BoardEdge.Right || edge == BoardEdge.Bottom) -1 else 1
 
-        private fun labelSide(run: HeaderRun, line: Int): Side {
-            val outer =
-                when (run.edge) {
-                    BoardEdge.Left -> Side.Left
-                    BoardEdge.Right -> Side.Right
-                    BoardEdge.Top -> Side.Top
-                    BoardEdge.Bottom -> Side.Bottom
-                    BoardEdge.Inside -> if (run.axis == RunAxis.Vertical) Side.Left else Side.Top
-                }
-            return if (line == 1) opposite(outer) else outer
+        private fun labelSide(run: HeaderRun, line: Int): Side =
+            if (line == 1) opposite(outerSide(run)) else outerSide(run)
+
+        // The side of line 0: the board edge itself, or left/top for an inside run.
+        private fun outerSide(run: HeaderRun): Side = when (run.edge) {
+            BoardEdge.Left -> Side.Left
+            BoardEdge.Right -> Side.Right
+            BoardEdge.Top -> Side.Top
+            BoardEdge.Bottom -> Side.Bottom
+            BoardEdge.Inside -> if (run.axis == RunAxis.Vertical) Side.Left else Side.Top
         }
 
         private fun opposite(side: Side): Side = when (side) {
