@@ -10,6 +10,7 @@ import dev.partlore.core.model.ContentResult
 import dev.partlore.core.model.LibraryHome
 import dev.partlore.core.model.PartCard
 import dev.partlore.core.model.PartPage
+import dev.partlore.core.model.Pinout
 import dev.partlore.core.model.Tag
 import dev.partlore.core.model.VerificationLevel
 import dev.partlore.core.packformat.PackFormat
@@ -53,6 +54,8 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
 
     fun part(id: String): PartPage? = PartQueries(db).part(id, meta("pack_version").orEmpty())
 
+    fun pinout(partId: String): Pinout? = PartQueries(db).pinout(partId, meta("pack_version").orEmpty())
+
     override fun close() = db.close()
 
     private fun meta(key: String): String? = db.query("SELECT value FROM meta WHERE key = ?", listOf(key)) {
@@ -71,15 +74,6 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
 
     private fun tile(row: CategoryRow, all: List<CategoryRow>, counts: Map<String, Int>) =
         CategoryTile(row.id, row.name, subtree(row.id, all).sumOf { counts[it] ?: 0 })
-
-    /** The category and everything below it. Guarded against parent loops. */
-    private fun subtree(id: String, all: List<CategoryRow>, seen: MutableSet<String> = mutableSetOf()): List<String> =
-        if (!seen.add(id)) {
-            emptyList()
-        } else {
-            listOf(id) +
-                all.filter { it.parentId == id }.flatMap { subtree(it.id, all, seen) }
-        }
 
     /**
      * Part cards matching [where] (SQL over the `part` table), A–Z, with tags and the level of their
@@ -126,6 +120,18 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
     companion object {
         private const val STARTER_BOARDS = 12
         private val CATEGORY_ORDER = compareBy<CategoryRow>({ it.sort ?: Int.MAX_VALUE }, { it.name.lowercase() })
+
+        /** The category and everything below it. Guarded against parent loops. */
+        private fun subtree(
+            id: String,
+            all: List<CategoryRow>,
+            seen: MutableSet<String> = mutableSetOf(),
+        ): List<String> = if (!seen.add(id)) {
+            emptyList()
+        } else {
+            listOf(id) +
+                all.filter { it.parentId == id }.flatMap { subtree(it.id, all, seen) }
+        }
 
         /** Opens [file] read-only and checks that this app understands its format. */
         fun open(file: File): ContentResult<PackReader> {

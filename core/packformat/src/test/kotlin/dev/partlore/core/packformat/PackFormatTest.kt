@@ -51,7 +51,8 @@ class PackFormatTest {
     private companion object {
         val EXPECTED_TABLES =
             listOf(
-                "article", "category", "glance", "gotcha", "gotcha_cite", "gotcha_pin", "header", "i2c_address",
+                "article", "category", "glance", "gotcha", "gotcha_cite", "gotcha_pin", "header",
+                "header_edge", "i2c_address",
                 "meta", "part", "part_alias", "part_related", "part_tag", "pin", "pin_alias", "pin_cite",
                 "pin_function", "search", "source", "spec", "status", "tag",
             )

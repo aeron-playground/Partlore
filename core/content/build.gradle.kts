@@ -20,6 +20,10 @@ tasks.withType<Test>().configureEach {
     // Tests build real packs from test content with the real packer.
     systemProperty("partlore.schemaDir", schemaDir.asFile.absolutePath)
     inputs.dir(schemaDir).withPathSensitivity(PathSensitivity.RELATIVE)
+    // RealPinoutTest packs the real content to check where pin 1 of each header lands.
+    val contentDir = rootProject.layout.projectDirectory.dir("content")
+    systemProperty("partlore.contentDir", contentDir.asFile.absolutePath)
+    inputs.dir(contentDir).withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 tasks.register<Test>("speedTest") {

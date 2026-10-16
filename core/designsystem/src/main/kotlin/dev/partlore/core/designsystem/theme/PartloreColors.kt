@@ -25,6 +25,8 @@ data class PartloreColors(
     val dangerContainer: Color,
     val info: Color,
     val shadowTint: Color,
+    /** Pin dot colours for the pinout viewer. */
+    val pins: PinColors,
 )
 
 internal val LightColors =
@@ -49,6 +51,7 @@ internal val LightColors =
         dangerContainer = Color(0xFFFDE8EB),
         info = Color(0xFF0068A3),
         shadowTint = Color(0xFF413663),
+        pins = LightPins,
     )
 
 internal val DarkColors =
@@ -73,6 +76,7 @@ internal val DarkColors =
         info = Color(0xFF56B4E9),
         // Dark mode shows elevation with lighter surfaces and a top highlight, not shadows.
         shadowTint = Color(0xFF000000),
+        pins = DarkPins,
     )
 
 /** Darker background for use at the bench. Other colors follow the dark theme for now. */
@@ -80,6 +84,31 @@ internal val BenchColors =
     DarkColors.copy(
         bg = Color(0xFF0B0A0F),
         textPrimary = Color(0xFFE6E1EE),
+    )
+
+/** Red on black for dark rooms: red light keeps the eyes adjusted to the dark. */
+internal val RedLightColors =
+    PartloreColors(
+        isDark = true,
+        bg = Color(0xFF000000),
+        surface = Color(0xFF120605),
+        surfaceRaised = Color(0xFF1A0907),
+        surfaceSunken = Color(0xFF080202),
+        outline = Color(0xFF4A1A15),
+        textPrimary = Color(0xFFFF8A80),
+        textSecondary = Color(0xFFE0675C),
+        primary = Color(0xFFFF6B5E),
+        onPrimary = Color(0xFF000000),
+        primaryContainer = Color(0xFF2A0F0C),
+        accent = Color(0xFFFF6B5E),
+        success = Color(0xFFFF6B5E),
+        warning = Color(0xFFFF8A80),
+        warningContainer = Color(0xFF2A0F0C),
+        danger = Color(0xFFFF6B5E),
+        dangerContainer = Color(0xFF2A0F0C),
+        info = Color(0xFFFF6B5E),
+        shadowTint = Color(0xFF000000),
+        pins = RedLightPins,
     )
 
 /** Token names and values, in display order. Used by the Design Catalog. */

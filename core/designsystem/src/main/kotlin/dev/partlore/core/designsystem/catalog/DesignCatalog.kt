@@ -42,6 +42,8 @@ fun DesignCatalog(modifier: Modifier = Modifier) {
         ElevationCatalog()
         ComponentsCatalog()
         ContentCatalog()
+        PinoutCatalog()
+        PinoutColourBlindCatalog()
     }
 }
 
@@ -113,7 +115,7 @@ fun ElevationCatalog(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CatalogSection(title: String, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+internal fun CatalogSection(title: String, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column(modifier.fillMaxWidth().background(PartloreTheme.colors.bg).padding(PartloreTheme.spacing.space16)) {
         Text(title, style = PartloreTheme.typography.headline, color = PartloreTheme.colors.textPrimary)
         Box(Modifier.height(PartloreTheme.spacing.space12))

@@ -80,6 +80,19 @@ data class Header(
     val pinsPerRow: Int,
     val pitchMm: Double,
     val cite: Citation,
+    val runs: List<HeaderRun>,
+    val pos: Pos,
+)
+
+/** Where part of a header runs on the board, in pin order. [run] is only set for `inside`. */
+data class HeaderRun(
+    val edge: String,
+    val run: String?,
+    val pins: Int,
+    val first: String,
+    val row1: String?,
+    val order: Int?,
+    val cite: Citation,
     val pos: Pos,
 )
 
@@ -159,7 +172,9 @@ data class Part(
     val citations: List<Citation>
         get() =
             (specs + absoluteMax).map { it.cite } + i2c.map { it.cite } +
-                pins?.headers?.map { it.cite }.orEmpty() + pins?.pins?.flatMap { it.cites }.orEmpty() +
+                pins?.headers?.map { it.cite }.orEmpty() +
+                pins?.headers?.flatMap { h -> h.runs.map { it.cite } }.orEmpty() +
+                pins?.pins?.flatMap { it.cites }.orEmpty() +
                 gotchas?.gotchas?.flatMap { it.cites }.orEmpty()
 }
 

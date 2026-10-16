@@ -25,6 +25,7 @@ import dev.partlore.app.navigation.BenchHomeKey
 import dev.partlore.app.navigation.CategoryKey
 import dev.partlore.app.navigation.LibraryHomeKey
 import dev.partlore.app.navigation.PartKey
+import dev.partlore.app.navigation.PinoutKey
 import dev.partlore.app.navigation.SearchHomeKey
 import dev.partlore.app.navigation.SettingsKey
 import dev.partlore.app.navigation.Tab
@@ -50,6 +51,7 @@ fun PartloreShell(screens: ShellScreens, modifier: Modifier = Modifier, tabs: Ta
             entry<LibraryHomeKey> { screens.library(nav) }
             entry<CategoryKey> { key -> screens.category(key.id, nav) }
             entry<PartKey> { key -> screens.part(key.id, nav) }
+            entry<PinoutKey> { key -> screens.pinout(key.partId, nav) }
             entry<SearchHomeKey> { SearchHomeScreen() }
             entry<ToolsHomeKey> { ToolsHomeScreen() }
             entry<BenchHomeKey> { BenchHomeScreen(onOpenSettings = { tabs.navigate(SettingsKey) }) }
@@ -73,6 +75,7 @@ fun PartloreShell(screens: ShellScreens, modifier: Modifier = Modifier, tabs: Ta
             })
         },
         modifier = modifier,
+        showNavigation = tabs.currentStack.lastOrNull() !is PinoutKey,
     ) {
         // NavDisplay handles Back while a tab has pages above its start page; this handles the start page.
         BackHandler(enabled = tabs.current != Tab.Library && tabs.currentStack.size == 1) { tabs.back() }
@@ -96,6 +99,7 @@ private fun rememberShellNav(tabs: TabsState): ShellNav = remember(tabs) {
         openCategory = { tabs.navigate(CategoryKey(it)) },
         openPart = { tabs.navigate(PartKey(it)) },
         openSearch = { tabs.select(Tab.Search) },
+        openPinout = { tabs.navigate(PinoutKey(it)) },
     )
 }
 

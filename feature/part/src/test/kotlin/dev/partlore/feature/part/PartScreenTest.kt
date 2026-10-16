@@ -21,6 +21,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.core.app.ApplicationProvider
+import dev.partlore.core.content.ContentLinks
 import dev.partlore.core.designsystem.theme.PartloreTheme
 import dev.partlore.core.model.Cite
 import dev.partlore.core.model.ContentResult
@@ -59,13 +60,33 @@ class PartScreenTest {
         }
         compose.setContent {
             CompositionLocalProvider(LocalUriHandler provides uri) {
-                PartloreTheme { PartScreen(state, onBack = {}, onOpenPart = { opened += it }) }
+                PartloreTheme {
+                    PartScreen(state, onBack = {}, onOpenPart = { opened += it }, onOpenPinout = {
+                        opened +=
+                            "pinout:$it"
+                    })
+                }
             }
         }
     }
 
     private fun scrollTo(matcher: SemanticsMatcher) =
         compose.onNode(hasScrollToIndexAction()).performScrollToNode(matcher)
+
+    @Test
+    fun aPartWithPinsShowsAPreviewThatOpensTheViewer() {
+        show()
+        scrollTo(hasText("Open pinout"))
+        compose.onNodeWithText("8 pins · 2 headers").assertExists()
+        compose.onNodeWithText("Open pinout").performClick()
+        assertEquals(listOf("pinout:example/devboard-v1"), opened)
+    }
+
+    @Test
+    fun aPartWithoutPinsHasNoPinoutSection() {
+        show(ContentResult.Ok(SampleContent.devBoard.copy(pinout = null)))
+        compose.onNodeWithText("Open pinout").assertDoesNotExist()
+    }
 
     @Test
     fun theHeroLeadsWithTheLeastCheckedStatus() {
@@ -129,7 +150,7 @@ class PartScreenTest {
         show()
         scrollTo(hasText("Report a problem"))
         compose.onNodeWithText("Report a problem").performClick()
-        assertEquals(listOf(GithubLinks.reportProblem("example/devboard-v1", "0.1.0")), links)
+        assertEquals(listOf(ContentLinks.reportProblem("example/devboard-v1", "0.1.0")), links)
     }
 
     @Test

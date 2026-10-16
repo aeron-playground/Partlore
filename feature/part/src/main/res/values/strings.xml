@@ -58,4 +58,15 @@
     <string name="part_help_needs_review">A source changed or a problem was reported. It is being checked again.</string>
     <string name="part_help_disputed">The sources disagree. Check the datasheet before you rely on this.</string>
     <string name="part_checked_line">Checked by %1$s on %2$s, against %3$s.</string>
+    <string name="part_section_pinout">Pinout</string>
+    <string name="part_open_pinout">Open pinout</string>
+    <string name="part_pinout_size">%1$s · %2$s</string>
+    <plurals name="part_pin_count">
+        <item quantity="one">%d pin</item>
+        <item quantity="other">%d pins</item>
+    </plurals>
+    <plurals name="part_header_count">
+        <item quantity="one">%d header</item>
+        <item quantity="other">%d headers</item>
+    </plurals>
 </resources>

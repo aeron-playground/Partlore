@@ -38,6 +38,33 @@ and underline mistakes while you type.
 4. Leave out anything a document doesn't state clearly. Missing is better than wrong.
 5. Start with `status: { level: draft }` and run the checks below.
 
+## Where headers sit (`edges`)
+
+The pinout viewer draws each header on the side of the board where it really is. Every header in
+`pins.yaml` says so in `edges`: one or more runs, in pin order, each with its own source.
+
+```yaml
+# ESP32-DevKitC V4: J2 runs down the left edge, pin 1 (3V3) at the top.
+edges:
+  - { edge: left, pins: 19, first: top, source: s4, page: 1 }
+
+# ESP32-WROOM-32E: the pads wrap around the module, so the header has three runs.
+edges:
+  - { edge: left, pins: 14, first: top, source: s1, page: 10 }
+  - { edge: bottom, pins: 10, first: left, source: s1, page: 10 }
+  - { edge: right, pins: 14, first: bottom, source: s1, page: 10 }
+```
+
+- `first` is the end of the run where its first pin is.
+- `row1` is only for 2-row headers: the side row 1 is on.
+- `order` sorts runs that share an edge: top to bottom on the sides, left to right on the top and
+  bottom.
+- `edge: inside` is for a header away from the edges; it also needs `run: vertical` or
+  `run: horizontal`.
+
+The runs of a header must add up to its pins per row. Check `first` against a photo or drawing of
+the real board: a header drawn backwards shows the wrong pins at the bench.
+
 ## Status levels
 
 | Level | Meaning | In release packs |

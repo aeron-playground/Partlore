@@ -5,6 +5,7 @@ import dev.partlore.core.model.CategoryPage
 import dev.partlore.core.model.ContentResult
 import dev.partlore.core.model.LibraryHome
 import dev.partlore.core.model.PartPage
+import dev.partlore.core.model.Pinout
 
 /** Content from memory, for screen and ViewModel tests. Unknown IDs are NotFound. */
 class FakeContentRepository(
@@ -13,10 +14,14 @@ class FakeContentRepository(
         mutableMapOf(SampleContent.boards.id to ContentResult.Ok(SampleContent.boards)),
     val parts: MutableMap<String, ContentResult<PartPage>> =
         mutableMapOf(SampleContent.devBoard.id to ContentResult.Ok(SampleContent.devBoard)),
+    val pinouts: MutableMap<String, ContentResult<Pinout>> =
+        mutableMapOf(SampleContent.devBoard.id to ContentResult.Ok(SampleContent.devBoardPinout)),
 ) : ContentRepository {
     override suspend fun library(): ContentResult<LibraryHome> = library
 
     override suspend fun category(id: String): ContentResult<CategoryPage> = categories[id] ?: ContentResult.NotFound
 
     override suspend fun part(id: String): ContentResult<PartPage> = parts[id] ?: ContentResult.NotFound
+
+    override suspend fun pinout(partId: String): ContentResult<Pinout> = pinouts[partId] ?: ContentResult.NotFound
 }

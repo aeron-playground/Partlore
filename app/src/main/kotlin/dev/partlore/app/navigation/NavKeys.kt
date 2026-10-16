@@ -16,3 +16,5 @@ import kotlinx.serialization.Serializable
 @Serializable data class CategoryKey(val id: String) : NavKey
 
 @Serializable data class PartKey(val id: String) : NavKey
+
+@Serializable data class PinoutKey(val partId: String) : NavKey

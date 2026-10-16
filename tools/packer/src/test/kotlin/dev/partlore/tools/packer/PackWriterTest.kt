@@ -1,5 +1,6 @@
 package dev.partlore.tools.packer
 
+import dev.partlore.core.packformat.PackFormat
 import dev.partlore.tools.content.Validator
 import dev.partlore.tools.content.ship.Mode
 import dev.partlore.tools.content.testing.ContentFixture
@@ -36,7 +37,10 @@ class PackWriterTest {
         assertEquals("60", single(pack, "SELECT address FROM i2c_address"))
         val files = query(pack, "SELECT file FROM status ORDER BY file").map { it.single() }
         assertEquals(listOf("gotchas", "part", "pins"), files)
-        assertEquals("1", single(pack, "SELECT value FROM meta WHERE key = 'schema_version'"))
+        assertEquals(
+            PackFormat.SCHEMA_VERSION.toString(),
+            single(pack, "SELECT value FROM meta WHERE key = 'schema_version'"),
+        )
         assertEquals("test-hash", single(pack, "SELECT value FROM meta WHERE key = 'content_sha256'"))
     }
 

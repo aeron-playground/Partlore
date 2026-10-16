@@ -80,6 +80,7 @@ dependencies {
     implementation(project(":core:content"))
     implementation(project(":feature:library"))
     implementation(project(":feature:part"))
+    implementation(project(":feature:pinout"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:settings"))
     implementation(platform(libs.koin.bom))

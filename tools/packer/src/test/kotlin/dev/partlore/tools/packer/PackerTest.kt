@@ -1,5 +1,6 @@
 package dev.partlore.tools.packer
 
+import dev.partlore.core.packformat.PackFormat
 import dev.partlore.tools.content.ship.Mode
 import dev.partlore.tools.content.testing.ContentFixture
 import org.junit.Assert.assertEquals
@@ -40,7 +41,7 @@ class PackerTest {
         assertEquals(sha256(result.file), result.entry.sha256)
         assertTrue(manifest, manifest.contains("\"sha256\" : \"${result.entry.sha256}\""))
         assertTrue(manifest, manifest.contains("\"size\" : ${result.file.length()}"))
-        assertTrue(manifest, manifest.contains("\"schemaVersion\" : 1"))
+        assertTrue(manifest, manifest.contains("\"schemaVersion\" : ${PackFormat.SCHEMA_VERSION}"))
         assertEquals("partlore-content-0.0.1.db", result.file.name)
     }
 

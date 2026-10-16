@@ -1,5 +1,7 @@
 package dev.partlore.core.designsystem.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +32,7 @@ fun PlTopBar(
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     large: Boolean = false,
+    badge: (@Composable () -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     Row(
@@ -52,13 +55,28 @@ fun PlTopBar(
         } else {
             Spacer(Modifier.width(PartloreTheme.spacing.space12))
         }
-        Text(
-            text = title,
-            style = if (large) PartloreTheme.typography.displayM else PartloreTheme.typography.title,
-            color = PartloreTheme.colors.textPrimary,
-            maxLines = 2,
-            modifier = Modifier.weight(1f).semantics { heading() },
-        )
+        val titleText = @Composable { titleModifier: Modifier ->
+            Text(
+                text = title,
+                style = if (large) PartloreTheme.typography.displayM else PartloreTheme.typography.title,
+                color = PartloreTheme.colors.textPrimary,
+                maxLines = 2,
+                modifier = titleModifier.semantics { heading() },
+            )
+        }
+        if (badge == null) {
+            titleText(Modifier.weight(1f))
+        } else {
+            // The badge sits after the title, or under it when both don't fit (long names, 200 % text).
+            FlowRow(
+                Modifier.weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(PartloreTheme.spacing.space8),
+                itemVerticalAlignment = Alignment.CenterVertically,
+            ) {
+                titleText(Modifier)
+                badge()
+            }
+        }
         Row(verticalAlignment = Alignment.CenterVertically, content = actions)
     }
 }

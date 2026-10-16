@@ -6,6 +6,7 @@ import dev.partlore.core.model.FiveVoltTolerance
 import dev.partlore.core.model.Glance
 import dev.partlore.core.model.PartPage
 import dev.partlore.core.model.PartRef
+import dev.partlore.core.model.Pinout
 import dev.partlore.core.model.SourceItem
 import dev.partlore.core.model.VerificationLevel
 
@@ -18,6 +19,7 @@ internal class PartQueries(private val db: SQLiteConnection) {
                 Head(it.text(), it.text(), it.text(), it.text(), it.textOrNull())
             }.firstOrNull() ?: return null
         val statuses = statuses(id)
+        val sources = sources(id)
         return PartPage(
             id = id,
             name = head.name,
@@ -38,12 +40,18 @@ internal class PartQueries(private val db: SQLiteConnection) {
             absoluteMax = db.specs(id, absolute = true),
             i2c = db.i2c(id),
             gotchas = db.gotchas(id),
-            sources = sources(id),
+            sources = sources,
             partStatus = statuses["part"] ?: FileStatus(VerificationLevel.Draft, emptyList(), null, emptyList(), null),
             pinsStatus = statuses["pins"],
             gotchasStatus = statuses["gotchas"],
             packVersion = packVersion,
+            pinout = db.pinout(id, head.name, sources, statuses["pins"], packVersion),
         )
+    }
+
+    fun pinout(id: String, packVersion: String): Pinout? {
+        val name = db.query("SELECT name FROM part WHERE id = ?", listOf(id)) { it.text() }.firstOrNull() ?: return null
+        return db.pinout(id, name, sources(id), statuses(id)["pins"], packVersion)
     }
 
     private fun refs(sql: String, args: List<String>): List<PartRef> =

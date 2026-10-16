@@ -6,6 +6,12 @@ import dev.partlore.tools.content.model.PinFile
 internal fun Rows.pins(partId: String, file: PinFile) {
     file.headers.forEach { h ->
         insert("header", listOf(partId, h.id, h.label, h.type, h.rows, h.pinsPerRow, h.pitchMm) + cite(h.cite))
+        h.runs.forEachIndexed { seq, r ->
+            insert(
+                "header_edge",
+                listOf(partId, h.id, seq, r.edge, r.run, r.pins, r.first, r.row1, r.order) + cite(r.cite),
+            )
+        }
     }
     file.pins.forEach { p ->
         insert(

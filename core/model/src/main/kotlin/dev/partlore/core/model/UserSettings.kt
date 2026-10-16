@@ -15,4 +15,9 @@ data class UserSettings(
     val sounds: Boolean = false,
     val onboardingDone: Boolean = false,
     val interests: Set<BuildInterest> = emptySet(),
+    /** The label mode the pinout viewer last used; null until the user picks one. */
+    val pinLabel: PinLabelMode? = null,
+    /** Keep the screen on in the pinout viewer; null follows the theme (on in Bench). */
+    val keepScreenOn: Boolean? = null,
+    val redLight: Boolean = false,
 )
