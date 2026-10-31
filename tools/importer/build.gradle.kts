@@ -44,7 +44,7 @@ tasks.register<JavaExec>("importEspDevKits") {
         CommandLineArgumentProvider {
             val path = checkout.orNull ?: error("set -Pcheckout=<path to an esp-dev-kits checkout>")
             val name = board.orNull ?: error("set -Pboard=<hints file name, for example esp32-s3-devkitc-1>")
-            listOf("--checkout", path, "--hints", "tools/importer/hints/espressif/$name.yaml", "--out", "content/parts")
+            listOf("--checkout", path, "--hints", "content/import/esp-dev-kits/$name.yaml", "--out", "content/parts")
         },
     )
 }
