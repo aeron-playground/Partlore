@@ -3,12 +3,13 @@ package dev.partlore.tools.packer
 import dev.partlore.tools.content.Validator
 import dev.partlore.tools.content.ship.Mode
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
 
-/** The real content/ folder: valid, and every part packs with every pin. */
+/** The real content/ folder: valid, every part packs with every pin, and release packs ship what ADR 0010 says. */
 class RealContentTest {
     @get:Rule val tmp = TemporaryFolder()
 
@@ -29,7 +30,7 @@ class RealContentTest {
             assertEquals(part.id, positions.toString(), pins)
         }
         val ids = query(result.file, "SELECT id FROM part ORDER BY id").map { it.single() }
-        assertEquals(listOf("arduino/uno-r3", "espressif/esp32-devkitc-v4-wroom-32e", "espressif/esp32-wroom-32e"), ids)
+        assertEquals((SEEDS + IMPORTED).sorted(), ids)
     }
 
     // The seed parts are checked, so the release pack (what release builds bundle) carries all of each part.
@@ -37,10 +38,30 @@ class RealContentTest {
     fun theSeedPartsShipInFullInReleasePacks() {
         val release = (Packer(content, tmp.newFolder()).pack(Mode.RELEASE) as Packer.Result.Packed).file
         val preview = (Packer(content, tmp.newFolder()).pack(Mode.PREVIEW) as Packer.Result.Packed).file
-        assertEquals("3", single(release, "SELECT count(*) FROM part"))
-        listOf("pin", "gotcha", "spec", "source").forEach { table ->
-            val sql = "SELECT count(*) FROM $table"
-            assertEquals(table, single(preview, sql), single(release, sql))
+        assertEquals((SEEDS.size + IMPORTED.size).toString(), single(release, "SELECT count(*) FROM part"))
+        for (part in SEEDS) {
+            listOf("pin", "gotcha", "spec", "source").forEach { table ->
+                val sql = "SELECT count(*) FROM $table WHERE part_id = ?"
+                assertEquals("$part $table", single(preview, sql, part), single(release, sql, part))
+            }
         }
+    }
+
+    // ADR 0010: an imported board ships as a part with its sources, but its pins wait for a person's check.
+    @Test
+    fun importedBoardsShipWithoutTheirPinsInReleasePacks() {
+        val release = (Packer(content, tmp.newFolder()).pack(Mode.RELEASE) as Packer.Result.Packed).file
+        val preview = (Packer(content, tmp.newFolder()).pack(Mode.PREVIEW) as Packer.Result.Packed).file
+        for (part in IMPORTED) {
+            assertEquals(part, "1", single(release, "SELECT count(*) FROM part WHERE id = ?", part))
+            assertEquals(part, "0", single(release, "SELECT count(*) FROM pin WHERE part_id = ?", part))
+            assertNotEquals(part, "0", single(preview, "SELECT count(*) FROM pin WHERE part_id = ?", part))
+            assertNotEquals(part, "0", single(release, "SELECT count(*) FROM source WHERE part_id = ?", part))
+        }
+    }
+
+    private companion object {
+        val SEEDS = listOf("arduino/uno-r3", "espressif/esp32-devkitc-v4-wroom-32e", "espressif/esp32-wroom-32e")
+        val IMPORTED = listOf("espressif/esp32-c3-devkitm-1", "espressif/esp32-s3-devkitc-1")
     }
 }
