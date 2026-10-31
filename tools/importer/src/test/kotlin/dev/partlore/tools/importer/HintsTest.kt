@@ -66,6 +66,27 @@ class HintsTest {
     }
 
     @Test
+    fun anEmptyCitesListStops() {
+        val error =
+            assertThrows(ImportException::class.java) {
+                Hints.read(
+                    HINTS.replace("safe: caution, cites: [ { source: s3, page: 2 } ]", "safe: caution, cites: []"),
+                )
+            }
+        assertTrue(error.message, error.message!!.contains("J1 No. 1"))
+    }
+
+    @Test
+    fun aHeaderMustSayItHasOneRow() {
+        assertThrows(ImportException::class.java) { Hints.read(HINTS.replace("    rows: 1\n", "")) }
+        val error =
+            assertThrows(ImportException::class.java) {
+                Hints.read(HINTS.replace("    rows: 1\n", "    rows: 2\n"))
+            }
+        assertTrue(error.message, error.message!!.contains("two-row"))
+    }
+
+    @Test
     fun aHintForAPinTheGuideLacksStops() {
         val error =
             assertThrows(ImportException::class.java) {
@@ -108,6 +129,7 @@ class HintsTest {
                 id: j1
                 label: J1
                 type: header
+                rows: 1
                 pitch_mm: 2.54
                 source: s3
                 page: 1

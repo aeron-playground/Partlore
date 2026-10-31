@@ -65,7 +65,7 @@ class Hints private constructor(
         private val PART_KEYS = setOf("id", "name", "aliases", "manufacturer", "category", "tags", "summary")
         private val GUIDE_KEYS = setOf("ref", "url", "version")
         private val HEADER_KEYS =
-            setOf("table", "id", "label", "type", "pitch_mm", "source", "page", "section", "ref", "edges")
+            setOf("table", "id", "label", "type", "rows", "pitch_mm", "source", "page", "section", "ref", "edges")
         private val PIN_KEYS =
             setOf(
                 "table", "no", "safe", "cites", "board_label", "reserved", "strapping", "voltage",
@@ -90,11 +90,7 @@ class Hints private constructor(
             keys(part, "part", PART_KEYS, setOf("id", "name", "manufacturer", "category", "summary"))
             val guide = root.get("guide")
             keys(guide, "guide", GUIDE_KEYS, GUIDE_KEYS)
-            val headers =
-                list(root, "headers").mapIndexed { i, header ->
-                    keys(header, "headers[$i]", HEADER_KEYS, HEADER_KEYS - setOf("page", "section", "ref"))
-                    HeaderHint(header.get("table").asString(), header)
-                }
+            val headers = list(root, "headers").mapIndexed(::header)
             return Hints(
                 part = part,
                 guide = GuideHint(
@@ -108,12 +104,26 @@ class Hints private constructor(
             )
         }
 
+        // The importer numbers pins along one row; a two-row header would be drawn wrong, so it stops.
+        private fun header(i: Int, node: JsonNode): HeaderHint {
+            keys(node, "headers[$i]", HEADER_KEYS, HEADER_KEYS - setOf("page", "section", "ref"))
+            val rows = node.get("rows")
+            if (!rows.isInt || rows.intValue() != 1) {
+                throw ImportException(
+                    "headers[$i]: two-row headers aren't supported yet; write this board's pins by hand",
+                )
+            }
+            return HeaderHint(node.get("table").asString(), node)
+        }
+
         private fun pin(i: Int, node: JsonNode): PinHint {
             keys(node, "pins[$i]", PIN_KEYS, setOf("table", "no", "safe"))
             if (!node.get("no").isInt) throw ImportException("pins[$i]: `no` must be a pin number")
             val hint = PinHint(node.get("table").asString(), node.get("no").intValue(), node)
             val judged = node.get("safe").asString() != "ok" || JUDGEMENTS.any { node.has(it) }
-            if (judged && !node.has("cites")) {
+            val cites = node.get("cites")
+            val cited = cites != null && cites.isArray && !cites.isEmpty
+            if (judged && !cited) {
                 throw ImportException(
                     "${hint.table} No. ${hint.no}: this hint needs `cites` (where the fact comes from)",
                 )

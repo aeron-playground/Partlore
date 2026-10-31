@@ -37,6 +37,12 @@ class PinTablesTest {
     }
 
     @Test
+    fun aListTableCellLineThatStartsWithARoleIsKept() {
+        val function = PinTables.read(LIST.replace("DAC_1 [3]_", ":sup:`x` DAC_1 [3]_")).single().rows.last().function
+        assertTrue(function, function.endsWith(":sup:`x` DAC_1"))
+    }
+
+    @Test
     fun tablesKeepTheirOrderInTheFile() {
         assertEquals(listOf("J1", "J2"), PinTables.read(SIMPLE + "\n" + LIST).map { it.heading })
     }

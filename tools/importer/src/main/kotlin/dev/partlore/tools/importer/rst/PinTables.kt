@@ -104,8 +104,12 @@ object PinTables {
             val cells = rows.lastOrNull()?.second
             when {
                 text == "* -" || text.startsWith("* - ") -> rows += n to mutableListOf(text.removePrefix("* -").trim())
-                cells == null || text.isEmpty() || text.startsWith(":") -> Unit
+
+                // Options such as :header-rows: come before the first row; after it, every line is cell text.
+                cells == null || text.isEmpty() -> Unit
+
                 text == "-" || text.startsWith("- ") -> cells += text.removePrefix("-").trim()
+
                 else -> cells[cells.lastIndex] += " $text"
             }
         }

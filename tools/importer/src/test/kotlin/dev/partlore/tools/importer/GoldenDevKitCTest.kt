@@ -68,7 +68,7 @@ class GoldenDevKitCTest {
         val labels = checked.get("headers").values().associate { it.get("id").asString() to it.get("label").asString() }
         for (header in checked.get("headers").values()) {
             append("  - table: ${header.get("label").asString()}\n")
-            for (key in listOf("id", "label", "type", "pitch_mm", "source", "page", "edges")) {
+            for (key in listOf("id", "label", "type", "rows", "pitch_mm", "source", "page", "edges")) {
                 append("    $key: ${YamlOut.inline(header.get(key))}\n")
             }
         }

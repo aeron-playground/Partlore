@@ -1,5 +1,6 @@
 package dev.partlore.tools.importer
 
+import tools.jackson.core.JacksonException
 import tools.jackson.dataformat.yaml.YAMLMapper
 import java.io.File
 import java.io.PrintStream
@@ -81,12 +82,19 @@ class ImporterCli(private val out: PrintStream, private val err: PrintStream) {
         }
     }
 
+    // sources.yaml has no status. part.yaml and pins.yaml must still be at level imported: a person may
+    // have checked a file without removing the importer's marker. A file that can't be read stays too.
     private fun ours(file: File): Boolean {
         val text = file.readText()
-        val level = YAMLMapper().readTree(text)?.get("status")?.get("level")?.asString()
-        val marked = text.lines().getOrNull(1).orEmpty().startsWith(Importer.MARKER)
-        return text.startsWith("# yaml-language-server") && marked &&
-            (level == null || level == "imported")
+        val marked =
+            text.startsWith("# yaml-language-server") && text.lines().getOrNull(1).orEmpty().startsWith(Importer.MARKER)
+        val level =
+            try {
+                YAMLMapper().readTree(text)?.get("status")?.get("level")?.asString()
+            } catch (_: JacksonException) {
+                return false
+            }
+        return marked && if (file.name == "sources.yaml") level == null else level == "imported"
     }
 
     private fun git(dir: File, vararg args: String): String {

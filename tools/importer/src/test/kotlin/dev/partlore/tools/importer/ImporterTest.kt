@@ -163,6 +163,7 @@ class ImporterTest {
                 id: j1
                 label: J1
                 type: header
+                rows: 1
                 pitch_mm: 2.54
                 source: s3
                 page: 1

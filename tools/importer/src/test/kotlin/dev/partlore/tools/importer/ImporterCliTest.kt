@@ -73,6 +73,20 @@ class ImporterCliTest {
     }
 
     @Test
+    fun markedFilesStayUnlessTheyAreStillImported() {
+        assertEquals(0, importBoard())
+        val pins = File(out, "example/board/pins.yaml")
+        val checked = pins.readText().replace("level: imported", "level: checked")
+        pins.writeText(checked)
+        assertEquals(1, importBoard())
+        assertEquals(checked, pins.readText())
+        val noStatus = checked.substringBefore("status:")
+        pins.writeText(noStatus)
+        assertEquals(1, importBoard())
+        assertEquals(noStatus, pins.readText())
+    }
+
+    @Test
     fun aGuideWithLocalChangesStops() {
         File(checkout, "docs/en/board/user_guide.rst").appendText("\nA local edit.\n")
         assertEquals(1, importBoard())
