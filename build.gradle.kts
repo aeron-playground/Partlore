@@ -95,3 +95,8 @@ detekt {
         },
     )
 }
+
+dependencies {
+    // Our design-token rules. Only their jar: detekt runs its own Kotlin, and a newer one from here could break it.
+    detektPlugins(project(":tools:detekt-rules")) { isTransitive = false }
+}
