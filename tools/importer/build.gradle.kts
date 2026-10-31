@@ -40,11 +40,14 @@ tasks.register<JavaExec>("importEspDevKits") {
     workingDir = rootProject.projectDir
     val checkout = providers.gradleProperty("checkout")
     val board = providers.gradleProperty("board")
+    // -Pon=<yyyy-mm-dd> re-imports with a fixed date, so the files only change where the data does.
+    val on = providers.gradleProperty("on")
     argumentProviders.add(
         CommandLineArgumentProvider {
             val path = checkout.orNull ?: error("set -Pcheckout=<path to an esp-dev-kits checkout>")
             val name = board.orNull ?: error("set -Pboard=<hints file name, for example esp32-s3-devkitc-1>")
-            listOf("--checkout", path, "--hints", "content/import/esp-dev-kits/$name.yaml", "--out", "content/parts")
+            listOf("--checkout", path, "--hints", "content/import/esp-dev-kits/$name.yaml", "--out", "content/parts") +
+                on.orNull?.let { listOf("--on", it) }.orEmpty()
         },
     )
 }
