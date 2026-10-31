@@ -17,6 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.KoinApplication
 import org.koin.core.context.stopKoin
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.koinApplication
@@ -27,7 +28,14 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(application = android.app.Application::class) // don't start the real app's Koin here
 class KoinGraphTest {
-    @After fun tearDown() = stopKoin()
+    // Each test builds its own Koin; closing it closes the settings file, so the next test starts clean.
+    private val apps = mutableListOf<KoinApplication>()
+
+    @After
+    fun tearDown() {
+        apps.forEach { it.close() }
+        stopKoin()
+    }
 
     @Test
     fun everyScreenDependencyResolves() {
@@ -36,7 +44,7 @@ class KoinGraphTest {
             koinApplication {
                 androidContext(ApplicationProvider.getApplicationContext())
                 modules(appModules + module { single<ContentRepository> { FakeContentRepository() } })
-            }.koin
+            }.also { apps += it }.koin
         assertNotNull(koin.get<UserSettingsRepository>())
         assertNotNull(koin.get<MainViewModel>())
         assertNotNull(koin.get<SettingsViewModel>())
@@ -53,7 +61,7 @@ class KoinGraphTest {
             koinApplication {
                 androidContext(ApplicationProvider.getApplicationContext())
                 modules(appModules)
-            }.koin
+            }.also { apps += it }.koin
         assertTrue(koin.get<ContentRepository>() is PackContentRepository)
     }
 }
