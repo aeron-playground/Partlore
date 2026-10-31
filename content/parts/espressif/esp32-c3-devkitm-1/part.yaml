@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=../../../schema/part.schema.json
+# Written by tools:importer from Espressif's esp-dev-kits. To change it, edit the board's hints
+# file and import again.
+id: espressif/esp32-c3-devkitm-1
+kind: board
+name: ESP32-C3-DevKitM-1
+manufacturer: Espressif
+category: esp32-boards
+tags: [wifi, bluetooth, "3v3-logic", micro-usb]
+summary: "Espressif's small ESP32-C3 dev board with an ESP32-C3-MINI-1 or MINI-1U module, a Micro-USB port with a USB-to-UART chip, and an RGB LED on GPIO8."
+status:
+  level: imported
+  imported_from: { importer: esp-dev-kits, source: s1, ref: docs/en/esp32-c3-devkitm-1/user_guide.rst, on: 2026-10-31 }

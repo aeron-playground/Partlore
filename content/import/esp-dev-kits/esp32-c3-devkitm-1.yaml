@@ -1,0 +1,102 @@
+# Hints for tools:importer: what the ESP32-C3-DevKitM-1 user guide's pin tables don't say.
+# The importer adds s1 (esp-dev-kits) and s2 (the guide). Every value here cites its own source.
+part:
+  id: espressif/esp32-c3-devkitm-1
+  name: ESP32-C3-DevKitM-1
+  manufacturer: Espressif
+  category: esp32-boards
+  tags: [wifi, bluetooth, 3v3-logic, micro-usb]
+  summary: Espressif's small ESP32-C3 dev board with an ESP32-C3-MINI-1 or MINI-1U module, a Micro-USB port with a USB-to-UART chip, and an RGB LED on GPIO8.
+guide:
+  ref: docs/en/esp32-c3-devkitm-1/user_guide.rst
+  url: "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c3/esp32-c3-devkitm-1/user_guide.html"
+  version: v1
+sources:
+  - id: s3
+    type: datasheet
+    title: ESP32-C3 Series Datasheet
+    publisher: Espressif Systems
+    url: "https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf"
+    version: "2.4"
+    retrieved: 2026-10-31
+    sha256: "833fc000b4b3c3d39c496fcbd597fed5806956503ce7390b19cc8ae82f19f968"
+    license: link-only
+  - id: s4
+    type: datasheet
+    title: ESP32-C3-MINI-1 & MINI-1U Datasheet
+    publisher: Espressif Systems
+    url: "https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf"
+    version: "2.2"
+    retrieved: 2026-10-31
+    sha256: "de7361381348d82a1abd337f10170be7a420675987568f71fe3c5b100deed270"
+    license: link-only
+  - id: s5
+    type: schematic
+    title: ESP32-C3-DevKitM-1 dimensions
+    publisher: Espressif Systems
+    url: "https://dl.espressif.com/dl/schematics/DIMENSION_ESP32-C3-DEVKITM-1_V1_20200915AA.pdf"
+    version: "V1, 2020-09-15"
+    retrieved: 2026-10-31
+    sha256: "284d7b4060098e252feafac8a412902b7c51d116b5df49111f4489fc84c92d92"
+    license: link-only
+  - id: s6
+    type: schematic
+    title: ESP32-C3-DevKitM-1 schematic
+    publisher: Espressif Systems
+    url: "https://dl.espressif.com/dl/schematics/SCH_ESP32-C3-DEVKITM-1_V1_20200915A.pdf"
+    version: "V1, 2020-09-15"
+    retrieved: 2026-10-31
+    sha256: "d2ac6d649cbea3ce4b2295a261f78823bf61e536f69fe4bee2b6e4142bd86542"
+    license: link-only
+headers:
+  - table: J1
+    id: j1
+    label: J1
+    type: header
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+    edges:
+      - { edge: left, pins: 15, first: top, source: s5, page: 1 }
+  - table: J3
+    id: j3
+    label: J3
+    type: header
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+    edges:
+      - { edge: right, pins: 15, first: top, source: s5, page: 1 }
+pins:
+  # J1, left edge, from the antenna end. The board prints 2, 3, 0, 1, 10 where the guide writes IO2 and so on.
+  - { table: J1, no: 1, safe: ok }
+  - { table: J1, no: 2, safe: caution, voltage: 3.3, note: "The board's 3.3 V rail. Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins.", cites: [ { source: s2, section: Power Supply Options }, { source: s6, page: 2 } ] }
+  - { table: J1, no: 3, safe: caution, voltage: 3.3, note: "The board's 3.3 V rail. Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins.", cites: [ { source: s2, section: Power Supply Options }, { source: s6, page: 2 } ] }
+  - { table: J1, no: 4, safe: caution, board_label: "2", voltage: 3.3, five_v_tolerant: false, strapping: { role: boot-mode, must_be: high, at: reset }, note: "Keep it high at reset. It doesn't choose the boot mode, but the datasheet asks for a pull-up against glitches; the chip leaves it floating.", cites: [ { source: s3, page: 30 }, { source: s3, page: 31 }, { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J1, no: 5, safe: ok, board_label: "3", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J1, no: 6, safe: ok }
+  - { table: J1, no: 7, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "Low restarts the chip; the Reset button pulls it low.", cites: [ { source: s2, section: Description of Components }, { source: s6, page: 2 }, { source: s4, page: 21 } ] }
+  - { table: J1, no: 8, safe: ok }
+  - { table: J1, no: 9, safe: ok, board_label: "0", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J1, no: 10, safe: ok, board_label: "1", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J1, no: 11, safe: ok, board_label: "10", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J1, no: 12, safe: ok }
+  - { table: J1, no: 13, safe: caution, voltage: 5, note: "Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins.", cites: [ { source: s2, section: Power Supply Options }, { source: s6, page: 2 } ] }
+  - { table: J1, no: 14, safe: caution, voltage: 5, note: "Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins.", cites: [ { source: s2, section: Power Supply Options }, { source: s6, page: 2 } ] }
+  - { table: J1, no: 15, safe: ok }
+  # J3, right edge, from the antenna end.
+  - { table: J3, no: 1, safe: ok }
+  - { table: J3, no: 2, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "UART0 TX, wired to the board's CP2102N USB-to-UART chip, which uploads firmware and shows the serial console.", cites: [ { source: s3, page: 23 }, { source: s6, page: 2 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 3, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "UART0 RX, wired to the board's CP2102N USB-to-UART chip, which uploads firmware and shows the serial console.", cites: [ { source: s3, page: 23 }, { source: s6, page: 2 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 4, safe: ok }
+  - { table: J3, no: 5, safe: caution, board_label: "9", voltage: 3.3, five_v_tolerant: false, strapping: { role: boot-mode, must_be: high, at: reset }, note: "Read at reset: high (the default, pulled up inside the chip) runs the program in flash; low, with GPIO8 high, starts download mode. The Boot button pulls it low.", cites: [ { source: s3, page: 30 }, { source: s3, page: 31 }, { source: s6, page: 2 }, { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 6, safe: caution, board_label: "8", voltage: 3.3, five_v_tolerant: false, strapping: { role: boot-mode, at: reset }, note: "Read at reset with GPIO9: it must be high for download mode; any level runs the program in flash. It also drives the board's RGB LED, and can turn off boot messages on UART0 when the chip's eFuses ask for it.", cites: [ { source: s3, page: 31 }, { source: s3, page: 32 }, { source: s2, section: Description of Components }, { source: s6, page: 2 }, { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 7, safe: ok }
+  - { table: J3, no: 8, safe: ok, board_label: "7", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 9, safe: ok, board_label: "6", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 10, safe: ok, board_label: "5", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 11, safe: ok, board_label: "4", voltage: 3.3, five_v_tolerant: false, cites: [ { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 12, safe: ok }
+  - { table: J3, no: 13, safe: ok, board_label: "18", voltage: 3.3, five_v_tolerant: false, note: "The chip's USB D- pin. On this board it isn't wired to the USB port (that link is not fitted).", cites: [ { source: s3, page: 23 }, { source: s6, page: 2 }, { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 14, safe: caution, board_label: "19", voltage: 3.3, five_v_tolerant: false, note: "The chip's USB D+ pin, with its USB pull-up on at reset. On this board it isn't wired to the USB port (that link is not fitted).", cites: [ { source: s3, page: 17 }, { source: s3, page: 23 }, { source: s6, page: 2 }, { source: s5, page: 1 }, { source: s4, page: 21 } ] }
+  - { table: J3, no: 15, safe: ok }

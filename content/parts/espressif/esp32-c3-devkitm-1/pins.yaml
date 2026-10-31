@@ -1,0 +1,505 @@
+# yaml-language-server: $schema=../../../schema/pins.schema.json
+# Written by tools:importer from Espressif's esp-dev-kits. To change it, edit the board's hints
+# file and import again.
+status:
+  level: imported
+  imported_from: { importer: esp-dev-kits, source: s1, ref: docs/en/esp32-c3-devkitm-1/user_guide.rst, on: 2026-10-31 }
+headers:
+  - id: j1
+    label: J1
+    type: header
+    rows: 1
+    pins_per_row: 15
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+    edges:
+      - { edge: left, pins: 15, first: top, source: s5, page: 1 }
+  - id: j3
+    label: J3
+    type: header
+    rows: 1
+    pins_per_row: 15
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+    edges:
+      - { edge: right, pins: 15, first: top, source: s5, page: 1 }
+pins:
+  - id: gnd-j1-1
+    header: j1
+    row: 1
+    index: 1
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 1" }
+      - { source: s2, section: J1 }
+  - id: 3v3-j1-2
+    header: j1
+    row: 1
+    index: 2
+    board_label: "3V3"
+    direction: power
+    voltage: 3.3
+    safe: caution
+    note: "The board's 3.3 V rail. Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 2" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Power Supply Options" }
+      - { source: s6, page: 2 }
+  - id: 3v3-j1-3
+    header: j1
+    row: 1
+    index: 3
+    board_label: "3V3"
+    direction: power
+    voltage: 3.3
+    safe: caution
+    note: "The board's 3.3 V rail. Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 3" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Power Supply Options" }
+      - { source: s6, page: 2 }
+  - id: gpio2
+    header: j1
+    row: 1
+    index: 4
+    chip_name: GPIO2
+    board_label: "2"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH2 }
+      - { type: spi, signal: FSPIQ }
+    strapping: { role: boot-mode, must_be: high, at: reset }
+    safe: caution
+    note: "Keep it high at reset. It doesn't choose the boot mode, but the datasheet asks for a pull-up against glitches; the chip leaves it floating."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 4" }
+      - { source: s2, section: J1 }
+      - { source: s3, page: 30 }
+      - { source: s3, page: 31 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio3
+    header: j1
+    row: 1
+    index: 5
+    chip_name: GPIO3
+    board_label: "3"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH3 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 5" }
+      - { source: s2, section: J1 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gnd-j1-6
+    header: j1
+    row: 1
+    index: 6
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 6" }
+      - { source: s2, section: J1 }
+  - id: rst
+    header: j1
+    row: 1
+    index: 7
+    board_label: "RST"
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: reset, signal: CHIP_PU }
+    safe: caution
+    note: "Low restarts the chip; the Reset button pulls it low."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 7" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 21 }
+  - id: gnd-j1-8
+    header: j1
+    row: 1
+    index: 8
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 8" }
+      - { source: s2, section: J1 }
+  - id: gpio0
+    header: j1
+    row: 1
+    index: 9
+    chip_name: GPIO0
+    board_label: "0"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH0 }
+      - { type: clock, signal: XTAL_32K_P }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 9" }
+      - { source: s2, section: J1 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio1
+    header: j1
+    row: 1
+    index: 10
+    chip_name: GPIO1
+    board_label: "1"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH1 }
+      - { type: clock, signal: XTAL_32K_N }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 10" }
+      - { source: s2, section: J1 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio10
+    header: j1
+    row: 1
+    index: 11
+    chip_name: GPIO10
+    board_label: "10"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: FSPICS0 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 11" }
+      - { source: s2, section: J1 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gnd-j1-12
+    header: j1
+    row: 1
+    index: 12
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 12" }
+      - { source: s2, section: J1 }
+  - id: 5v-j1-13
+    header: j1
+    row: 1
+    index: 13
+    board_label: "5V"
+    direction: power
+    voltage: 5
+    safe: caution
+    note: "Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 13" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Power Supply Options" }
+      - { source: s6, page: 2 }
+  - id: 5v-j1-14
+    header: j1
+    row: 1
+    index: 14
+    board_label: "5V"
+    direction: power
+    voltage: 5
+    safe: caution
+    note: "Can power the board, but use one power source at a time: the Micro-USB port, the 5V pins or the 3V3 pins."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 14" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Power Supply Options" }
+      - { source: s6, page: 2 }
+  - id: gnd-j1-15
+    header: j1
+    row: 1
+    index: 15
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J1 No. 15" }
+      - { source: s2, section: J1 }
+  - id: gnd-j3-1
+    header: j3
+    row: 1
+    index: 1
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 1" }
+      - { source: s2, section: J3 }
+  - id: gpio21
+    header: j3
+    row: 1
+    index: 2
+    chip_name: GPIO21
+    board_label: "TX"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0TXD }
+    safe: caution
+    note: "UART0 TX, wired to the board's CP2102N USB-to-UART chip, which uploads firmware and shows the serial console."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 2" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 23 }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 21 }
+  - id: gpio20
+    header: j3
+    row: 1
+    index: 3
+    chip_name: GPIO20
+    board_label: "RX"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0RXD }
+    safe: caution
+    note: "UART0 RX, wired to the board's CP2102N USB-to-UART chip, which uploads firmware and shows the serial console."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 3" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 23 }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 21 }
+  - id: gnd-j3-4
+    header: j3
+    row: 1
+    index: 4
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 4" }
+      - { source: s2, section: J3 }
+  - id: gpio9
+    header: j3
+    row: 1
+    index: 5
+    chip_name: GPIO9
+    board_label: "9"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    strapping: { role: boot-mode, must_be: high, at: reset }
+    safe: caution
+    note: "Read at reset: high (the default, pulled up inside the chip) runs the program in flash; low, with GPIO8 high, starts download mode. The Boot button pulls it low."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 5" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 30 }
+      - { source: s3, page: 31 }
+      - { source: s6, page: 2 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio8
+    header: j3
+    row: 1
+    index: 6
+    chip_name: GPIO8
+    board_label: "8"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    strapping: { role: boot-mode, at: reset }
+    safe: caution
+    note: "Read at reset with GPIO9: it must be high for download mode; any level runs the program in flash. It also drives the board's RGB LED, and can turn off boot messages on UART0 when the chip's eFuses ask for it."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 6" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 31 }
+      - { source: s3, page: 32 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s6, page: 2 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gnd-j3-7
+    header: j3
+    row: 1
+    index: 7
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 7" }
+      - { source: s2, section: J3 }
+  - id: gpio7
+    header: j3
+    row: 1
+    index: 8
+    chip_name: GPIO7
+    board_label: "7"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: FSPID }
+      - { type: jtag, signal: MTDO }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 8" }
+      - { source: s2, section: J3 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio6
+    header: j3
+    row: 1
+    index: 9
+    chip_name: GPIO6
+    board_label: "6"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: FSPICLK }
+      - { type: jtag, signal: MTCK }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 9" }
+      - { source: s2, section: J3 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio5
+    header: j3
+    row: 1
+    index: 10
+    chip_name: GPIO5
+    board_label: "5"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC2_CH0 }
+      - { type: spi, signal: FSPIWP }
+      - { type: jtag, signal: MTDI }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 10" }
+      - { source: s2, section: J3 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio4
+    header: j3
+    row: 1
+    index: 11
+    chip_name: GPIO4
+    board_label: "4"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: adc, signal: ADC1_CH4 }
+      - { type: spi, signal: FSPIHD }
+      - { type: jtag, signal: MTMS }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 11" }
+      - { source: s2, section: J3 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gnd-j3-12
+    header: j3
+    row: 1
+    index: 12
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 12" }
+      - { source: s2, section: J3 }
+  - id: gpio18
+    header: j3
+    row: 1
+    index: 13
+    chip_name: GPIO18
+    board_label: "18"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: usb, signal: USB_D- }
+    safe: ok
+    note: "The chip's USB D- pin. On this board it isn't wired to the USB port (that link is not fitted)."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 13" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 23 }
+      - { source: s6, page: 2 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gpio19
+    header: j3
+    row: 1
+    index: 14
+    chip_name: GPIO19
+    board_label: "19"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: usb, signal: USB_D+ }
+    safe: caution
+    note: "The chip's USB D+ pin, with its USB pull-up on at reset. On this board it isn't wired to the USB port (that link is not fitted)."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 14" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 17 }
+      - { source: s3, page: 23 }
+      - { source: s6, page: 2 }
+      - { source: s5, page: 1 }
+      - { source: s4, page: 21 }
+  - id: gnd-j3-15
+    header: j3
+    row: 1
+    index: 15
+    board_label: "GND"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 15" }
+      - { source: s2, section: J3 }
