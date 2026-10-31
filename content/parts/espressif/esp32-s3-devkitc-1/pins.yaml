@@ -1,0 +1,866 @@
+# yaml-language-server: $schema=../../../schema/pins.schema.json
+# Written by tools:importer from Espressif's esp-dev-kits. To change it, edit the board's hints
+# file and import again.
+status:
+  level: imported
+  imported_from: { importer: esp-dev-kits, source: s1, ref: docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, on: 2026-10-31 }
+headers:
+  - id: j1
+    label: J1
+    type: header
+    rows: 1
+    pins_per_row: 22
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+    edges:
+      - { edge: left, pins: 22, first: top, source: s5, page: 1 }
+  - id: j3
+    label: J3
+    type: header
+    rows: 1
+    pins_per_row: 22
+    pitch_mm: 2.54
+    source: s5
+    page: 1
+    edges:
+      - { edge: right, pins: 22, first: top, source: s5, page: 1 }
+pins:
+  - id: 3v3-j1-1
+    header: j1
+    row: 1
+    index: 1
+    board_label: "3V3"
+    direction: power
+    voltage: 3.3
+    safe: caution
+    note: "The board's 3.3 V rail. Can power the board, but use one power source at a time: USB, the 5V pin or a 3V3 pin."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 1" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Power Supply Options" }
+      - { source: s6, page: 2 }
+  - id: 3v3-j1-2
+    header: j1
+    row: 1
+    index: 2
+    board_label: "3V3"
+    direction: power
+    voltage: 3.3
+    safe: caution
+    note: "The board's 3.3 V rail. Can power the board, but use one power source at a time: USB, the 5V pin or a 3V3 pin."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 2" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Power Supply Options" }
+      - { source: s6, page: 2 }
+  - id: rst
+    header: j1
+    row: 1
+    index: 3
+    board_label: "RST"
+    direction: in
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: reset, signal: EN }
+    safe: caution
+    note: "Low restarts the chip; the Reset button pulls it low."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 3" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 28 }
+  - id: gpio4
+    header: j1
+    row: 1
+    index: 4
+    chip_name: GPIO4
+    board_label: "4"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO4 }
+      - { type: touch, signal: TOUCH4 }
+      - { type: adc, signal: ADC1_CH3 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 4" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio5
+    header: j1
+    row: 1
+    index: 5
+    chip_name: GPIO5
+    board_label: "5"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO5 }
+      - { type: touch, signal: TOUCH5 }
+      - { type: adc, signal: ADC1_CH4 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 5" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio6
+    header: j1
+    row: 1
+    index: 6
+    chip_name: GPIO6
+    board_label: "6"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO6 }
+      - { type: touch, signal: TOUCH6 }
+      - { type: adc, signal: ADC1_CH5 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 6" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio7
+    header: j1
+    row: 1
+    index: 7
+    chip_name: GPIO7
+    board_label: "7"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO7 }
+      - { type: touch, signal: TOUCH7 }
+      - { type: adc, signal: ADC1_CH6 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 7" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio15
+    header: j1
+    row: 1
+    index: 8
+    chip_name: GPIO15
+    board_label: "15"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO15 }
+      - { type: uart, signal: U0RTS }
+      - { type: adc, signal: ADC2_CH4 }
+      - { type: clock, signal: XTAL_32K_P }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 8" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio16
+    header: j1
+    row: 1
+    index: 9
+    chip_name: GPIO16
+    board_label: "16"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO16 }
+      - { type: uart, signal: U0CTS }
+      - { type: adc, signal: ADC2_CH5 }
+      - { type: clock, signal: XTAL_32K_N }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 9" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio17
+    header: j1
+    row: 1
+    index: 10
+    chip_name: GPIO17
+    board_label: "17"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO17 }
+      - { type: uart, signal: U1TXD }
+      - { type: adc, signal: ADC2_CH6 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 10" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio18
+    header: j1
+    row: 1
+    index: 11
+    chip_name: GPIO18
+    board_label: "18"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO18 }
+      - { type: uart, signal: U1RXD }
+      - { type: adc, signal: ADC2_CH7 }
+      - { type: clock, signal: CLK_OUT3 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 11" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio8
+    header: j1
+    row: 1
+    index: 12
+    chip_name: GPIO8
+    board_label: "8"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO8 }
+      - { type: touch, signal: TOUCH8 }
+      - { type: adc, signal: ADC1_CH7 }
+      - { type: spi, signal: SUBSPICS1 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 12" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio3
+    header: j1
+    row: 1
+    index: 13
+    chip_name: GPIO3
+    board_label: "3"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO3 }
+      - { type: touch, signal: TOUCH3 }
+      - { type: adc, signal: ADC1_CH2 }
+    strapping: { role: jtag-source, at: reset }
+    safe: caution
+    note: "A strapping pin: read at reset to pick the JTAG source, but only when the chip's eFuses ask for it. It has no pull resistor inside the chip."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 13" }
+      - { source: s2, section: J1 }
+      - { source: s3, page: 26 }
+      - { source: s3, page: 34 }
+      - { source: s4, page: 27 }
+  - id: gpio46
+    header: j1
+    row: 1
+    index: 14
+    chip_name: GPIO46
+    board_label: "46"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    strapping: { role: boot-mode, at: reset }
+    safe: caution
+    note: "Read at reset with GPIO0: it must be low for download mode; any level runs the program in flash. The chip pulls it low by default."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 14" }
+      - { source: s2, section: J1 }
+      - { source: s3, page: 32 }
+      - { source: s3, page: 33 }
+      - { source: s4, page: 27 }
+  - id: gpio9
+    header: j1
+    row: 1
+    index: 15
+    chip_name: GPIO9
+    board_label: "9"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO9 }
+      - { type: touch, signal: TOUCH9 }
+      - { type: adc, signal: ADC1_CH8 }
+      - { type: spi, signal: FSPIHD }
+      - { type: spi, signal: SUBSPIHD }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 15" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio10
+    header: j1
+    row: 1
+    index: 16
+    chip_name: GPIO10
+    board_label: "10"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO10 }
+      - { type: touch, signal: TOUCH10 }
+      - { type: adc, signal: ADC1_CH9 }
+      - { type: spi, signal: FSPICS0 }
+      - { type: spi, signal: FSPIIO4 }
+      - { type: spi, signal: SUBSPICS0 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 16" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio11
+    header: j1
+    row: 1
+    index: 17
+    chip_name: GPIO11
+    board_label: "11"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO11 }
+      - { type: touch, signal: TOUCH11 }
+      - { type: adc, signal: ADC2_CH0 }
+      - { type: spi, signal: FSPID }
+      - { type: spi, signal: FSPIIO5 }
+      - { type: spi, signal: SUBSPID }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 17" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio12
+    header: j1
+    row: 1
+    index: 18
+    chip_name: GPIO12
+    board_label: "12"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO12 }
+      - { type: touch, signal: TOUCH12 }
+      - { type: adc, signal: ADC2_CH1 }
+      - { type: spi, signal: FSPICLK }
+      - { type: spi, signal: FSPIIO6 }
+      - { type: spi, signal: SUBSPICLK }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 18" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio13
+    header: j1
+    row: 1
+    index: 19
+    chip_name: GPIO13
+    board_label: "13"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO13 }
+      - { type: touch, signal: TOUCH13 }
+      - { type: adc, signal: ADC2_CH2 }
+      - { type: spi, signal: FSPIQ }
+      - { type: spi, signal: FSPIIO7 }
+      - { type: spi, signal: SUBSPIQ }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 19" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: gpio14
+    header: j1
+    row: 1
+    index: 20
+    chip_name: GPIO14
+    board_label: "14"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO14 }
+      - { type: touch, signal: TOUCH14 }
+      - { type: adc, signal: ADC2_CH3 }
+      - { type: spi, signal: FSPIWP }
+      - { type: spi, signal: FSPIDQS }
+      - { type: spi, signal: SUBSPIWP }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 20" }
+      - { source: s2, section: J1 }
+      - { source: s4, page: 27 }
+  - id: 5v
+    header: j1
+    row: 1
+    index: 21
+    board_label: "5V"
+    direction: power
+    voltage: 5
+    safe: caution
+    note: "Can power the board, but use one power source at a time: USB, the 5V pin or a 3V3 pin."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 21" }
+      - { source: s2, section: J1 }
+      - { source: s2, section: "Power Supply Options" }
+      - { source: s6, page: 2 }
+  - id: gnd-j1-22
+    header: j1
+    row: 1
+    index: 22
+    board_label: "G"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J1 No. 22" }
+      - { source: s2, section: J1 }
+  - id: gnd-j3-1
+    header: j3
+    row: 1
+    index: 1
+    board_label: "G"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 1" }
+      - { source: s2, section: J3 }
+  - id: gpio43
+    header: j3
+    row: 1
+    index: 2
+    chip_name: GPIO43
+    board_label: "TX"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0TXD }
+      - { type: clock, signal: CLK_OUT1 }
+    safe: caution
+    note: "UART0 TX, wired to the board's CP2102N USB-to-UART chip, which uploads firmware and shows the serial console."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 2" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 27 }
+  - id: gpio44
+    header: j3
+    row: 1
+    index: 3
+    chip_name: GPIO44
+    board_label: "RX"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: uart, signal: U0RXD }
+      - { type: clock, signal: CLK_OUT2 }
+    safe: caution
+    note: "UART0 RX, wired to the board's CP2102N USB-to-UART chip, which uploads firmware and shows the serial console."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 3" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 27 }
+  - id: gpio1
+    header: j3
+    row: 1
+    index: 4
+    chip_name: GPIO1
+    board_label: "1"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO1 }
+      - { type: touch, signal: TOUCH1 }
+      - { type: adc, signal: ADC1_CH0 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 4" }
+      - { source: s2, section: J3 }
+      - { source: s4, page: 27 }
+  - id: gpio2
+    header: j3
+    row: 1
+    index: 5
+    chip_name: GPIO2
+    board_label: "2"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO2 }
+      - { type: touch, signal: TOUCH2 }
+      - { type: adc, signal: ADC1_CH1 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 5" }
+      - { source: s2, section: J3 }
+      - { source: s4, page: 27 }
+  - id: gpio42
+    header: j3
+    row: 1
+    index: 6
+    chip_name: GPIO42
+    board_label: "42"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: jtag, signal: MTMS }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 6" }
+      - { source: s2, section: J3 }
+      - { source: s4, page: 27 }
+  - id: gpio41
+    header: j3
+    row: 1
+    index: 7
+    chip_name: GPIO41
+    board_label: "41"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: jtag, signal: MTDI }
+      - { type: clock, signal: CLK_OUT1 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 7" }
+      - { source: s2, section: J3 }
+      - { source: s4, page: 27 }
+  - id: gpio40
+    header: j3
+    row: 1
+    index: 8
+    chip_name: GPIO40
+    board_label: "40"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: jtag, signal: MTDO }
+      - { type: clock, signal: CLK_OUT2 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 8" }
+      - { source: s2, section: J3 }
+      - { source: s4, page: 27 }
+  - id: gpio39
+    header: j3
+    row: 1
+    index: 9
+    chip_name: GPIO39
+    board_label: "39"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: jtag, signal: MTCK }
+      - { type: clock, signal: CLK_OUT3 }
+      - { type: spi, signal: SUBSPICS1 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 9" }
+      - { source: s2, section: J3 }
+      - { source: s4, page: 27 }
+  - id: gpio38
+    header: j3
+    row: 1
+    index: 10
+    chip_name: GPIO38
+    board_label: "38"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: FSPIWP }
+      - { type: spi, signal: SUBSPIWP }
+    safe: caution
+    note: "Drives the board's addressable RGB LED on v1.1 (the first version used GPIO48)."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 10" }
+      - { source: s2, section: J3 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s2, section: "Hardware Revision Details" }
+      - { source: s4, page: 27 }
+  - id: gpio37
+    header: j3
+    row: 1
+    index: 11
+    chip_name: GPIO37
+    board_label: "37"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: SPIDQS }
+      - { type: spi, signal: FSPIQ }
+      - { type: spi, signal: SUBSPIQ }
+    safe: caution
+    note: "Taken by the module's octal PSRAM or flash on boards with an octal-PSRAM WROOM-1/1U (R8 and R16V models) or a WROOM-2 module; free on the others."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 11" }
+      - { source: s2, section: J3 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s4, page: 12 }
+      - { source: s4, page: 27 }
+  - id: gpio36
+    header: j3
+    row: 1
+    index: 12
+    chip_name: GPIO36
+    board_label: "36"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: SPIIO7 }
+      - { type: spi, signal: FSPICLK }
+      - { type: spi, signal: SUBSPICLK }
+    safe: caution
+    note: "Taken by the module's octal PSRAM or flash on boards with an octal-PSRAM WROOM-1/1U (R8 and R16V models) or a WROOM-2 module; free on the others."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 12" }
+      - { source: s2, section: J3 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s4, page: 12 }
+      - { source: s4, page: 27 }
+  - id: gpio35
+    header: j3
+    row: 1
+    index: 13
+    chip_name: GPIO35
+    board_label: "35"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: SPIIO6 }
+      - { type: spi, signal: FSPID }
+      - { type: spi, signal: SUBSPID }
+    safe: caution
+    note: "Taken by the module's octal PSRAM or flash on boards with an octal-PSRAM WROOM-1/1U (R8 and R16V models) or a WROOM-2 module; free on the others."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 13" }
+      - { source: s2, section: J3 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s4, page: 12 }
+      - { source: s4, page: 27 }
+  - id: gpio0
+    header: j3
+    row: 1
+    index: 14
+    chip_name: GPIO0
+    board_label: "0"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO0 }
+    strapping: { role: boot-mode, must_be: high, at: reset }
+    safe: caution
+    note: "Read at reset: high (the default, pulled up inside the chip) runs the program in flash; low, with GPIO46 low, starts download mode. The Boot button pulls it low."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 14" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 32 }
+      - { source: s3, page: 33 }
+      - { source: s2, section: "Description of Components" }
+      - { source: s4, page: 27 }
+  - id: gpio45
+    header: j3
+    row: 1
+    index: 15
+    chip_name: GPIO45
+    board_label: "45"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+    strapping: { role: flash-voltage, at: reset }
+    safe: caution
+    note: "Read at reset to choose the flash supply unless the chip's eFuses set it: low (the default, pulled down inside the chip) gives 3.3 V, high gives 1.8 V. Leave it at its default unless you know your module's flash voltage."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 15" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 32 }
+      - { source: s3, page: 34 }
+      - { source: s4, page: 27 }
+  - id: gpio48
+    header: j3
+    row: 1
+    index: 16
+    chip_name: GPIO48
+    board_label: "48"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: SPICLK_N }
+      - { type: spi, signal: SUBSPICLK_N_DIFF }
+    safe: caution
+    note: "Works at 1.8 V, not 3.3 V, on boards whose module has an ESP32-S3R8V or R16V chip. On the board's first version it drives the RGB LED."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 16" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 18 }
+      - { source: s4, page: 12 }
+      - { source: s2, section: "Hardware Revision Details" }
+      - { source: s4, page: 27 }
+  - id: gpio47
+    header: j3
+    row: 1
+    index: 17
+    chip_name: GPIO47
+    board_label: "47"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: spi, signal: SPICLK_P }
+      - { type: spi, signal: SUBSPICLK_P_DIFF }
+    safe: caution
+    note: "Works at 1.8 V, not 3.3 V, on boards whose module has an ESP32-S3R8V or R16V chip."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 17" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 18 }
+      - { source: s4, page: 12 }
+      - { source: s4, page: 27 }
+  - id: gpio21
+    header: j3
+    row: 1
+    index: 18
+    chip_name: GPIO21
+    board_label: "21"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO21 }
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 18" }
+      - { source: s2, section: J3 }
+      - { source: s4, page: 27 }
+  - id: gpio20
+    header: j3
+    row: 1
+    index: 19
+    chip_name: GPIO20
+    board_label: "20"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO20 }
+      - { type: uart, signal: U1CTS }
+      - { type: adc, signal: ADC2_CH9 }
+      - { type: clock, signal: CLK_OUT1 }
+      - { type: usb, signal: USB_D+ }
+    safe: caution
+    note: "USB D+ of the chip's own USB, wired to the board's USB port. Free only when you don't use that port."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 19" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 27 }
+  - id: gpio19
+    header: j3
+    row: 1
+    index: 20
+    chip_name: GPIO19
+    board_label: "19"
+    direction: io
+    voltage: 3.3
+    five_v_tolerant: false
+    functions:
+      - { type: gpio }
+      - { type: rtc, signal: RTC_GPIO19 }
+      - { type: uart, signal: U1RTS }
+      - { type: adc, signal: ADC2_CH8 }
+      - { type: clock, signal: CLK_OUT2 }
+      - { type: usb, signal: USB_D- }
+    safe: caution
+    note: "USB D- of the chip's own USB, wired to the board's USB port. Free only when you don't use that port."
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 20" }
+      - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
+      - { source: s6, page: 2 }
+      - { source: s4, page: 27 }
+  - id: gnd-j3-21
+    header: j3
+    row: 1
+    index: 21
+    board_label: "G"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 21" }
+      - { source: s2, section: J3 }
+  - id: gnd-j3-22
+    header: j3
+    row: 1
+    index: 22
+    board_label: "G"
+    direction: ground
+    safe: ok
+    cites:
+      - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 22" }
+      - { source: s2, section: J3 }
