@@ -30,6 +30,39 @@ class RealPinoutTest {
         it.pinId == pin.id
     }.let { it.x to it.y }
 
+    // Imported boards: the hints' edges put J1 down the left and J3 down the right, both from the
+    // antenna end, as each board's dimensions drawing shows. Rows of the two headers line up.
+    @Test
+    fun importedBoardsHaveTheirHeadersWhereTheDrawingShowsThem() {
+        for ((id, count, firstLeft) in listOf(
+            Triple("espressif/esp32-s3-devkitc-1", 22, "3V3"),
+            Triple("espressif/esp32-c3-devkitm-1", 15, "GND"),
+        )) {
+            val p = pinout(id)
+            val board = PinoutLayout.place(p, Rotation.R0)
+            fun pin(header: String, index: Int) = p.pins.single { it.headerId == header && it.index == index }
+            assertEquals(id, 0 to 1, board.cellOf(pin("j1", 1)))
+            assertEquals(id, firstLeft, pin("j1", 1).boardLabel)
+            assertEquals(id, board.columns - 1 to 1, board.cellOf(pin("j3", 1)))
+            for (index in 1..count) {
+                assertEquals(
+                    "$id row $index",
+                    board.cellOf(pin("j1", index)).second,
+                    board.cellOf(pin("j3", index)).second,
+                )
+            }
+            assertEquals(id, emptyList<String>(), board.unplacedHeaders)
+            assertEquals(id, 2 * count, board.pins.size)
+        }
+        // The C3 board prints 2 where its guide writes IO2.
+        assertEquals(
+            "2",
+            pinout("espressif/esp32-c3-devkitm-1").pins.single {
+                it.headerId == "j1" && it.index == 4
+            }.boardLabel,
+        )
+    }
+
     @Test
     fun devKitCHas3v3TopLeftAndGndTopRight() {
         val p = pinout("espressif/esp32-devkitc-v4-wroom-32e")
