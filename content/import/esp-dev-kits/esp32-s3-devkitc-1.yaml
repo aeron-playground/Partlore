@@ -54,6 +54,7 @@ headers:
     id: j1
     label: J1
     type: header
+    rows: 1
     pitch_mm: 2.54
     source: s5
     page: 1
@@ -63,6 +64,7 @@ headers:
     id: j3
     label: J3
     type: header
+    rows: 1
     pitch_mm: 2.54
     source: s5
     page: 1
@@ -82,7 +84,7 @@ pins:
   - { table: J1, no: 10, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
   - { table: J1, no: 11, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
   - { table: J1, no: 12, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
-  - { table: J1, no: 13, safe: caution, voltage: 3.3, five_v_tolerant: false, strapping: { role: jtag-source, at: reset }, note: "A strapping pin: read at reset to pick the JTAG source, but only when the chip's eFuses ask for it. It has no pull resistor inside the chip.", cites: [ { source: s3, page: 26 }, { source: s3, page: 34 }, { source: s4, page: 27 } ] }
+  - { table: J1, no: 13, safe: caution, voltage: 3.3, five_v_tolerant: false, strapping: { role: jtag-source, at: reset }, note: "A strapping pin: read at reset to pick the JTAG source, but only when the chip's eFuses ask for it. It has no pull resistor inside the chip.", cites: [ { source: s3, page: 26 }, { source: s3, page: 34 }, { source: s3, page: 35 }, { source: s4, page: 27 } ] }
   - { table: J1, no: 14, safe: caution, voltage: 3.3, five_v_tolerant: false, strapping: { role: boot-mode, at: reset }, note: "Read at reset with GPIO0: it must be low for download mode; any level runs the program in flash. The chip pulls it low by default.", cites: [ { source: s3, page: 32 }, { source: s3, page: 33 }, { source: s4, page: 27 } ] }
   - { table: J1, no: 15, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
   - { table: J1, no: 16, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
@@ -98,18 +100,18 @@ pins:
   - { table: J3, no: 3, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "UART0 RX, wired to the board's CP2102N USB-to-UART chip, which uploads firmware and shows the serial console.", cites: [ { source: s3, page: 26 }, { source: s6, page: 2 }, { source: s4, page: 27 } ] }
   - { table: J3, no: 4, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
   - { table: J3, no: 5, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
-  - { table: J3, no: 6, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
-  - { table: J3, no: 7, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
-  - { table: J3, no: 8, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
-  - { table: J3, no: 9, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
+  - { table: J3, no: 6, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "JTAG pin MTMS: the datasheet asks for care with it, because a JTAG debugger can use it.", cites: [ { source: s3, page: 26 }, { source: s4, page: 27 } ] }
+  - { table: J3, no: 7, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "JTAG pin MTDI: the datasheet asks for care with it, because a JTAG debugger can use it.", cites: [ { source: s3, page: 26 }, { source: s4, page: 27 } ] }
+  - { table: J3, no: 8, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "JTAG pin MTDO: the datasheet asks for care with it, because a JTAG debugger can use it.", cites: [ { source: s3, page: 26 }, { source: s4, page: 27 } ] }
+  - { table: J3, no: 9, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "JTAG pin MTCK: the datasheet asks for care with it, because a JTAG debugger can use it.", cites: [ { source: s3, page: 26 }, { source: s4, page: 27 } ] }
   - { table: J3, no: 10, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "Drives the board's addressable RGB LED on v1.1 (the first version used GPIO48).", cites: [ { source: s2, section: Description of Components }, { source: s2, section: Hardware Revision Details }, { source: s4, page: 27 } ] }
   - { table: J3, no: 11, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "Taken by the module's octal PSRAM or flash on boards with an octal-PSRAM WROOM-1/1U (R8 and R16V models) or a WROOM-2 module; free on the others.", cites: [ { source: s2, section: Description of Components }, { source: s4, page: 12 }, { source: s4, page: 27 } ] }
   - { table: J3, no: 12, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "Taken by the module's octal PSRAM or flash on boards with an octal-PSRAM WROOM-1/1U (R8 and R16V models) or a WROOM-2 module; free on the others.", cites: [ { source: s2, section: Description of Components }, { source: s4, page: 12 }, { source: s4, page: 27 } ] }
   - { table: J3, no: 13, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "Taken by the module's octal PSRAM or flash on boards with an octal-PSRAM WROOM-1/1U (R8 and R16V models) or a WROOM-2 module; free on the others.", cites: [ { source: s2, section: Description of Components }, { source: s4, page: 12 }, { source: s4, page: 27 } ] }
-  - { table: J3, no: 14, safe: caution, voltage: 3.3, five_v_tolerant: false, strapping: { role: boot-mode, must_be: high, at: reset }, note: "Read at reset: high (the default, pulled up inside the chip) runs the program in flash; low, with GPIO46 low, starts download mode. The Boot button pulls it low.", cites: [ { source: s3, page: 32 }, { source: s3, page: 33 }, { source: s2, section: Description of Components }, { source: s4, page: 27 } ] }
+  - { table: J3, no: 14, safe: caution, voltage: 3.3, five_v_tolerant: false, strapping: { role: boot-mode, must_be: high, at: reset }, note: "Read at reset: high (the default, pulled up inside the chip) runs the program in flash; low, with GPIO46 low, starts download mode. The Boot button pulls it low.", cites: [ { source: s3, page: 32 }, { source: s3, page: 33 }, { source: s2, section: Description of Components }, { source: s6, page: 2 }, { source: s4, page: 27 } ] }
   - { table: J3, no: 15, safe: caution, voltage: 3.3, five_v_tolerant: false, strapping: { role: flash-voltage, at: reset }, note: "Read at reset to choose the flash supply unless the chip's eFuses set it: low (the default, pulled down inside the chip) gives 3.3 V, high gives 1.8 V. Leave it at its default unless you know your module's flash voltage.", cites: [ { source: s3, page: 32 }, { source: s3, page: 34 }, { source: s4, page: 27 } ] }
-  - { table: J3, no: 16, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "Works at 1.8 V, not 3.3 V, on boards whose module has an ESP32-S3R8V or R16V chip. On the board's first version it drives the RGB LED.", cites: [ { source: s3, page: 18 }, { source: s4, page: 12 }, { source: s2, section: Hardware Revision Details }, { source: s4, page: 27 } ] }
-  - { table: J3, no: 17, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "Works at 1.8 V, not 3.3 V, on boards whose module has an ESP32-S3R8V or R16V chip.", cites: [ { source: s3, page: 18 }, { source: s4, page: 12 }, { source: s4, page: 27 } ] }
+  - { table: J3, no: 16, safe: avoid, voltage: 3.3, five_v_tolerant: false, note: "Check your module first: where it has an ESP32-S3R8V or R16V chip, this pin works at 1.8 V and 3.3 V is above its input limit. On the board's first version it drives the RGB LED.", cites: [ { source: s3, page: 18 }, { source: s4, page: 12 }, { source: s2, section: Hardware Revision Details }, { source: s4, page: 27 } ] }
+  - { table: J3, no: 17, safe: avoid, voltage: 3.3, five_v_tolerant: false, note: "Check your module first: where it has an ESP32-S3R8V or R16V chip, this pin works at 1.8 V and 3.3 V is above its input limit.", cites: [ { source: s3, page: 18 }, { source: s4, page: 12 }, { source: s4, page: 27 } ] }
   - { table: J3, no: 18, safe: ok, voltage: 3.3, five_v_tolerant: false, cites: [ { source: s4, page: 27 } ] }
   - { table: J3, no: 19, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "USB D+ of the chip's own USB, wired to the board's USB port. Free only when you don't use that port.", cites: [ { source: s3, page: 26 }, { source: s6, page: 2 }, { source: s4, page: 27 } ] }
   - { table: J3, no: 20, safe: caution, voltage: 3.3, five_v_tolerant: false, note: "USB D- of the chip's own USB, wired to the board's USB port. Free only when you don't use that port.", cites: [ { source: s3, page: 26 }, { source: s6, page: 2 }, { source: s4, page: 27 } ] }

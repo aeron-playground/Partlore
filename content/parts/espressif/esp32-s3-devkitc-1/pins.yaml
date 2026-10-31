@@ -269,6 +269,7 @@ pins:
       - { source: s2, section: J1 }
       - { source: s3, page: 26 }
       - { source: s3, page: 34 }
+      - { source: s3, page: 35 }
       - { source: s4, page: 27 }
   - id: gpio46
     header: j1
@@ -547,10 +548,12 @@ pins:
     functions:
       - { type: gpio }
       - { type: jtag, signal: MTMS }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTMS: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 6" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
       - { source: s4, page: 27 }
   - id: gpio41
     header: j3
@@ -565,10 +568,12 @@ pins:
       - { type: gpio }
       - { type: jtag, signal: MTDI }
       - { type: clock, signal: CLK_OUT1 }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTDI: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 7" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
       - { source: s4, page: 27 }
   - id: gpio40
     header: j3
@@ -583,10 +588,12 @@ pins:
       - { type: gpio }
       - { type: jtag, signal: MTDO }
       - { type: clock, signal: CLK_OUT2 }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTDO: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 8" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
       - { source: s4, page: 27 }
   - id: gpio39
     header: j3
@@ -602,10 +609,12 @@ pins:
       - { type: jtag, signal: MTCK }
       - { type: clock, signal: CLK_OUT3 }
       - { type: spi, signal: SUBSPICS1 }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTCK: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 9" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 26 }
       - { source: s4, page: 27 }
   - id: gpio38
     header: j3
@@ -715,6 +724,7 @@ pins:
       - { source: s3, page: 32 }
       - { source: s3, page: 33 }
       - { source: s2, section: "Description of Components" }
+      - { source: s6, page: 2 }
       - { source: s4, page: 27 }
   - id: gpio45
     header: j3
@@ -749,8 +759,8 @@ pins:
       - { type: gpio }
       - { type: spi, signal: SPICLK_N }
       - { type: spi, signal: SUBSPICLK_N_DIFF }
-    safe: caution
-    note: "Works at 1.8 V, not 3.3 V, on boards whose module has an ESP32-S3R8V or R16V chip. On the board's first version it drives the RGB LED."
+    safe: avoid
+    note: "Check your module first: where it has an ESP32-S3R8V or R16V chip, this pin works at 1.8 V and 3.3 V is above its input limit. On the board's first version it drives the RGB LED."
     cites:
       - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 16" }
       - { source: s2, section: J3 }
@@ -771,8 +781,8 @@ pins:
       - { type: gpio }
       - { type: spi, signal: SPICLK_P }
       - { type: spi, signal: SUBSPICLK_P_DIFF }
-    safe: caution
-    note: "Works at 1.8 V, not 3.3 V, on boards whose module has an ESP32-S3R8V or R16V chip."
+    safe: avoid
+    note: "Check your module first: where it has an ESP32-S3R8V or R16V chip, this pin works at 1.8 V and 3.3 V is above its input limit."
     cites:
       - { source: s1, ref: "docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, J3 No. 17" }
       - { source: s2, section: J3 }

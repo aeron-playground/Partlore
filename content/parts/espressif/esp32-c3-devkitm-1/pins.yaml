@@ -375,10 +375,12 @@ pins:
       - { type: gpio }
       - { type: spi, signal: FSPID }
       - { type: jtag, signal: MTDO }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTDO: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 8" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 23 }
       - { source: s5, page: 1 }
       - { source: s4, page: 21 }
   - id: gpio6
@@ -394,10 +396,12 @@ pins:
       - { type: gpio }
       - { type: spi, signal: FSPICLK }
       - { type: jtag, signal: MTCK }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTCK: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 9" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 23 }
       - { source: s5, page: 1 }
       - { source: s4, page: 21 }
   - id: gpio5
@@ -414,10 +418,12 @@ pins:
       - { type: adc, signal: ADC2_CH0 }
       - { type: spi, signal: FSPIWP }
       - { type: jtag, signal: MTDI }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTDI: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 10" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 23 }
       - { source: s5, page: 1 }
       - { source: s4, page: 21 }
   - id: gpio4
@@ -434,10 +440,12 @@ pins:
       - { type: adc, signal: ADC1_CH4 }
       - { type: spi, signal: FSPIHD }
       - { type: jtag, signal: MTMS }
-    safe: ok
+    safe: caution
+    note: "JTAG pin MTMS: the datasheet asks for care with it, because a JTAG debugger can use it."
     cites:
       - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 11" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 23 }
       - { source: s5, page: 1 }
       - { source: s4, page: 21 }
   - id: gnd-j3-12
@@ -462,11 +470,12 @@ pins:
     functions:
       - { type: gpio }
       - { type: usb, signal: USB_D- }
-    safe: ok
-    note: "The chip's USB D- pin. On this board it isn't wired to the USB port (that link is not fitted)."
+    safe: caution
+    note: "The chip's USB D- pin; its USB function is on by default. On this board it isn't wired to the USB port (that link is not fitted)."
     cites:
       - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 13" }
       - { source: s2, section: J3 }
+      - { source: s3, page: 17 }
       - { source: s3, page: 23 }
       - { source: s6, page: 2 }
       - { source: s5, page: 1 }
@@ -484,7 +493,7 @@ pins:
       - { type: gpio }
       - { type: usb, signal: USB_D+ }
     safe: caution
-    note: "The chip's USB D+ pin, with its USB pull-up on at reset. On this board it isn't wired to the USB port (that link is not fitted)."
+    note: "The chip's USB D+ pin; its USB function and pull-up are on by default after reset. On this board it isn't wired to the USB port (that link is not fitted)."
     cites:
       - { source: s1, ref: "docs/en/esp32-c3-devkitm-1/user_guide.rst, J3 No. 14" }
       - { source: s2, section: J3 }
