@@ -21,3 +21,21 @@ tasks.withType<Test>().configureEach {
 application {
     mainClass = "dev.partlore.tools.importer.MainKt"
 }
+
+// ./gradlew :tools:importer:importEspDevKits -Pcheckout=<esp-dev-kits checkout> -Pboard=<hints file name>
+tasks.register<JavaExec>("importEspDevKits") {
+    group = "content"
+    description = "Imports a board's pins from a local esp-dev-kits checkout and its hints file."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    workingDir = rootProject.projectDir
+    val checkout = providers.gradleProperty("checkout")
+    val board = providers.gradleProperty("board")
+    argumentProviders.add(
+        CommandLineArgumentProvider {
+            val path = checkout.orNull ?: error("set -Pcheckout=<path to an esp-dev-kits checkout>")
+            val name = board.orNull ?: error("set -Pboard=<hints file name, for example esp32-s3-devkitc-1>")
+            listOf("--checkout", path, "--hints", "tools/importer/hints/espressif/$name.yaml", "--out", "content/parts")
+        },
+    )
+}

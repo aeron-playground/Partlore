@@ -21,8 +21,11 @@ object Importer {
     const val NAME = "esp-dev-kits"
     private const val DATASET = "s1"
     private const val GUIDE = "s2"
+
+    /** Every file the importer writes starts with this, so it can tell its own files from a person's. */
+    const val MARKER = "# Written by tools:importer"
     private const val NOTICE =
-        "# Written by tools:importer from Espressif's esp-dev-kits. To change it, edit the board's hints\n" +
+        "$MARKER from Espressif's esp-dev-kits. To change it, edit the board's hints\n" +
             "# file and import again.\n"
 
     fun import(guide: String, hints: Hints, commit: String, on: LocalDate): ImportResult {
