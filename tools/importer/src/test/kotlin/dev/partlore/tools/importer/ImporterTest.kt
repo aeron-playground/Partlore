@@ -110,6 +110,13 @@ class ImporterTest {
     }
 
     @Test
+    fun pinsNamedInANoteAreListedEvenWithoutAFootnote() {
+        val guide = GUIDE + "\n.. note::\n\n    On some modules GPIO4 is used inside the module.\n"
+        val flagged = import(guide = guide).flagged
+        assertTrue(flagged.toString(), flagged.any { "J1 No. 2" in it && "note at line 13" in it })
+    }
+
+    @Test
     fun hintSourcesMayNotTakeTheImportersIds() {
         assertThrows(ImportException::class.java) { import(HINTS.replace("- id: s3", "- id: s2")) }
     }

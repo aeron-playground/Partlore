@@ -3,6 +3,7 @@ package dev.partlore.tools.importer
 import dev.partlore.tools.importer.YamlOut.inline
 import dev.partlore.tools.importer.YamlOut.quote
 import dev.partlore.tools.importer.YamlOut.text
+import dev.partlore.tools.importer.rst.GuideNotes
 import dev.partlore.tools.importer.rst.PinTable
 import dev.partlore.tools.importer.rst.PinTables
 import dev.partlore.tools.importer.rst.TableRow
@@ -43,11 +44,11 @@ object Importer {
                 "sources.yaml" to sources(hints, commit, on),
                 "pins.yaml" to pinFile(hints, tables, pins, origin),
             ),
-            flagged = flagged(pins),
+            flagged = ToCheck.list(pins, GuideNotes.pinsNamed(guide)),
         )
     }
 
-    private class Pin(
+    internal class Pin(
         val table: PinTable,
         val row: TableRow,
         val facts: PinFacts,
@@ -198,17 +199,6 @@ object Importer {
             append("      - { type: ${fn.type}${fn.signal?.let { ", signal: ${text(it)}" }.orEmpty()} }\n")
         }
     }
-
-    private fun flagged(pins: List<Pin>): List<String> = listOf(
-        "Board labels: each board label is the guide's Name unless a hint sets it. Compare them with the board photo.",
-    ) +
-        pins.flatMap { pin ->
-            val where = "${pin.table.heading} No. ${pin.row.no} (${pin.chipName ?: pin.row.name})"
-            pin.row.footnotes.sorted().map {
-                "$where: the guide has footnote $it here. Read it; put what matters in the hints."
-            } +
-                pin.facts.flags.map { "$where: '$it' is not a pin function. Say it in a note if it matters." }
-        }
 
     private const val SHORT_COMMIT = 7
 }
