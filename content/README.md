@@ -17,6 +17,7 @@ parts/<maker>/<part>/    one folder per part; the folder path is the part's id
   pins.yaml              every pin, by header (optional)
   gotchas.yaml           traps the datasheet doesn't make obvious (optional)
   article.md             a longer text in our own words (optional)
+import/<importer>/       hints a person writes for an importer, one file per board
 ```
 
 Each YAML file starts with a `# yaml-language-server: $schema=…` line. Editors with YAML
@@ -65,6 +66,28 @@ edges:
 The runs of a header must add up to its pins per row. Check `first` against a photo or drawing of
 the real board: a header drawn backwards shows the wrong pins at the bench.
 
+## Importing a board from Espressif's esp-dev-kits
+
+Espressif's board user guides (the esp-dev-kits repository, Apache-2.0) list each header's pins in
+tables. `tools:importer` turns those tables into `pins.yaml`. What the tables don't say, a person
+writes in a hints file, each value with its source: which edge each header is on and where pin 1
+is, the pitch, how safe each pin is (strapping, flash and PSRAM pins, the USB-to-UART pins), its
+voltage and 5 V tolerance, and board labels where the board prints something other than the guide.
+
+1. Get the guide: `git clone --filter=blob:none --sparse https://github.com/espressif/esp-dev-kits.git`,
+   then `git sparse-checkout set docs/en/<board>` inside it.
+2. Write `import/esp-dev-kits/<board>.yaml`; start from an existing one. Every pin needs `safe`,
+   and anything more than an ordinary pin needs `cites`.
+3. Run `./gradlew :tools:importer:importEspDevKits -Pcheckout=<the clone> -Pboard=<board>`. It
+   writes `parts/espressif/<board>/` at level `imported` and lists what to look at: footnotes,
+   pins the guide's notes name, and words that aren't pin functions.
+4. Run `./gradlew validateContent`, then `contentChecklist` for the person checking the board.
+5. When a person has checked every value, they set `checked` in each file's `status`. The importer
+   never overwrites those files after that.
+
+The importer stops instead of guessing: an unknown signal name, a pin without `safe`, or a guide
+with local changes. See [ADR 0013](../docs/adr/0013-importers-write-facts-people-write-judgments.md).
+
 ## Status levels
 
 | Level | Meaning | In release packs |
@@ -85,4 +108,5 @@ people, so `gotchas.yaml` is never `imported`.
 |---|---|
 | `./gradlew validateContent` | Checks every rule; problems print as `content/…:line:column` |
 | `./gradlew contentChecklist -Ppart=<maker>/<part>` | Writes a checklist grouped by document and page to `build/content/checklists/` |
+| `./gradlew :tools:importer:importEspDevKits -Pcheckout=<clone> -Pboard=<board>` | Imports a board from a local esp-dev-kits clone and its hints file |
 | `./gradlew packContent` | Builds the release pack in `build/content/pack/`; with `-Ppreview`, a pack that includes drafts in `build/content/preview/` |

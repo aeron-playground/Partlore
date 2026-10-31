@@ -57,6 +57,7 @@ This file is ignored by git.
 | `feature:*` | One screen or flow each, for example `feature:settings` or `feature:pinout` (the pinout viewer) |
 | `tools:validator` | Checks the files in `content/` (runs on your computer, not in the app) |
 | `tools:packer` | Builds the content pack from `content/` |
+| `tools:importer` | Turns open board data (Espressif's esp-dev-kits) and a person's hints into part files (runs on your computer) |
 | `tools:detekt-rules` | Our detekt rules: screens use design tokens, not raw colours, `.dp` numbers or `tween()` |
 | `build-logic` | Shared build settings (convention plugins) |
 

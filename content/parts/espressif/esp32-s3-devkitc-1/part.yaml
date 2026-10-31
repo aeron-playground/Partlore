@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../../schema/part.schema.json
+# Written by tools:importer from Espressif's esp-dev-kits. To change it, edit the board's hints
+# file and import again.
+id: espressif/esp32-s3-devkitc-1
+kind: board
+name: ESP32-S3-DevKitC-1
+aliases: ["ESP32-S3-DevKitC-1 v1.1"]
+manufacturer: Espressif
+category: esp32-boards
+tags: [wifi, bluetooth, "3v3-logic", micro-usb]
+summary: "Espressif's ESP32-S3 dev board (v1.1) with a WROOM-1, WROOM-1U or WROOM-2 module, two Micro-USB ports (USB-to-UART and the chip's own USB) and an RGB LED on GPIO38."
+status:
+  level: imported
+  imported_from: { importer: esp-dev-kits, source: s1, ref: docs/en/esp32-s3-devkitc-1/user_guide_v1.1.rst, on: 2026-10-31 }
