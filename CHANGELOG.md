@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/aeron-playground/Partlore/compare/app-v0.0.5...app-v0.0.6) (2026-10-31)
+
+
+### Features
+
+* **content:** import board pinouts from Espressif's esp-dev-kits ([#50](https://github.com/aeron-playground/Partlore/issues/50)) ([323cb15](https://github.com/aeron-playground/Partlore/commit/323cb15861e9658796e224e354ba3a0e7707d731))
+
 ## [0.0.5](https://github.com/aeron-playground/Partlore/compare/app-v0.0.4...app-v0.0.5) (2026-10-31)
 
 
