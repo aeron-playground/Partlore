@@ -18,3 +18,13 @@ style:
   MagicNumber:
     # Token files are where numbers belong. Keep detekt's default test excludes.
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/designsystem/**/theme/**', '**/testFixtures/**']
+
+# Our own rules (tools/detekt-rules): screens use design tokens. Tests and the token files may use raw values.
+partlore:
+  RawColor:
+    excludes: &testsAndTheme ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/designsystem/**/theme/**', '**/testFixtures/**']
+  DpLiteral:
+    excludes: *testsAndTheme
+  TweenOutsideMotion:
+    # Only the motion tokens time an animation by hand: they also handle reduced motion.
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/designsystem/**/theme/PartloreMotion.kt', '**/testFixtures/**']

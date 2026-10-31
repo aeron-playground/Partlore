@@ -1,0 +1,9 @@
+# Defaults for the partlore rule set. The repo's config/detekt/detekt.yml adds where each rule does not apply.
+partlore:
+  active: true
+  RawColor:
+    active: true
+  DpLiteral:
+    active: true
+  TweenOutsideMotion:
+    active: true

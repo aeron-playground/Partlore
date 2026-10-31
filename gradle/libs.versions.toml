@@ -73,6 +73,8 @@ androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core",
 
 # Lint rule sets (not shipped in the app)
 compose-rules-ktlint = { module = "io.nlopez.compose.rules:ktlint", version.ref = "compose-rules" }
+detekt-api = { module = "io.gitlab.arturbosch.detekt:detekt-api", version.ref = "detekt" }
+detekt-test = { module = "io.gitlab.arturbosch.detekt:detekt-test", version.ref = "detekt" }
 
 # Build logic (convention plugins compile against these; the root build supplies them at runtime)
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }

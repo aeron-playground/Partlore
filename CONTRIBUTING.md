@@ -57,6 +57,7 @@ This file is ignored by git.
 | `feature:*` | One screen or flow each, for example `feature:settings` or `feature:pinout` (the pinout viewer) |
 | `tools:validator` | Checks the files in `content/` (runs on your computer, not in the app) |
 | `tools:packer` | Builds the content pack from `content/` |
+| `tools:detekt-rules` | Our detekt rules: screens use design tokens, not raw colours, `.dp` numbers or `tween()` |
 | `build-logic` | Shared build settings (convention plugins) |
 
 A feature module depends only on `core:*` modules. Only `app` knows about navigation. See
@@ -160,7 +161,8 @@ Content in `content/` is licensed CC BY-SA 4.0. By contributing it, you agree to
 ## Code rules
 
 - Format and lint before you push. The checks in CI are the same ones you run locally.
-- UI code uses design tokens only: no raw colours, sizes or animation timings.
+- UI code uses design tokens only: no raw colours, sizes or animation timings. `./gradlew detekt` checks this
+  (`RawColor`, `DpLiteral`, `TweenOutsideMotion`); tests and the theme's token files may use raw values.
 - New UI components go into the Design Catalog first, then into screens.
 - UI changes need screenshots in the PR: light and dark theme, normal and 200% font size.
 - Don't add a dependency without discussing it in the issue first.
