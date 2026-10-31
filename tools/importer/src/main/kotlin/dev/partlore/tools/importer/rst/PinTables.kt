@@ -17,6 +17,7 @@ object PinTables {
     private val SIMPLE_BORDER = Regex("""^=+( +=+)+\s*$""")
     private val UNDERLINE = Regex("""^([-=^~"'`#*+])\1{2,}\s*$""")
     private val FOOTNOTE = Regex("""\s*\[(#\w*|\d+)]_""")
+    private const val HEADER_ROWS = ":header-rows:"
 
     fun read(rst: String): List<PinTable> {
         val lines = rst.lines()
@@ -57,20 +58,23 @@ object PinTables {
         val headerEnd =
             (start + 1 until lines.size).firstOrNull { SIMPLE_BORDER.matches(lines[it]) } ?: return null to start + 1
         val end = (headerEnd + 1 until lines.size).firstOrNull { SIMPLE_BORDER.matches(lines[it]) } ?: lines.size
-        val header = cells(lines[start + 1], starts).map(::clean)
-        if (header != COLUMNS) return null to end + 1
+        val pins = cells(lines[start + 1], starts).map(::clean) == COLUMNS
+        return (if (pins) simpleRows(lines, headerEnd + 1 until end, starts) else null) to end + 1
+    }
+
+    // A line whose first column is blank goes on with the row above it.
+    private fun simpleRows(lines: List<String>, body: IntRange, starts: List<Int>): List<TableRow> {
         val rows = mutableListOf<Pair<Int, MutableList<String>>>()
-        for (n in headerEnd + 1 until end) {
-            if (lines[n].isBlank()) continue
+        for (n in body.filterNot { lines[it].isBlank() }) {
             val cells = cells(lines[n], starts)
             val previous = rows.lastOrNull()
-            if (cells[0].isBlank() && previous != null) {
+            if (cells.first().isBlank() && previous != null) {
                 cells.forEachIndexed { k, text -> if (text.isNotBlank()) previous.second[k] += " $text" }
             } else {
                 rows += n to cells.toMutableList()
             }
         }
-        return rows.map { (n, cells) -> row(n, cells) } to end + 1
+        return rows.map { (n, cells) -> row(n, cells) }
     }
 
     private fun cells(line: String, starts: List<Int>): List<String> = starts.mapIndexed { k, from ->
@@ -80,37 +84,43 @@ object PinTables {
 
     private fun listTable(lines: List<String>, start: Int): Pair<List<TableRow>?, Int> {
         val indent = indentOf(lines[start])
-        var headerRows = 0
+        val end =
+            (start + 1 until lines.size).firstOrNull { lines[it].isNotBlank() && indentOf(lines[it]) <= indent }
+                ?: lines.size
+        val body = (start + 1 until end).map { it to lines[it].trim() }
+        val headerRows =
+            body.firstNotNullOfOrNull { (_, text) ->
+                text.takeIf { it.startsWith(HEADER_ROWS) }?.removePrefix(HEADER_ROWS)?.trim()?.toIntOrNull()
+            } ?: 0
+        val rows = listRows(body)
+        val pins = headerRows >= 1 && rows.firstOrNull()?.second?.map(::clean) == COLUMNS
+        return (if (pins) rows.drop(headerRows).map { (n, cells) -> row(n, cells) } else null) to end
+    }
+
+    // `* -` starts a row, `-` starts a cell, and any other text goes on with the cell above it.
+    private fun listRows(body: List<Pair<Int, String>>): List<Pair<Int, List<String>>> {
         val rows = mutableListOf<Pair<Int, MutableList<String>>>()
-        var n = start + 1
-        while (n < lines.size && (lines[n].isBlank() || indentOf(lines[n]) > indent)) {
-            val text = lines[n].trim()
+        for ((n, text) in body) {
+            val cells = rows.lastOrNull()?.second
             when {
-                text.startsWith(":header-rows:") ->
-                    headerRows = text.substringAfter(":header-rows:").trim().toIntOrNull() ?: 0
-
-                text.startsWith("* - ") || text == "* -" -> rows += n to mutableListOf(text.removePrefix("* -").trim())
-
-                text.startsWith("- ") || text == "-" -> rows.lastOrNull()?.second?.add(text.removePrefix("-").trim())
-
-                text.isNotEmpty() && !text.startsWith(":") ->
-                    rows.lastOrNull()?.second?.let { it[it.lastIndex] += " $text" }
+                text == "* -" || text.startsWith("* - ") -> rows += n to mutableListOf(text.removePrefix("* -").trim())
+                cells == null || text.isEmpty() || text.startsWith(":") -> Unit
+                text == "-" || text.startsWith("- ") -> cells += text.removePrefix("-").trim()
+                else -> cells[cells.lastIndex] += " $text"
             }
-            n++
         }
-        val header = rows.firstOrNull()?.second?.map(::clean)
-        if (headerRows < 1 || header != COLUMNS) return null to n
-        return rows.drop(headerRows).map { (line, cells) -> row(line, cells) } to n
+        return rows
     }
 
     private fun row(line: Int, cells: List<String>): TableRow {
         if (cells.size != COLUMNS.size) {
             throw ImportException("line ${line + 1}: a pin row has ${cells.size} cells, not ${COLUMNS.size}")
         }
-        val no = clean(cells[0])
+        val cleaned = cells.map(::clean)
+        val (no, name, type) = cleaned
         val number = no.toIntOrNull() ?: throw ImportException("line ${line + 1}: pin number '$no' is not a number")
         val footnotes = cells.flatMap { cell -> FOOTNOTE.findAll(cell).map { it.groupValues[1] } }.toSet()
-        return TableRow(number, clean(cells[1]), clean(cells[2]), clean(cells[3]), footnotes)
+        return TableRow(number, name, type, cleaned.last(), footnotes)
     }
 
     private fun clean(cell: String): String = cell.replace(FOOTNOTE, "").trim()

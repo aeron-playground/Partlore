@@ -14,10 +14,12 @@ object Signals {
     private val DIRECTIONS =
         mapOf("P" to "power", "G" to "ground", "I" to "in", "O" to "out", "I/O" to "io", "I/O/T" to "io")
 
+    private val GPIO = Regex("""GPIO\d+""")
+
     // First match wins.
     private val TYPES =
         listOf(
-            Regex("""GPIO\d+""") to "gpio",
+            GPIO to "gpio",
             Regex("""RTC_GPIO\d+""") to "rtc",
             Regex("""ADC\d_CH\d+""") to "adc",
             Regex("""DAC_\d""") to "dac",
@@ -45,32 +47,33 @@ object Signals {
 
     fun read(type: String, function: String): PinFacts {
         val direction = DIRECTIONS[type] ?: throw ImportException("unknown pin type '$type'")
-        val chipNames = mutableListOf<String>()
-        val functions = mutableListOf<Fn>()
-        val flags = mutableListOf<String>()
-        for (token in function.split(",").map(String::trim).filter(String::isNotEmpty)) {
-            when (token) {
-                in SUPPLY_WORDS ->
-                    if (direction != "power" && direction != "ground") {
-                        throw ImportException("'$token' describes a supply pin, but the pin type is '$type'")
-                    }
-
-                in NOT_MODELLED -> Unit
-
-                in FLAGGED -> flags += token
-
-                else -> {
-                    val fn = function(token, function)
-                    if (fn.type == "gpio") chipNames += token
-                    functions += fn
-                }
-            }
-        }
-        if (chipNames.size > 1) throw ImportException("two GPIO names in '$function'")
+        val tokens = function.split(",").map(String::trim).filter(String::isNotEmpty)
+        checkSupplyWords(tokens, type, direction)
+        val functions = tokens.filterNot {
+            it in SUPPLY_WORDS || it in NOT_MODELLED || it in FLAGGED
+        }.map { function(it, function) }
         // A bare "Reset" next to CHIP_PU or EN only describes it.
-        val reset = functions.any { it.type == "reset" && it.signal != null }
-        val kept = functions.filterNot { reset && it.type == "reset" && it.signal == null }
-        return PinFacts(chipNames.singleOrNull(), direction, kept.sortedBy { if (it.type == "gpio") 0 else 1 }, flags)
+        val named = functions.any { it.type == "reset" && it.signal != null }
+        val kept = functions.filterNot { named && it.type == "reset" && it.signal == null }
+        return PinFacts(
+            chipName = chipName(tokens, function),
+            direction = direction,
+            functions = kept.sortedBy { if (it.type == "gpio") 0 else 1 },
+            flags = tokens.filter { it in FLAGGED },
+        )
+    }
+
+    private fun checkSupplyWords(tokens: List<String>, type: String, direction: String) {
+        if (direction == "power" || direction == "ground") return
+        tokens.firstOrNull { it in SUPPLY_WORDS }?.let {
+            throw ImportException("'$it' describes a supply pin, but the pin type is '$type'")
+        }
+    }
+
+    private fun chipName(tokens: List<String>, cell: String): String? {
+        val names = tokens.filter { GPIO.matches(it) }
+        if (names.size > 1) throw ImportException("two GPIO names in '$cell'")
+        return names.singleOrNull()
     }
 
     private fun function(token: String, cell: String): Fn {
