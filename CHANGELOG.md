@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/aeron-playground/Partlore/compare/app-v0.0.4...app-v0.0.5) (2026-10-31)
+
+
+### Bug Fixes
+
+* **app:** close the settings file when Koin closes ([#44](https://github.com/aeron-playground/Partlore/issues/44)) ([33c0b32](https://github.com/aeron-playground/Partlore/commit/33c0b328dd0a9b3d0a362a32b08aee1df4c50bb9))
+
 ## [0.0.4](https://github.com/aeron-playground/Partlore/compare/app-v0.0.3...app-v0.0.4) (2026-10-16)
 
 
