@@ -62,7 +62,7 @@ class Hints private constructor(
 
     companion object {
         private val ROOT_KEYS = setOf("part", "guide", "sources", "headers", "pins")
-        private val PART_KEYS = setOf("id", "name", "aliases", "category", "tags", "summary")
+        private val PART_KEYS = setOf("id", "name", "aliases", "manufacturer", "category", "tags", "summary")
         private val GUIDE_KEYS = setOf("ref", "url", "version")
         private val HEADER_KEYS =
             setOf("table", "id", "label", "type", "pitch_mm", "source", "page", "section", "ref", "edges")
@@ -87,7 +87,7 @@ class Hints private constructor(
                 }
             keys(root, "hints", ROOT_KEYS, ROOT_KEYS - "sources")
             val part = root.get("part")
-            keys(part, "part", PART_KEYS, setOf("id", "name", "category", "summary"))
+            keys(part, "part", PART_KEYS, setOf("id", "name", "manufacturer", "category", "summary"))
             val guide = root.get("guide")
             keys(guide, "guide", GUIDE_KEYS, GUIDE_KEYS)
             val headers =

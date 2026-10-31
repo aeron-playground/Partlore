@@ -97,6 +97,7 @@ class HintsTest {
             part:
               id: example/board
               name: Example Board
+              manufacturer: Example
               category: esp32-boards
               summary: A made-up board for the importer's tests.
             guide: { ref: docs/en/board/user_guide.rst, url: "https://example.com/board.html", version: v1.0 }
