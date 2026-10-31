@@ -16,6 +16,15 @@ tasks.withType<Test>().configureEach {
     // Imported files are checked against the real schema files and rules.
     systemProperty("partlore.schemaDir", schemaDir.asFile.absolutePath)
     inputs.dir(schemaDir).withPathSensitivity(PathSensitivity.RELATIVE)
+    // The golden test compares with a checked board in content/, and reads the guide from a local
+    // esp-dev-kits checkout given with -PespDevKits=<path> (skipped without it: no network in CI).
+    val contentDir = rootProject.layout.projectDirectory.dir("content")
+    systemProperty("partlore.contentDir", contentDir.asFile.absolutePath)
+    inputs.dir(contentDir).withPathSensitivity(PathSensitivity.RELATIVE)
+    providers.gradleProperty("espDevKits").orNull?.let {
+        systemProperty("espDevKits", it)
+        inputs.property("espDevKits", it)
+    }
 }
 
 application {
