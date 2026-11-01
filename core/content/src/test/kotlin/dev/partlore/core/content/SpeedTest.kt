@@ -42,7 +42,7 @@ class SpeedTest {
                     "category" to median { reader.category("cat-07") },
                     "part" to median { reader.part("scale/board-2500") },
                     "pinout" to median { reader.pinout("scale/board-2500") },
-                )
+                ) + SEARCHES.associate { "search '$it'" to median { reader.search(it) } }
             println("speed: " + timings.entries.joinToString { "%s %.2f ms".format(it.key, it.value) })
             timings.forEach { (name, ms) -> assertTrue("$name took $ms ms", ms < LIMIT_MS) }
         }
@@ -64,5 +64,8 @@ class SpeedTest {
         const val WARMUP = 5
         const val RUNS = 21
         const val LIMIT_MS = 20.0
+
+        // The slow shapes: a word on every part, a short word, a pin name on every board, part + pin, no match.
+        val SEARCHES = listOf("board", "b", "io5", "gpio", "scale io5", "scale gpio", "test zzz", "zzz", "reset low")
     }
 }

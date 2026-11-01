@@ -28,7 +28,7 @@ tasks.withType<Test>().configureEach {
 
 tasks.register<Test>("speedTest") {
     group = "verification"
-    description = "Packs 5,000 generated parts and checks that each screen reads in under 20 ms (CI)."
+    description = "Packs 5,000 generated parts and checks that each screen and search reads in under 20 ms (CI)."
     testClassesDirs =
         sourceSets.test
             .get()

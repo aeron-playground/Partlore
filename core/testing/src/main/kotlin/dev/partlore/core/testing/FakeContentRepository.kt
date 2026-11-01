@@ -6,6 +6,7 @@ import dev.partlore.core.model.ContentResult
 import dev.partlore.core.model.LibraryHome
 import dev.partlore.core.model.PartPage
 import dev.partlore.core.model.Pinout
+import dev.partlore.core.model.SearchResults
 
 /** Content from memory, for screen and ViewModel tests. Unknown IDs are NotFound. */
 class FakeContentRepository(
@@ -16,6 +17,7 @@ class FakeContentRepository(
         mutableMapOf(SampleContent.devBoard.id to ContentResult.Ok(SampleContent.devBoard)),
     val pinouts: MutableMap<String, ContentResult<Pinout>> =
         mutableMapOf(SampleContent.devBoard.id to ContentResult.Ok(SampleContent.devBoardPinout)),
+    val searches: MutableMap<String, ContentResult<SearchResults>> = mutableMapOf(),
 ) : ContentRepository {
     override suspend fun library(): ContentResult<LibraryHome> = library
 
@@ -24,4 +26,7 @@ class FakeContentRepository(
     override suspend fun part(id: String): ContentResult<PartPage> = parts[id] ?: ContentResult.NotFound
 
     override suspend fun pinout(partId: String): ContentResult<Pinout> = pinouts[partId] ?: ContentResult.NotFound
+
+    override suspend fun search(text: String): ContentResult<SearchResults> =
+        searches[text] ?: ContentResult.Ok(SearchResults())
 }

@@ -11,6 +11,7 @@ import dev.partlore.core.model.LibraryHome
 import dev.partlore.core.model.PartCard
 import dev.partlore.core.model.PartPage
 import dev.partlore.core.model.Pinout
+import dev.partlore.core.model.SearchResults
 import dev.partlore.core.model.Tag
 import dev.partlore.core.model.VerificationLevel
 import dev.partlore.core.packformat.PackFormat
@@ -55,6 +56,8 @@ class PackReader private constructor(private val db: SQLiteConnection) : AutoClo
     fun part(id: String): PartPage? = PartQueries(db).part(id, meta("pack_version").orEmpty())
 
     fun pinout(partId: String): Pinout? = PartQueries(db).pinout(partId, meta("pack_version").orEmpty())
+
+    fun search(text: String): SearchResults = SearchQueries(db).search(text)
 
     override fun close() = db.close()
 

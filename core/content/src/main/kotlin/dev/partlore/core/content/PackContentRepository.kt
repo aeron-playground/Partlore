@@ -6,6 +6,7 @@ import dev.partlore.core.model.ContentResult
 import dev.partlore.core.model.LibraryHome
 import dev.partlore.core.model.PartPage
 import dev.partlore.core.model.Pinout
+import dev.partlore.core.model.SearchResults
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -30,6 +31,8 @@ class PackContentRepository(
     override suspend fun part(id: String): ContentResult<PartPage> = read { it.part(id) }
 
     override suspend fun pinout(partId: String): ContentResult<Pinout> = read { it.pinout(partId) }
+
+    override suspend fun search(text: String): ContentResult<SearchResults> = read { it.search(text) }
 
     private suspend fun <T : Any> read(query: (PackReader) -> T?): ContentResult<T> = withContext(dispatcher) {
         val first = readOnce(query, force = false)
